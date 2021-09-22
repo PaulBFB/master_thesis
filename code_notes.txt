@@ -1,0 +1,14 @@
+notes for the code for synthetic data augmentation
+
+1 - split the data normally, train, test, validate
+2 - train a GAN on the whole training data
+3 - create k-folds for the underlying model
+4 - iterate over the k-folds --> 
+4a - fine-tune the GAN generator on the fold
+4b - generate synthetic data, mix into the fold
+4c - ingest the fold into the base model
+5 - validate
+
+notes - when do you stop? (with the GAN and fine tuning?)
+
+see chollet pg. 155
