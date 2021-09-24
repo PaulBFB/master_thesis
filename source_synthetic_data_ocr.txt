@@ -1,0 +1,9 @@
+@inproceedings{chernyshova2018generation,
+  title={Generation method of synthetic training data for mobile OCR system},
+  author={Chernyshova, Yulia S and Gayer, Alexander V and Sheshkus, Alexander V},
+  booktitle={Tenth international conference on machine vision (ICMV 2017)},
+  volume={10696},
+  pages={106962G},
+  year={2018},
+  organization={International Society for Optics and Photonics}
+}
