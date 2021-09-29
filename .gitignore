@@ -15,4 +15,4 @@ tmp/
 *.dvi
 *.out
 *.lol
-.ipynbb_checkpoints/
+.ipynb_checkpoints/
