@@ -1,7 +1,9 @@
 import os
+import time
 from tensorflow.keras import models, layers, Model
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.wrappers.scikit_learn import KerasClassifier
+from tensorflow.keras.callbacks import TensorBoard, ModelCheckpoint, EarlyStopping
 
 
 root_logdir = os.path.join(os.curdir, 'custom_logs')
@@ -29,7 +31,7 @@ def make_model(
     
     model.add(layers.Dense(1, activation='sigmoid'))
     
-    optimizer = Adam(lr=learning_rate)
+    optimizer = Adam(learning_rate=learning_rate)
     
     model.compile(loss=loss, optimizer=optimizer)
     
@@ -45,11 +47,37 @@ def logdir(hyperparam_note=None) -> str:
     directory = os.path.join(root_logdir, run_d)
     
     return directory
+
+
+def nn_gridsearch(
+    model_builder_function,
+    epochs: int = 100,
+    validation_split: float = .2,
+    patience: int = 10,
+    checkpoints: bool = True
+):
     
+    model_wrapped = KerasClassifier(model_builder_function)
+    
+    return model_wrapped
+
 
 if __name__ == '__main__':
+    from process_data import process_data
+    
+    
+    data = process_data()
+    
     test_model = make_model()
     print(logdir('changed_batch_size_32'))
 
     
     test_model.summary()
+    
+    # note = the wrapper takes a FUNCTION as input!
+    test_wrap = nn_gridsearch(make_model)
+    test_wrap.fit(
+        data['x_train_processed'], 
+        data['y_train'], 
+        epochs=30, 
+        callbacks=[TensorBoard(logdir())])
