@@ -36,7 +36,7 @@ def make_model(
     
     optimizer = Adam(learning_rate=learning_rate)
     
-    model.compile(loss=loss, optimizer=optimizer)
+    model.compile(loss=loss, optimizer=optimizer, metrics=['accuracy'])
     
     return model
 
@@ -61,6 +61,7 @@ def nn_gridsearch(
     validation_split: float = .2,
     patience: int = 10,
     batch_size: int = 32,
+    n_iterations: int = 10,
     verbose: int = 1):
     
     keras_cl = KerasClassifier(
