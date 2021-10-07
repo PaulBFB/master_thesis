@@ -4,6 +4,7 @@ from tensorflow.keras import models, layers, Model
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.wrappers.scikit_learn import KerasClassifier
 from tensorflow.keras.callbacks import TensorBoard, ModelCheckpoint, EarlyStopping
+from sklearn.model_selection import RandomizedSearchCV
 
 
 root_logdir = os.path.join(os.curdir, 'custom_logs')
@@ -51,15 +52,39 @@ def logdir(hyperparam_note=None) -> str:
 
 def nn_gridsearch(
     model_builder_function,
+    x_train,
+    y_train,
+    params,
     epochs: int = 100,
-    validation_split: float = .2,
+#    validation_split: float = .2,
     patience: int = 10,
-    checkpoints: bool = True
-):
+    checkpoints: bool = True):
     
-    model_wrapped = KerasClassifier(model_builder_function)
     
-    return model_wrapped
+#    validation_length = int(x_train.shape[1] * validation_split)   
+    
+#    x_val =  x_train[:validation_length]
+#    x_train = x_train[validation_length:]
+    
+#    y_val =  y_train[:validation_length]
+#    y_train = y_train[validation_length:]
+    
+    
+    model_wrapped = KerasClassifier(
+        model_builder_function,
+        batch_size=32,
+        shuffle=True,
+        verbose=1)
+    
+    
+    gridsearch = RandomizedSearchCV(model_wrapped, params, n_iter=10, cv=3)
+    gridsearch.fit(
+        x_train, y_train,
+        epochs=epochs,
+#        validation_data=(x_val, y_val),
+        callbacks=[TensorBoard(logdir())])
+    
+    return gridsearch
 
 
 if __name__ == '__main__':
@@ -70,14 +95,19 @@ if __name__ == '__main__':
     
     test_model = make_model()
     print(logdir('changed_batch_size_32'))
-
     
-    test_model.summary()
+#    test_model.summary()
+    
+    grid_parameters = {'number_hidden_layers': [3, 5, 7]}
     
     # note = the wrapper takes a FUNCTION as input!
-    test_wrap = nn_gridsearch(make_model)
-    test_wrap.fit(
-        data['x_train_processed'], 
-        data['y_train'], 
-        epochs=30, 
-        callbacks=[TensorBoard(logdir())])
+    grid = nn_gridsearch(
+        make_model, 
+        data['x_train_processed'], data['y_train'], 
+        grid_parameters)
+
+    
+    best_model = grid.best_estimator_.model
+    best_model.save('./models/titanic_gridsearch.h5')
+    
+    print(best_model.summary())
