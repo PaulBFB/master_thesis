@@ -1,10 +1,13 @@
 import os
 import time
+import numpy as np
+from scipy.stats import reciprocal
 from tensorflow.keras import models, layers, Model
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.wrappers.scikit_learn import KerasClassifier
 from tensorflow.keras.callbacks import TensorBoard, ModelCheckpoint, EarlyStopping
 from sklearn.model_selection import RandomizedSearchCV
+from process_data import process_data
 
 
 root_logdir = os.path.join(os.curdir, 'custom_logs')
@@ -27,8 +30,7 @@ def make_model(
         model.add(layers.Dense(
             neurons, 
             name=f'hidden_layer_{i}', 
-            activation='relu'
-        ))
+            activation='relu'))
     
     model.add(layers.Dense(1, activation='sigmoid'))
     
@@ -51,40 +53,39 @@ def logdir(hyperparam_note=None) -> str:
 
 
 def nn_gridsearch(
-    model_builder_function,
-    x_train,
-    y_train,
-    params,
+    make_model_function,
+    x_train: np.ndarray = None,
+    y_train: np.ndarray = None,
+    params: dict = None,
     epochs: int = 100,
-#    validation_split: float = .2,
+    validation_split: float = .2,
     patience: int = 10,
-    checkpoints: bool = True):
+    batch_size: int = 32,
+    verbose: int = 1):
     
-    
-#    validation_length = int(x_train.shape[1] * validation_split)   
-    
-#    x_val =  x_train[:validation_length]
-#    x_train = x_train[validation_length:]
-    
-#    y_val =  y_train[:validation_length]
-#    y_train = y_train[validation_length:]
-    
-    
-    model_wrapped = KerasClassifier(
-        model_builder_function,
-        batch_size=32,
+    keras_cl = KerasClassifier(
+        make_model_function,
+        batch_size=batch_size,
         shuffle=True,
-        verbose=1)
+        verbose=verbose)
     
+    rnd_search_cv = RandomizedSearchCV(
+        keras_cl, 
+        params, 
+        n_iter=10, 
+        cv=3, 
+        verbose=2, 
+        n_jobs=-1)
     
-    gridsearch = RandomizedSearchCV(model_wrapped, params, n_iter=10, cv=3)
-    gridsearch.fit(
-        x_train, y_train,
+    rnd_search_cv.fit(
+        x_train, y_train, 
         epochs=epochs,
-#        validation_data=(x_val, y_val),
-        callbacks=[TensorBoard(logdir())])
+        validation_split=validation_split,
+        callbacks=[
+#            EarlyStopping(patience=patience, monitor='val_loss', mode='min'),
+            TensorBoard(logdir())])
     
-    return gridsearch
+    return rnd_search_cv
 
 
 if __name__ == '__main__':
@@ -95,10 +96,12 @@ if __name__ == '__main__':
     
     test_model = make_model()
     print(logdir('changed_batch_size_32'))
-    
-#    test_model.summary()
-    
-    grid_parameters = {'number_hidden_layers': [3, 5, 7]}
+        
+    grid_parameters = {
+        "number_hidden_layers": list(range(1, 7)),
+        "neurons": np.arange(1, 100).tolist(),
+        "learning_rate": reciprocal(3e-4, 3e-2).rvs(1000).tolist()}
+
     
     # note = the wrapper takes a FUNCTION as input!
     grid = nn_gridsearch(
