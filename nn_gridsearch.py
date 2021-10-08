@@ -3,6 +3,7 @@ import time
 import numpy as np
 from scipy.stats import reciprocal
 from tensorflow.keras import models, layers, Model
+from tensorflow.keras.metrics import AUC, Precision, Recall
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.wrappers.scikit_learn import KerasClassifier
 from tensorflow.keras.callbacks import TensorBoard, ModelCheckpoint, EarlyStopping
@@ -36,7 +37,7 @@ def make_model(
     
     optimizer = Adam(learning_rate=learning_rate)
     
-    model.compile(loss=loss, optimizer=optimizer, metrics=['accuracy'])
+    model.compile(loss=loss, optimizer=optimizer, metrics=['accuracy', Precision(), Recall(), AUC()])
     
     return model
 
@@ -107,8 +108,9 @@ if __name__ == '__main__':
     # note = the wrapper takes a FUNCTION as input!
     grid = nn_gridsearch(
         make_model, 
-        data['x_train_processed'], data['y_train'], 
-        grid_parameters)
+        data['x_train_processed'], data['y_train'],
+        grid_parameters,
+        n_iterations=200)
 
     
     best_model = grid.best_estimator_.model
