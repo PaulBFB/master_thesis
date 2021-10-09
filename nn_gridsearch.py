@@ -30,7 +30,7 @@ def make_model(
     model.add(layers.InputLayer(input_shape=input_shape))
     
     for i in range(number_hidden_layers):
-        model.add(layers.Dense(neurons, name=f'hidden_layer_{i}'))
+        model.add(layers.Dense(neurons, name=f'hidden_layer_{i}_relu_alpha_{alpha}'))
         model.add(layers.LeakyReLU(alpha=alpha))
         model.add(layers.Dropout(dropout_rate, name=f'dropout_{i}_{round(dropout_rate * 100)}'))
     
