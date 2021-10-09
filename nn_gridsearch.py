@@ -122,7 +122,7 @@ if __name__ == '__main__':
         make_model, 
         data['x_train_processed'], data['y_train'],
         grid_parameters,
-        n_iterations=300)
+        n_iterations=1)
 
     
     best_model = grid.best_estimator_.model
