@@ -17,7 +17,8 @@ root_logdir = os.path.join(os.curdir, 'custom_logs')
 def make_model(
     input_shape: tuple = (11, ),
     number_hidden_layers: int = 8, 
-    activation: str = 'relu', 
+#    activation: str = 'relu', 
+    alpha: float = .2,
     neurons: int = 32,
     loss: str = 'binary_crossentropy',
     learning_rate: float = .003,
@@ -29,12 +30,10 @@ def make_model(
     model.add(layers.InputLayer(input_shape=input_shape))
     
     for i in range(number_hidden_layers):
-        model.add(layers.Dense(
-            neurons, 
-            name=f'hidden_layer_{i}', 
-            activation=activation))
+        model.add(layers.Dense(neurons, name=f'hidden_layer_{i}'))
+        model.add(layers.LeakyReLU(alpha=alpha))
+        model.add(layers.Dropout(dropout_rate, name=f'dropout_{i}_{round(dropout_rate * 100)}'))
     
-    model.add(layers.Dropout(dropout_rate, name=f'dropout_{round(dropout_rate * 100)}'))
     model.add(layers.Dense(1, activation='sigmoid'))
     
     optimizer = Adam(learning_rate=learning_rate)
@@ -61,7 +60,7 @@ def nn_gridsearch(
     y_train: np.ndarray = None,
     params: dict = None,
     epochs: int = 100,
-    validation_split: float = .2,
+    validation_split: float = .1,
     patience: int = 10,
     batch_size: int = 16,
     n_iterations: int = 10,
@@ -102,10 +101,11 @@ if __name__ == '__main__':
     print(logdir('changed_batch_size_32'))
         
     grid_parameters = {
-        "number_hidden_layers": list(range(1, 8)),
-        "neurons": np.arange(1, 100).tolist(),
-        "learning_rate": reciprocal(3e-4, 3e-2).rvs(1000).tolist(),
-        "dropout_rate": [.3, .5, .618]
+        'number_hidden_layers': list(range(1, 8)),
+        'neurons': np.arange(1, 100).tolist(),
+        'learning_rate': reciprocal(3e-4, 3e-2).rvs(1000).tolist(),
+        'dropout_rate': np.arange(.2, .6, .1).tolist(),
+        'alpha': np.arange(.2, .35, .05).tolist()
     }
 
     
@@ -114,7 +114,7 @@ if __name__ == '__main__':
         make_model, 
         data['x_train_processed'], data['y_train'],
         grid_parameters,
-        n_iterations=1)
+        n_iterations=250)
 
     
     best_model = grid.best_estimator_.model
