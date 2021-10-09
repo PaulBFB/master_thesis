@@ -20,7 +20,8 @@ def make_model(
     activation: str = 'relu', 
     neurons: int = 32,
     loss: str = 'binary_crossentropy',
-    learning_rate: float = .003) -> Model:
+    learning_rate: float = .003,
+    dropout_rate: float = .5) -> Model:
     """
     """
 
@@ -31,8 +32,9 @@ def make_model(
         model.add(layers.Dense(
             neurons, 
             name=f'hidden_layer_{i}', 
-            activation='relu'))
+            activation=activation))
     
+    model.add(layers.Dropout(dropout_rate, name=f'dropout_{round(dropout_rate * 100)}'))
     model.add(layers.Dense(1, activation='sigmoid'))
     
     optimizer = Adam(learning_rate=learning_rate)
@@ -61,7 +63,7 @@ def nn_gridsearch(
     epochs: int = 100,
     validation_split: float = .2,
     patience: int = 10,
-    batch_size: int = 32,
+    batch_size: int = 16,
     n_iterations: int = 10,
     verbose: int = 1):
     
@@ -74,7 +76,7 @@ def nn_gridsearch(
     rnd_search_cv = RandomizedSearchCV(
         keras_cl, 
         params, 
-        n_iter=10, 
+        n_iter=n_iterations, 
         cv=3, 
         verbose=2, 
         n_jobs=-1)
@@ -100,9 +102,11 @@ if __name__ == '__main__':
     print(logdir('changed_batch_size_32'))
         
     grid_parameters = {
-        "number_hidden_layers": list(range(1, 7)),
+        "number_hidden_layers": list(range(1, 8)),
         "neurons": np.arange(1, 100).tolist(),
-        "learning_rate": reciprocal(3e-4, 3e-2).rvs(1000).tolist()}
+        "learning_rate": reciprocal(3e-4, 3e-2).rvs(1000).tolist(),
+        "dropout_rate": [.3, .5, .618]
+    }
 
     
     # note = the wrapper takes a FUNCTION as input!
@@ -110,10 +114,10 @@ if __name__ == '__main__':
         make_model, 
         data['x_train_processed'], data['y_train'],
         grid_parameters,
-        n_iterations=200)
+        n_iterations=1)
 
     
     best_model = grid.best_estimator_.model
-    best_model.save('./models/titanic_gridsearch.h5')
+    best_model.save(f'./models/titanic_gridsearch_{time.strftime("%Y_%m_%d_%H_%M")}.h5')
     
     print(best_model.summary())
