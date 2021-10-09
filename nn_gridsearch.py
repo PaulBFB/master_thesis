@@ -17,7 +17,7 @@ root_logdir = os.path.join(os.curdir, 'custom_logs')
 def make_model(
     input_shape: tuple = (11, ),
     number_hidden_layers: int = 8, 
-#    activation: str = 'relu', 
+    activation: str = 'elu', 
     alpha: float = .2,
     neurons: int = 32,
     loss: str = 'binary_crossentropy',
@@ -31,7 +31,11 @@ def make_model(
     
     for i in range(number_hidden_layers):
         model.add(layers.Dense(neurons, name=f'hidden_layer_{i}_relu_alpha_{alpha}'))
-        model.add(layers.LeakyReLU(alpha=alpha))
+        
+        if number_hidden_layers >= 3:
+            model.add(layers.BatchNormalization())
+        
+        model.add(layers.Activation(activation))
         model.add(layers.Dropout(dropout_rate, name=f'dropout_{i}_{round(dropout_rate * 100)}'))
     
     model.add(layers.Dense(1, activation='sigmoid'))
@@ -98,14 +102,15 @@ if __name__ == '__main__':
     data = process_data()
     
     test_model = make_model()
-    print(logdir('changed_batch_size_32'))
+#    print(logdir('changed_batch_size_32'))
         
     grid_parameters = {
         'number_hidden_layers': list(range(1, 8)),
         'neurons': np.arange(1, 100).tolist(),
         'learning_rate': reciprocal(3e-4, 3e-2).rvs(1000).tolist(),
         'dropout_rate': np.arange(.2, .6, .1).tolist(),
-        'alpha': np.arange(.2, .35, .05).tolist()
+        'alpha': np.arange(.2, .35, .05).tolist(),
+        'activation': ['elu', 'selu', 'relu']
     }
 
     
@@ -114,7 +119,7 @@ if __name__ == '__main__':
         make_model, 
         data['x_train_processed'], data['y_train'],
         grid_parameters,
-        n_iterations=250)
+        n_iterations=100)
 
     
     best_model = grid.best_estimator_.model
