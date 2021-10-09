@@ -18,3 +18,5 @@ tmp/
 .ipynb_checkpoints/
 logs/
 __pycache__/
+custom_logs/
+
