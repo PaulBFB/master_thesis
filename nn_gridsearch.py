@@ -30,7 +30,10 @@ def make_model(
     model.add(layers.InputLayer(input_shape=input_shape))
     
     for i in range(number_hidden_layers):
-        model.add(layers.Dense(neurons, name=f'hidden_layer_{i}_relu_alpha_{alpha}'))
+        model.add(layers.Dense(
+            neurons, 
+            kernel_initializer='he_normal',
+            name=f'hidden_layer_{i}_relu_alpha_{alpha}'))
         
         if number_hidden_layers >= 3:
             model.add(layers.BatchNormalization())
@@ -119,7 +122,7 @@ if __name__ == '__main__':
         make_model, 
         data['x_train_processed'], data['y_train'],
         grid_parameters,
-        n_iterations=100)
+        n_iterations=300)
 
     
     best_model = grid.best_estimator_.model
