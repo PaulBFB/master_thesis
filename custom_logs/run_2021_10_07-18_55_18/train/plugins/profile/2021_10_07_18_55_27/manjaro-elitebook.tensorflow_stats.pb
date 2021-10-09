@@ -1,408 +1,0 @@
-"ó“
-BHostIDLE"IDLE1…ëQ¸æ*ß@A…ëQ¸æ*ß@a÷…ó»ágà?i÷…ó»ágà?ŠUnknown
-„HostResourceApplyAdam"%Adam/Adam/update_11/ResourceApplyAdam(1w¾ŸÏàµ@9w¾ŸÏàµ@Aw¾ŸÏàµ@Iw¾ŸÏàµ@aÁ’„û;·?iOd;éHã?ŠUnknown
-ƒHostResourceApplyAdam"$Adam/Adam/update_6/ResourceApplyAdam(1Å °rHM³@9Å °rHM³@AÅ °rHM³@IÅ °rHM³@a!³gœëQ´?i³ñ®&Óå?ŠUnknown
-ˆHost
-_MklMatMul"0gradient_tape/sequential/hidden_layer_5/MatMul_1(1ğ§ÆK7š­@9ğ§ÆK7š­@Ağ§ÆK7š­@Iğ§ÆK7š­@a ZC‚ñ)¯?i]DÇÅÅç?ŠUnknown
-HostResourceApplyAdam""Adam/Adam/update/ResourceApplyAdam(1B`åĞ"¦@9B`åĞ"¦@AB`åĞ"¦@IB`åĞ"¦@aîPÉzB§?i\Eªsí9é?ŠUnknown
-ƒHostResourceApplyAdam"$Adam/Adam/update_8/ResourceApplyAdam(1®Gázşœ@9®Gázşœ@A®Gázşœ@I®Gázşœ@a¹ï2[’…?iÚÜƒ.ê?ŠUnknown
-„HostResourceApplyAdam"%Adam/Adam/update_10/ResourceApplyAdam(1®GáúÑš@9®GáúÑš@A®GáúÑš@I®GáúÑš@ağ@‘Ÿ#<œ?iâf€#ûë?ŠUnknown
-‹HostReadVariableOp"/sequential/hidden_layer_0/MatMul/ReadVariableOp(1/İ$r@9/İ$r@A/İ$r@I/İ$r@aNç…£Q?i–œ°e”ë?ŠUnknown
-ƒ	HostResourceApplyAdam"$Adam/Adam/update_4/ResourceApplyAdam(1w¾Ÿ/A‡@9w¾Ÿ/A‡@Aw¾Ÿ/A‡@Iw¾Ÿ/A‡@aÑ¼,2{ˆ?i`‰OyRöë?ŠUnknown
-ƒ
-HostResourceApplyAdam"$Adam/Adam/update_2/ResourceApplyAdam(1ï§ÆKC†@9ï§ÆKC†@Aï§ÆKC†@Iï§ÆKC†@au‹êo‡?i¢]}#Tì?ŠUnknown
-Host_MklNativeFusedMatMul"sequential/hidden_layer_1/Relu(1?5^ºIz…@9?5^ºIz…@A?5^ºIz…@I?5^ºIz…@a[Š>Nœ†?i†w\ƒ®ì?ŠUnknown
-{Host_MklNativeFusedMatMul"sequential/dense/BiasAdd(1/İ$2@9/İ$2@A/İ$2@I/İ$2@aşlñ¸‚?iC6=@îöì?ŠUnknown
-Host_MklNativeFusedMatMul"sequential/hidden_layer_0/Relu(1ƒÀÊ¡EÌx@9ƒÀÊ¡EÌx@AƒÀÊ¡EÌx@IƒÀÊ¡EÌx@a€˜O¨z?itÕ$+í?ŠUnknown
-†Host
-_MklMatMul".gradient_tape/sequential/hidden_layer_4/MatMul(1¦›Ä °tt@9¦›Ä °tt@A¦›Ä °tt@I¦›Ä °tt@a? 4èˆu?i¤÷O6Ví?ŠUnknown
-Host_MklNativeFusedMatMul"sequential/hidden_layer_2/Relu(1/İ$q@9/İ$q@A/İ$q@I/İ$q@aP¦Ûô(ñq?iñÌà¡zí?ŠUnknown
-ˆHost
-_MklMatMul"0gradient_tape/sequential/hidden_layer_4/MatMul_1(19´Èv¾h@99´Èv¾h@A9´Èv¾h@I9´Èv¾h@a³TÅÜXi?iFá¥~q“í?ŠUnknown
-}Host
-_MklMatMul"%gradient_tape/sequential/dense/MatMul(1˜nƒÀ>d@9˜nƒÀ>d@A˜nƒÀ>d@I˜nƒÀ>d@aØG Pe?ic¹íÁ¨í?ŠUnknown
-|HostSelect"(binary_crossentropy/logistic_loss/Select(1‹lçû©‰c@9‹lçû©‰c@A‹lçû©‰c@I‹lçû©‰c@a$ˆê{|‘d?ië£iS½í?ŠUnknown
-Host_MklNativeFusedMatMul"sequential/hidden_layer_3/Relu(1}?5^ºb@9}?5^ºb@A}?5^ºb@I}?5^ºb@a8ÿ|ùb?i#£æ1LĞí?ŠUnknown
-†Host
-_MklMatMul".gradient_tape/sequential/hidden_layer_5/MatMul(1`åĞ"Û™a@9`åĞ"Û™a@A`åĞ"Û™a@I`åĞ"Û™a@a¬@o£†‡b?idŠ¸Óâí?ŠUnknown
-ŒHostSelect"8gradient_tape/binary_crossentropy/logistic_loss/Select_3(17‰A`åü`@97‰A`åü`@A7‰A`åü`@I7‰A`åü`@a@IjIâa?i¤[ô¶ôí?ŠUnknown
-Host_MklNativeFusedMatMul"sequential/hidden_layer_5/Relu(1øSã¥›D`@9øSã¥›D`@AøSã¥›D`@IøSã¥›D`@aºäT5G a?i‰°)IÖî?ŠUnknown
-„HostResourceApplyAdam"%Adam/Adam/update_13/ResourceApplyAdam(1•C‹lw_@9•C‹lw_@A•C‹lw_@I•C‹lw_@aŸ#L)`?i(Ôurfî?ŠUnknown
-”HostBiasAddGrad";gradient_tape/sequential/hidden_layer_3/BiasAdd/BiasAddGrad(1•C‹ä^@9•C‹ä^@A•C‹ä^@I•C‹ä^@a“±aûØB`?iÚ5qK©&î?ŠUnknown
-Host_MklNativeFusedMatMul"sequential/hidden_layer_4/Relu(1¶óıÔxa^@9¶óıÔxa^@A¶óıÔxa^@I¶óıÔxa^@aJÂ£µû_?iÿC&§6î?ŠUnknown
-Host
-_MklMatMul"'gradient_tape/sequential/dense/MatMul_1(1—nƒ^@9—nƒ^@A—nƒ^@I—nƒ^@a„-¯æ®_?iŞš™~Fî?ŠUnknown
-†Host
-_MklMatMul".gradient_tape/sequential/hidden_layer_3/MatMul(1¤p=
-×Ã\@9¤p=
-×Ã\@A¤p=
-×Ã\@I¤p=
-×Ã\@aÎ2Q}BH^?i¯†Ùº¢Uî?ŠUnknown
-\HostGreater"Greater(1D‹lçûÑY@9D‹lçûÑY@AD‹lçûÑY@ID‹lçûÑY@aÚÁká£.[?i<Ê:cî?ŠUnknown
-uHostFlushSummaryWriter"FlushSummaryWriter(1?5^ºIlX@9?5^ºIlX@A?5^ºIlX@I?5^ºIlX@aâf©¶Y?iğpî?ŠUnknown
-”HostBiasAddGrad";gradient_tape/sequential/hidden_layer_5/BiasAdd/BiasAddGrad(1ÍÌÌÌÌìW@9ÍÌÌÌÌìW@AÍÌÌÌÌìW@IÍÌÌÌÌìW@a,Ñª<İ/Y?ijE=­|î?ŠUnknown
-ƒHostResourceApplyAdam"$Adam/Adam/update_9/ResourceApplyAdam(1Ï÷Sã¥ãV@9Ï÷Sã¥ãV@AÏ÷Sã¥ãV@IÏ÷Sã¥ãV@aqø@ì¹X?iæe3b¹ˆî?ŠUnknown
-„ HostResourceApplyAdam"%Adam/Adam/update_12/ResourceApplyAdam(1œÄ °rÈV@9œÄ °rÈV@AœÄ °rÈV@IœÄ °rÈV@a^‡oüW?i•)ëm·”î?ŠUnknown
-†!Host
-_MklMatMul".gradient_tape/sequential/hidden_layer_0/MatMul(1çû©ñÒåU@9çû©ñÒåU@Açû©ñÒåU@Içû©ñÒåU@a˜ƒŠƒW?iak°/> î?ŠUnknown
-~"HostSelect"*binary_crossentropy/logistic_loss/Select_1(1D‹lçûYT@9D‹lçûYT@AD‹lçûYT@ID‹lçûYT@aøæVdËlU?iÔ–b•ôªî?ŠUnknown
-†#Host
-_MklMatMul".gradient_tape/sequential/hidden_layer_1/MatMul(1-²ï/S@9-²ï/S@A-²ï/S@I-²ï/S@a®€3T?iØ¢¢µî?ŠUnknown
-ˆ$Host
-_MklMatMul"0gradient_tape/sequential/hidden_layer_3/MatMul_1(1ìQ¸…S@9ìQ¸…S@AìQ¸…S@IìQ¸…S@ajh÷>DT?iŒÂ:¿î?ŠUnknown
-Š%HostDynamicStitch"/gradient_tape/binary_crossentropy/DynamicStitch(1şÔxé&1R@9şÔxé&1R@AşÔxé&1R@IşÔxé&1R@a1?eÍ&S?i¾t¡£Èî?ŠUnknown
-‹&HostBiasAddGrad"2gradient_tape/sequential/dense/BiasAdd/BiasAddGrad(1+‡™Q@9+‡™Q@A+‡™Q@I+‡™Q@a¿ò¨·†R?io7IıæÑî?ŠUnknown
-”'HostBiasAddGrad";gradient_tape/sequential/hidden_layer_4/BiasAdd/BiasAddGrad(1u“VfQ@9u“VfQ@Au“VfQ@Iu“VfQ@a+òNÕIQR?ièŞ3¢Ûî?ŠUnknown
-ˆ(Host
-_MklMatMul"0gradient_tape/sequential/hidden_layer_2/MatMul_1(1h‘í|?5Q@9h‘í|?5Q@Ah‘í|?5Q@Ih‘í|?5Q@aáè¸uœR?i\»npäî?ŠUnknown
-ƒ)HostResourceApplyAdam"$Adam/Adam/update_1/ResourceApplyAdam(1¾Ÿ/İQ@9¾Ÿ/İQ@A¾Ÿ/İQ@I¾Ÿ/İQ@akã6Ş„ûQ?iÎÖİ2íî?ŠUnknown
-†*HostReluGrad"0gradient_tape/sequential/hidden_layer_3/ReluGrad(1{®GázO@9{®GázO@A{®GázO@I{®GázO@aÎÂ»ÿú‘P?i¯´]0eõî?ŠUnknown
-e+Host
-LogicalAnd"
-LogicalAnd(1^ºI;O@9^ºI;O@A^ºI;O@I^ºI;O@aM^%\pP?iŞ5p^ıî?ŠUnknown
-r,HostDataset"Iterator::Root::ParallelMapV2(1R¸…ëAM@9R¸…ëAM@AR¸…ëAM@IR¸…ëAM@a<)tıÌN?i@ÍPï?ŠUnknown
-~-HostAssignAddVariableOp"Adam/Adam/AssignAddVariableOp(1¼t“L@9¼t“L@A¼t“L@I¼t“L@a¦[Pl€M?iõFá¸°ï?ŠUnknown
-‰.HostDataset"4Iterator::Root::ParallelMapV2::Zip[1]::ForeverRepeat(1q=
-×£ĞO@9q=
-×£ĞO@AÛù~j¼¤K@IÛù~j¼¤K@aşŠ€
-M?iç£9÷ï?ŠUnknown
-†/Host
-_MklMatMul".gradient_tape/sequential/hidden_layer_2/MatMul(1mçû©ñ¢K@9mçû©ñ¢K@Amçû©ñ¢K@Imçû©ñ¢K@a&^ M?iš¾©A=ï?ŠUnknown
-t0HostAssignAddVariableOp"AssignAddVariableOp(1ö(\ÂµJ@9ö(\ÂµJ@Aö(\ÂµJ@Iö(\ÂµJ@aiJ*>nL?i-I9İD"ï?ŠUnknown
-ƒ1HostResourceApplyAdam"$Adam/Adam/update_7/ResourceApplyAdam(1J+‡6J@9J+‡6J@AJ+‡6J@IJ+‡6J@a‚¹—Ï|˜K?i/mü*)ï?ŠUnknown
-ˆ2Host
-_MklMatMul"0gradient_tape/sequential/hidden_layer_1/MatMul_1(1
-×£p=úH@9
-×£p=úH@A
-×£p=úH@I
-×£p=úH@aÓK.„KJ?iÂxİ½/ï?ŠUnknown
-†3HostReluGrad"0gradient_tape/sequential/hidden_layer_5/ReluGrad(1¸…ëQèH@9¸…ëQèH@A¸…ëQèH@I¸…ëQèH@a¨¬ò®¦8J?i»~$L6ï?ŠUnknown
-”4HostBiasAddGrad";gradient_tape/sequential/hidden_layer_1/BiasAdd/BiasAddGrad(1?5^ºILH@9?5^ºILH@A?5^ºILH@I?5^ºILH@aû#c”I?i‚G ±<ï?ŠUnknown
-i5HostWriteSummary"WriteSummary(1Ï÷Sã¥H@9Ï÷Sã¥H@AÏ÷Sã¥H@IÏ÷Sã¥H@a¨µUì.aI?iï\Ãk	Cï?ŠUnknown
-ˆ6HostTile"6gradient_tape/binary_crossentropy/weighted_loss/Tile_1(1J+‡H@9J+‡H@AJ+‡H@IJ+‡H@a­ªË[I?iÚ¢‡^`Iï?ŠUnknown
-ƒ7HostResourceApplyAdam"$Adam/Adam/update_3/ResourceApplyAdam(1j¼t“ÈG@9j¼t“ÈG@Aj¼t“ÈG@Ij¼t“ÈG@ayCºÀº	I?ikÑ7Í¢Oï?ŠUnknown
-v8HostAssignAddVariableOp"AssignAddVariableOp_2(1bX9´G@9bX9´G@AbX9´G@IbX9´G@a>JZ¯”PH?iş§cò¶Uï?ŠUnknown
-m9HostSigmoid"sequential/dense/Sigmoid(1-²ï÷F@9-²ï÷F@A-²ï÷F@I-²ï÷F@aõšš.H?iNÊwÂ[ï?ŠUnknown
-c:HostDataset"Iterator::Root(1B`åĞ"ÓY@9B`åĞ"ÓY@A1¬ZdF@I1¬ZdF@ag$>·’G?i×™%§aï?ŠUnknown
-ƒ;HostResourceApplyAdam"$Adam/Adam/update_5/ResourceApplyAdam(1î|?5^ŠE@9î|?5^ŠE@Aî|?5^ŠE@Iî|?5^ŠE@aÙóÛ;­F?i¾tRgï?ŠUnknown
-†<HostReluGrad"0gradient_tape/sequential/hidden_layer_4/ReluGrad(1?5^ºI\D@9?5^ºI\D@A?5^ºI\D@I?5^ºI\D@aékÌS8oE?iÙ¥B®lï?ŠUnknown
-V=HostMean"Mean(17‰A`åD@97‰A`åD@A7‰A`åD@I7‰A`åD@a3
-ñÙE?i\Ô!9öqï?ŠUnknown
-v>HostSum"%binary_crossentropy/weighted_loss/Sum(1İ$•cC@9İ$•cC@Aİ$•cC@Iİ$•cC@avMÍeiD?i¢'•’wï?ŠUnknown
-Š?HostSelect"6gradient_tape/binary_crossentropy/logistic_loss/Select(1sh‘í|_B@9sh‘í|_B@Ash‘í|_B@Ish‘í|_B@a”è–•WC?i\MÛwæ{ï?ŠUnknown
-ˆ@HostNeg"7gradient_tape/binary_crossentropy/logistic_loss/sub/Neg(1D‹lçûé@@9D‹lçûé@@AD‹lçûé@@ID‹lçûé@@arG’`ÎA?i.ÑÿZ€ï?ŠUnknown
-~AHostMaximum")gradient_tape/binary_crossentropy/Maximum(15^ºI@@95^ºI@@A5^ºI@@I5^ºI@@aG8P ë@?i<åGÓ”„ï?ŠUnknown
-†BHostReluGrad"0gradient_tape/sequential/hidden_layer_2/ReluGrad(1Âõ(\Ï<@9Âõ(\Ï<@AÂõ(\Ï<@IÂõ(\Ï<@aƒËœ*cT>?iÕ8­__ˆï?ŠUnknown
-VCHostSum"Sum_2(1V-²½;@9V-²½;@AV-²½;@IV-²½;@a‡ O×I4=?iµ"èèŒï?ŠUnknown
-vDHostMul"%binary_crossentropy/logistic_loss/mul(1ƒÀÊ¡:@9ƒÀÊ¡:@AƒÀÊ¡:@IƒÀÊ¡:@a¡Ğ .e;?iÏöM‰rï?ŠUnknown
-vEHostAssignAddVariableOp"AssignAddVariableOp_4(1ÙÎ÷Sã¥9@9ÙÎ÷Sã¥9@AÙÎ÷Sã¥9@IÙÎ÷Sã¥9@aDÿİ7 ;?i¯¶IÒ’ï?ŠUnknown
-”FHostBiasAddGrad";gradient_tape/sequential/hidden_layer_0/BiasAdd/BiasAddGrad(1ìQ¸…ë6@9ìQ¸…ë6@AìQ¸…ë6@IìQ¸…ë6@aT)½s!8?iT.¸°Ö•ï?ŠUnknown
-vGHostSub"%binary_crossentropy/logistic_loss/sub(1'1¬6@9'1¬6@A'1¬6@I'1¬6@a*h SD7?ia’¢B¿˜ï?ŠUnknown
-[HHostAddV2"Adam/add(1h‘í|?õ5@9h‘í|?õ5@Ah‘í|?õ5@Ih‘í|?õ5@aÈ[À7?id®ú¢›ï?ŠUnknown
-”IHostBiasAddGrad";gradient_tape/sequential/hidden_layer_2/BiasAdd/BiasAddGrad(1L7‰A`¥5@9L7‰A`¥5@AL7‰A`¥5@IL7‰A`¥5@aÇm3™ªÉ6?iÒ10|ï?ŠUnknown
-†JHostBroadcastTo"-gradient_tape/binary_crossentropy/BroadcastTo(1Ûù~j¼t5@9Ûù~j¼t5@AÛù~j¼t5@IÛù~j¼t5@arföu–6?i“ş¿şN¡ï?ŠUnknown
-†KHostAddV2"3gradient_tape/binary_crossentropy/logistic_loss/add(1;ßO—N5@9;ßO—N5@A;ßO—N5@I;ßO—N5@a¡3>Nn6?iYÈ¤ï?ŠUnknown
-jLHostMean"binary_crossentropy/Mean(1!°rh‘-5@9!°rh‘-5@A!°rh‘-5@I!°rh‘-5@aÍlTõ‰K6?iç°¿9æ¦ï?ŠUnknown
-eMHostAddN"Adam/gradients/AddN(19´Èv¾5@99´Èv¾5@A9´Èv¾5@I9´Èv¾5@a%O“Xü<6?iQÃJÙ­©ï?ŠUnknown
-†NHostReluGrad"0gradient_tape/sequential/hidden_layer_0/ReluGrad(1}?5^ºé4@9}?5^ºé4@A}?5^ºé4@I}?5^ºé4@aJ[^Ü6?iO&]n¬ï?ŠUnknown
-gOHostStridedSlice"strided_slice(1î|?5^4@9î|?5^4@Aî|?5^4@Iî|?5^4@a…­Ò)5?iĞğ{—¯ï?ŠUnknown
-“PHostDataset">Iterator::Root::ParallelMapV2::Zip[0]::FlatMap[0]::Concatenate(1{®GáÚA@9{®GáÚA@A\Âõ(3@I\Âõ(3@aCıÎ44?i³^—±ï?ŠUnknown
-bQHostDivNoNan"div_no_nan_1(1+‡Y2@9+‡Y2@A+‡Y2@I+‡Y2@aÙZ‰FØP3?i;„y´ï?ŠUnknown
-}RHostDivNoNan"'binary_crossentropy/weighted_loss/value(1‰A`åĞ"1@9‰A`åĞ"1@A‰A`åĞ"1@I‰A`åĞ"1@aXÁú4
-2?iÓÅ½¿B¶ï?ŠUnknown
-vSHostNeg"%binary_crossentropy/logistic_loss/Neg(1yé&1Ì0@9yé&1Ì0@Ayé&1Ì0@Iyé&1Ì0@a3‡iØ®1?iÄèÊšx¸ï?ŠUnknown
-XTHostCast"Cast_5(1ÍÌÌÌÌ¬0@9ÍÌÌÌÌ¬0@AÍÌÌÌÌ¬0@IÍÌÌÌÌ¬0@a6DPI÷1?iÍ´Yªºï?ŠUnknown
-£UHostDataset"NIterator::Root::ParallelMapV2::Zip[0]::FlatMap[0]::Concatenate[0]::TensorSlice(1š™™™™™0@9š™™™™™0@Aš™™™™™0@Iš™™™™™0@a›'ÓÀy1?iÀwÎ‘Ù¼ï?ŠUnknown
-†VHostReluGrad"0gradient_tape/sequential/hidden_layer_1/ReluGrad(1L7‰A`…0@9L7‰A`…0@AL7‰A`…0@IL7‰A`…0@a¦ïXdvd1?iŞ› ¿ï?ŠUnknown
-XWHostCast"Cast_3(1åĞ"Ûù>0@9åĞ"Ûù>0@AåĞ"Ûù>0@IåĞ"Ûù>0@a¥ØÃ]Y1?iY»Æk)Áï?ŠUnknown
-^XHostGatherV2"GatherV2(1NbX9ô/@9NbX9ô/@ANbX9ô/@INbX9ô/@añÄ'LÚÑ0?iR@§CÃï?ŠUnknown
-“YHost	ZerosLike"<gradient_tape/binary_crossentropy/logistic_loss/zeros_like_1(1×£p=
-×/@9×£p=
-×/@A×£p=
-×/@I×£p=
-×/@a¤%ê´}Â0?i—İÆö[Åï?ŠUnknown
-lZHostIteratorGetNext"IteratorGetNext(1F¶óıÔx.@9F¶óıÔx.@AF¶óıÔx.@IF¶óıÔx.@a®&
-0?imš;]Çï?ŠUnknown
-t[HostAddV2"!binary_crossentropy/logistic_loss(1ƒÀÊ¡E.@9ƒÀÊ¡E.@AƒÀÊ¡E.@IƒÀÊ¡E.@aKî «fŞ/?i|X"[Éï?ŠUnknown
-ˆ\HostGreaterEqual".binary_crossentropy/logistic_loss/GreaterEqual(1é&1¬-@9é&1¬-@Aé&1¬-@Ié&1¬-@aWq’ÿÆ¥.?i£Qu~EËï?ŠUnknown
-x]HostCast"&gradient_tape/binary_crossentropy/Cast(1/İ$Õ,@9/İ$Õ,@A/İ$Õ,@I/İ$Õ,@a±Ø€şÚZ.?i±9%,+Íï?ŠUnknown
-‘^Host	ZerosLike":gradient_tape/binary_crossentropy/logistic_loss/zeros_like(1¢E¶óı”*@9¢E¶óı”*@A¢E¶óı”*@I¢E¶óı”*@a j)ïû+?iQĞëêÎï?ŠUnknown
-…_HostCast"3binary_crossentropy/weighted_loss/num_elements/Cast(1¸…ëQ8*@9¸…ëQ8*@A¸…ëQ8*@I¸…ëQ8*@aY=ºÂ_š+?iõû‘¤Ğï?ŠUnknown
-z`HostLog1p"'binary_crossentropy/logistic_loss/Log1p(1 /İ$Æ)@9 /İ$Æ)@A /İ$Æ)@I /İ$Æ)@atHlö,"+?iºbã³VÒï?ŠUnknown
-ŒaHostReadVariableOp"0sequential/hidden_layer_4/BiasAdd/ReadVariableOp(1      )@9      )@A      )@I      )@asŸñ„”Q*?iÔ±+ÍûÓï?ŠUnknown
-`bHostDivNoNan"
-div_no_nan(1sh‘í|¿(@9sh‘í|¿(@Ash‘í|¿(@Ish‘í|¿(@aTª*?iEóĞ§œÕï?ŠUnknown
-€cHostFloorDiv"*gradient_tape/binary_crossentropy/floordiv(1#Ûù~j<(@9#Ûù~j<(@A#Ûù~j<(@I#Ûù~j<(@añû®ƒ)?i¥±â4×ï?ŠUnknown
-vdHostExp"%binary_crossentropy/logistic_loss/Exp(1-²ï§'@9-²ï§'@A-²ï§'@I-²ï§'@av½+^ç(?i‘µ“XÃØï?ŠUnknown
-ŒeHostReadVariableOp"0sequential/hidden_layer_1/BiasAdd/ReadVariableOp(1+‡™'@9+‡™'@A+‡™'@I+‡™'@a§•¼×(?i]ÔPÚï?ŠUnknown
-ŒfHostSelect"8gradient_tape/binary_crossentropy/logistic_loss/Select_2(1P—nƒ'@9P—nƒ'@AP—nƒ'@IP—nƒ'@aen¶3À(?irKPİÜÛï?ŠUnknown
-’gHost
-Reciprocal":gradient_tape/binary_crossentropy/logistic_loss/Reciprocal(1)\Âõè&@9)\Âõè&@A)\Âõè&@I)\Âõè&@aÖ#†Q(?iT­hÂ^İï?ŠUnknown
-ThHostMul"Mul(1ºI+‡&@9ºI+‡&@AºI+‡&@IºI+‡&@aR0D^·'?iYğL8ÚŞï?ŠUnknown
-`iHostGatherV2"
-GatherV2_1(1ÙÎ÷Sã%&@9ÙÎ÷Sã%&@AÙÎ÷Sã%&@IÙÎ÷Sã%&@al•şôP'?i±ÙœGOàï?ŠUnknown
-ŠjHostSum"9gradient_tape/binary_crossentropy/logistic_loss/sub/Sum_1(1/İ$&@9/İ$&@A/İ$&@I/İ$&@a[2=&*'?i„MıéÁáï?ŠUnknown
-XkHostEqual"Equal(1ÓMbX¹%@9ÓMbX¹%@AÓMbX¹%@IÓMbX¹%@a›˜Ø	°Ş&?iëıÔ/ãï?ŠUnknown
-–lHostDivNoNan"@gradient_tape/binary_crossentropy/weighted_loss/value/div_no_nan(1Ï÷Sã¥›%@9Ï÷Sã¥›%@AÏ÷Sã¥›%@IÏ÷Sã¥›%@aéX
-ßl¿&?i´ÛËË›äï?ŠUnknown
-„mHostSum"3gradient_tape/binary_crossentropy/logistic_loss/Sum(1ÁÊ¡E¶3%@9ÁÊ¡E¶3%@AÁÊ¡E¶3%@IÁÊ¡E¶3%@aúy8ÉR&?i<oèë æï?ŠUnknown
-ˆnHostMul"7gradient_tape/binary_crossentropy/logistic_loss/mul/Mul(1'1¬%@9'1¬%@A'1¬%@I'1¬%@aC7&?i`Ğ\dçï?ŠUnknown
-~oHostRealDiv")gradient_tape/binary_crossentropy/truediv(1bX9´%@9bX9´%@AbX9´%@IbX9´%@aºüıº$&?i"_€¨Æèï?ŠUnknown
-vpHostAssignAddVariableOp"AssignAddVariableOp_1(1š™™™™Ù$@9š™™™™Ù$@Aš™™™™Ù$@Iš™™™™Ù$@a²¸'P$ó%?iaÅÚ%êï?ŠUnknown
-vqHostAssignAddVariableOp"AssignAddVariableOp_3(1+‡ÙÎ·!@9+‡ÙÎ·!@A+‡ÙÎ·!@I+‡ÙÎ·!@aë gÌ§"?i(²KPëï?ŠUnknown
-•rHostDataset"@Iterator::Root::ParallelMapV2::Zip[1]::ForeverRepeat::FromTensor(1V-²¯ @9V-²¯@AV-²¯ @IV-²¯@a@Ê5î!?i›y•Ziìï?ŠUnknown
-wsHostDataset""Iterator::Root::ParallelMapV2::Zip(1çû©ñÒ5\@9çû©ñÒ5\@A^ºI« @I^ºI« @a]À-VŒ!?iwÜÚ‚íï?ŠUnknown
-‹tHostReadVariableOp"/sequential/hidden_layer_1/MatMul/ReadVariableOp(1¨ÆK7‰Á@9¨ÆK7‰Á@A¨ÆK7‰Á@I¨ÆK7‰Á@a”,· ?i(şšîï?ŠUnknown
-uuHostReadVariableOp"div_no_nan/ReadVariableOp(1ï§ÆK·@9ï§ÆK·@Aï§ÆK·@Iï§ÆK·@a™İ&È± ?iøk«˜ïï?ŠUnknown
-ˆvHostSum"7gradient_tape/binary_crossentropy/logistic_loss/sub/Sum(1é&1¬œ@9é&1¬œ@Aé&1¬œ@Ié&1¬œ@aï( „ö?i?m>_pğï?ŠUnknown
-YwHostPow"Adam/Pow(11¬Zä@91¬Zä@A1¬Zä@I1¬Zä@a&doKy4?iºÈBñï?ŠUnknown
-axHostIdentity"Identity(1      @9      @A      @I      @aAUµà’6?ieÎŸ·òï?ŠUnknown
-XyHostCast"Cast_4(1{®Gáú@9{®Gáú@A{®Gáú@I{®Gáú@aFJw/1?iúAÅòï?ŠUnknown
-†zHostMul"5gradient_tape/binary_crossentropy/logistic_loss/mul_1(1–C‹lçû@9–C‹lçû@A–C‹lçû@I–C‹lçû@a`'ÿ+Â$?iZ)g~óï?ŠUnknown
-y{HostReadVariableOp"div_no_nan_1/ReadVariableOp_1(1î|?5^º@9î|?5^º@Aî|?5^º@Iî|?5^º@aµu`0CÒ?iİBù,ôï?ŠUnknown
-ƒ|HostDataset".Iterator::Root::ParallelMapV2::Zip[0]::FlatMap(1ÇK7‰ApD@9ÇK7‰ApD@A^ºI«@I^ºI«@aÂT¦Â?iOÒÿ	Ûôï?ŠUnknown
-†}HostSum"5gradient_tape/binary_crossentropy/logistic_loss/Sum_1(1…ëQ¸…@9…ëQ¸…@A…ëQ¸…@I…ëQ¸…@a~¨®4š?iG¥Û‡õï?ŠUnknown
-w~HostReadVariableOp"div_no_nan/ReadVariableOp_1(1D‹lçû)@9D‹lçû)@AD‹lçû)@ID‹lçû)@a@ñ<C:?i/¿­1öï?ŠUnknown
-‚HostReadVariableOp"&sequential/dense/MatMul/ReadVariableOp(1¼t“Ö@9¼t“Ö@A¼t“Ö@I¼t“Ö@aè‹Ä—İá?i=í«¼Øöï?ŠUnknown
-x€HostReadVariableOp"div_no_nan_1/ReadVariableOp(1¼t“V@9¼t“V@A¼t“V@I¼t“V@a\yµ.[?iéb••{÷ï?ŠUnknown
-…HostNeg"3gradient_tape/binary_crossentropy/logistic_loss/Neg(1
-×£p=Š@9
-×£p=Š@A
-×£p=Š@I
-×£p=Š@aGÄ©å–„?i7Lºøï?ŠUnknown
-‰‚HostSum"7gradient_tape/binary_crossentropy/logistic_loss/mul/Sum(1—nƒ@@9—nƒ@@A—nƒ@@I—nƒ@@a#&ùöø6?i Hr±øï?ŠUnknown
-WƒHostCast"Cast(1š™™™™@9š™™™™@Aš™™™™@Iš™™™™@a”­6< ?iµ)vAùï?ŠUnknown
-^„HostCast"Adam/Cast_1(15^ºI‚@95^ºI‚@A5^ºI‚@I5^ºI‚@a‚h=|õ`?i Ê}Ìùï?ŠUnknown
-Œ…HostReadVariableOp"/sequential/hidden_layer_2/MatMul/ReadVariableOp(1•C‹lç@9•C‹lç@A•C‹lç@I•C‹lç@a67zË?irÜµÖRúï?ŠUnknown
-w†HostReadVariableOp"Adam/Cast_2/ReadVariableOp(1×£p=
-×@9×£p=
-×@A×£p=
-×@I×£p=
-×@aıÛyóx\?iYª™HÌúï?ŠUnknown
-‡HostReadVariableOp"0sequential/hidden_layer_5/BiasAdd/ReadVariableOp(1ÙÎ÷Sã¥@9ÙÎ÷Sã¥@AÙÎ÷Sã¥@IÙÎ÷Sã¥@arYTº(?i¿û‚ëDûï?ŠUnknown
-…ˆHostMul"3gradient_tape/binary_crossentropy/logistic_loss/mul(1{®Gáz@9{®Gáz@A{®Gáz@I{®Gáz@a7ñş¶òí?i»×M£¸ûï?ŠUnknown
-‰HostReadVariableOp"0sequential/hidden_layer_2/BiasAdd/ReadVariableOp(1¶óıÔxé
-@9¶óıÔxé
-@A¶óıÔxé
-@I¶óıÔxé
-@aS¹éÊŞT?ibÉö)üï?ŠUnknown
-pŠHostReadVariableOp"Adam/ReadVariableOp(1F¶óıÔx@9F¶óıÔx@AF¶óıÔx@IF¶óıÔx@a‡}XOHÃ	?iÄ@ê‘üï?ŠUnknown
-Œ‹HostReadVariableOp"/sequential/hidden_layer_4/MatMul/ReadVariableOp(1Zd;ßO@9Zd;ßO@AZd;ßO@IZd;ßO@a¬%hu)˜	?ied÷üï?ŠUnknown
-ŒŒHostReadVariableOp"/sequential/hidden_layer_5/MatMul/ReadVariableOp(1¨ÆK7‰A@9¨ÆK7‰A@A¨ÆK7‰A@I¨ÆK7‰A@aìTÜ‰	?iµ‡×ˆ]ıï?ŠUnknown
-wHostReadVariableOp"Adam/Cast_3/ReadVariableOp(1ÙÎ÷Sã@9ÙÎ÷Sã@AÙÎ÷Sã@IÙÎ÷Sã@aÛ<«€ä%	?ibŠi Âıï?ŠUnknown
-„HostReadVariableOp"'sequential/dense/BiasAdd/ReadVariableOp(1oƒÀÊ¡@9oƒÀÊ¡@AoƒÀÊ¡@IoƒÀÊ¡@a0‹…eÓ?i”ÿm!şï?ŠUnknown
-\HostPow"
-Adam/Pow_1(1q=
-×£p@9q=
-×£p@Aq=
-×£p@Iq=
-×£p@aÃ!ìå¦Ÿ?iE6›ìşï?ŠUnknown
-HostReadVariableOp"0sequential/hidden_layer_0/BiasAdd/ReadVariableOp(1+‡ÙÎ@9+‡ÙÎ@A+‡ÙÎ@I+‡ÙÎ@a¢¡XÒç?i¨«å‹×şï?ŠUnknown
-‘HostReadVariableOp"0sequential/hidden_layer_3/BiasAdd/ReadVariableOp(1ã¥›Ä °@9ã¥›Ä °@Aã¥›Ä °@Iã¥›Ä °@a‹¨Õy¬?iHÍ=&ÿï?ŠUnknown
-Œ’HostReadVariableOp"/sequential/hidden_layer_3/MatMul/ReadVariableOp(1\Âõ(\@9\Âõ(\@A\Âõ(\@I\Âõ(\@aW<]^“F?i½{Xoÿï?ŠUnknown
-§“HostCast"Tbinary_crossentropy/ArithmeticOptimizer/ReorderCastLikeAndValuePreserving_int64_Cast(1R¸…ëQ@9R¸…ëQ@AR¸…ëQ@IR¸…ëQ@aa&á§Ë;?iBIG¸ÿï?ŠUnknown
-u”HostReadVariableOp"Adam/Cast/ReadVariableOp(1Õxé&1@9Õxé&1@AÕxé&1@IÕxé&1@a=ˆ0¹-î?i     ğ?ŠUnknown*®“
-„HostResourceApplyAdam"%Adam/Adam/update_11/ResourceApplyAdam(1w¾ŸÏàµ@9w¾ŸÏàµ@Aw¾ŸÏàµ@Iw¾ŸÏàµ@aa$Šª¡Ç?ia$Šª¡Ç?ŠUnknown
-ƒHostResourceApplyAdam"$Adam/Adam/update_6/ResourceApplyAdam(1Å °rHM³@9Å °rHM³@AÅ °rHM³@IÅ °rHM³@aZã«ƒHÙÄ?iŞ›Ny=Ö?ŠUnknown
-ˆHost
-_MklMatMul"0gradient_tape/sequential/hidden_layer_5/MatMul_1(1ğ§ÆK7š­@9ğ§ÆK7š­@Ağ§ÆK7š­@Iğ§ÆK7š­@añ²=‹ù¿?išp*Ü;Ş?ŠUnknown
-HostResourceApplyAdam""Adam/Adam/update/ResourceApplyAdam(1B`åĞ"¦@9B`åĞ"¦@AB`åĞ"¦@IB`åĞ"¦@aB½‹èlİ·?iõ¯&¦›â?ŠUnknown
-ƒHostResourceApplyAdam"$Adam/Adam/update_8/ResourceApplyAdam(1®Gázşœ@9®Gázşœ@A®Gázşœ@I®Gázşœ@a¨ûbîäP¯?i°ßõ©ä?ŠUnknown
-„HostResourceApplyAdam"%Adam/Adam/update_10/ResourceApplyAdam(1®GáúÑš@9®GáúÑš@A®GáúÑš@I®GáúÑš@a
-ÉèM:ø¬?iAlë™-Şå?ŠUnknown
-‹HostReadVariableOp"/sequential/hidden_layer_0/MatMul/ReadVariableOp(1/İ$r@9/İ$r@A/İ$r@I/İ$r@aÌ.ºÊ”û ?i.—ææíæ?ŠUnknown
-ƒHostResourceApplyAdam"$Adam/Adam/update_4/ResourceApplyAdam(1w¾Ÿ/A‡@9w¾Ÿ/A‡@Aw¾Ÿ/A‡@Iw¾Ÿ/A‡@a¾¹yG™?iİd"Ù¶ç?ŠUnknown
-ƒ	HostResourceApplyAdam"$Adam/Adam/update_2/ResourceApplyAdam(1ï§ÆKC†@9ï§ÆKC†@Aï§ÆKC†@Iï§ÆKC†@aÆXX˜?iÕ'}9wè?ŠUnknown
-
-Host_MklNativeFusedMatMul"sequential/hidden_layer_1/Relu(1?5^ºIz…@9?5^ºIz…@A?5^ºIz…@I?5^ºIz…@aöhcí2—?iÍâBèĞ0é?ŠUnknown
-{Host_MklNativeFusedMatMul"sequential/dense/BiasAdd(1/İ$2@9/İ$2@A/İ$2@I/İ$2@a	ÜolS“’?i­a¦ƒkÅé?ŠUnknown
-Host_MklNativeFusedMatMul"sequential/hidden_layer_0/Relu(1ƒÀÊ¡EÌx@9ƒÀÊ¡EÌx@AƒÀÊ¡EÌx@IƒÀÊ¡EÌx@aj¯ÉŠ?i#
-d¢0ê?ŠUnknown
-†Host
-_MklMatMul".gradient_tape/sequential/hidden_layer_4/MatMul(1¦›Ä °tt@9¦›Ä °tt@A¦›Ä °tt@I¦›Ä °tt@a±óÃ\†?ibÖsñˆê?ŠUnknown
-Host_MklNativeFusedMatMul"sequential/hidden_layer_2/Relu(1/İ$q@9/İ$q@A/İ$q@I/İ$q@a]÷®h‚?iØ³·Ï“Òê?ŠUnknown
-ˆHost
-_MklMatMul"0gradient_tape/sequential/hidden_layer_4/MatMul_1(19´Èv¾h@99´Èv¾h@A9´Èv¾h@I9´Èv¾h@a^ç¶¶z?iï%=—ë?ŠUnknown
-}Host
-_MklMatMul"%gradient_tape/sequential/dense/MatMul(1˜nƒÀ>d@9˜nƒÀ>d@A˜nƒÀ>d@I˜nƒÀ>d@a‚J<—Şu?i„úSrS2ë?ŠUnknown
-|HostSelect"(binary_crossentropy/logistic_loss/Select(1‹lçû©‰c@9‹lçû©‰c@A‹lçû©‰c@I‹lçû©‰c@a7æÕ€u?iòÆÿsˆ\ë?ŠUnknown
-Host_MklNativeFusedMatMul"sequential/hidden_layer_3/Relu(1}?5^ºb@9}?5^ºb@A}?5^ºb@I}?5^ºb@aïDzws?i¥‰hwƒë?ŠUnknown
-†Host
-_MklMatMul".gradient_tape/sequential/hidden_layer_5/MatMul(1`åĞ"Û™a@9`åĞ"Û™a@A`åĞ"Û™a@I`åĞ"Û™a@a¯ˆëõs?i)¨`T}©ë?ŠUnknown
-ŒHostSelect"8gradient_tape/binary_crossentropy/logistic_loss/Select_3(17‰A`åü`@97‰A`åü`@A7‰A`åü`@I7‰A`åü`@a…ÿ:òkYr?i(E,0Îë?ŠUnknown
-Host_MklNativeFusedMatMul"sequential/hidden_layer_5/Relu(1øSã¥›D`@9øSã¥›D`@AøSã¥›D`@IøSã¥›D`@ayÉŞV]’q?i»ÛòæTñë?ŠUnknown
-„HostResourceApplyAdam"%Adam/Adam/update_13/ResourceApplyAdam(1•C‹lw_@9•C‹lw_@A•C‹lw_@I•C‹lw_@a\¯bşp?is:¸åQì?ŠUnknown
-”HostBiasAddGrad";gradient_tape/sequential/hidden_layer_3/BiasAdd/BiasAddGrad(1•C‹ä^@9•C‹ä^@A•C‹ä^@I•C‹ä^@a–'<
-,¯p?iÂ²Ì=°4ì?ŠUnknown
-Host_MklNativeFusedMatMul"sequential/hidden_layer_4/Relu(1¶óıÔxa^@9¶óıÔxa^@A¶óıÔxa^@I¶óıÔxa^@aÛ$/Gbhp?i[Uì?ŠUnknown
-Host
-_MklMatMul"'gradient_tape/sequential/dense/MatMul_1(1—nƒ^@9—nƒ^@A—nƒ^@I—nƒ^@aÖføú@p?iÚIKøvì?ŠUnknown
-†Host
-_MklMatMul".gradient_tape/sequential/hidden_layer_3/MatMul(1¤p=
-×Ã\@9¤p=
-×Ã\@A¤p=
-×Ã\@I¤p=
-×Ã\@a»ëŒ¡üo?iÆÖìô•ì?ŠUnknown
-\HostGreater"Greater(1D‹lçûÑY@9D‹lçûÑY@AD‹lçûÑY@ID‹lçûÑY@a•%G·ãk?iÉû3¬ø°ì?ŠUnknown
-uHostFlushSummaryWriter"FlushSummaryWriter(1?5^ºIlX@9?5^ºIlX@A?5^ºIlX@I?5^ºIlX@an?NZaj?iJÃZËì?ŠUnknown
-”HostBiasAddGrad";gradient_tape/sequential/hidden_layer_5/BiasAdd/BiasAddGrad(1ÍÌÌÌÌìW@9ÍÌÌÌÌìW@AÍÌÌÌÌìW@IÍÌÌÌÌìW@ağŞ¦×i?iø(Õ¬1åì?ŠUnknown
-ƒHostResourceApplyAdam"$Adam/Adam/update_9/ResourceApplyAdam(1Ï÷Sã¥ãV@9Ï÷Sã¥ãV@AÏ÷Sã¥ãV@IÏ÷Sã¥ãV@aT÷B?¹h?i ìêıì?ŠUnknown
-„HostResourceApplyAdam"%Adam/Adam/update_12/ResourceApplyAdam(1œÄ °rÈV@9œÄ °rÈV@AœÄ °rÈV@IœÄ °rÈV@aòåÂŞ›h?iêâÊ†í?ŠUnknown
-† Host
-_MklMatMul".gradient_tape/sequential/hidden_layer_0/MatMul(1çû©ñÒåU@9çû©ñÒåU@Açû©ñÒåU@Içû©ñÒåU@a@(Ô§g?iéñŞ-.í?ŠUnknown
-~!HostSelect"*binary_crossentropy/logistic_loss/Select_1(1D‹lçûYT@9D‹lçûYT@AD‹lçûYT@ID‹lçûYT@a„Ò¨­„ûe?iå‘Ÿc)Dí?ŠUnknown
-†"Host
-_MklMatMul".gradient_tape/sequential/hidden_layer_1/MatMul(1-²ï/S@9-²ï/S@A-²ï/S@I-²ï/S@aÙæX˜•¹d?iÌê7ùâXí?ŠUnknown
-ˆ#Host
-_MklMatMul"0gradient_tape/sequential/hidden_layer_3/MatMul_1(1ìQ¸…S@9ìQ¸…S@AìQ¸…S@IìQ¸…S@a•§Ú›‰d?ib’•lmí?ŠUnknown
-Š$HostDynamicStitch"/gradient_tape/binary_crossentropy/DynamicStitch(1şÔxé&1R@9şÔxé&1R@AşÔxé&1R@IşÔxé&1R@aı‘Ì´a¦c?iô^Çöí?ŠUnknown
-‹%HostBiasAddGrad"2gradient_tape/sequential/dense/BiasAdd/BiasAddGrad(1+‡™Q@9+‡™Q@A+‡™Q@I+‡™Q@a§a8!c?iV—U”í?ŠUnknown
-”&HostBiasAddGrad";gradient_tape/sequential/hidden_layer_4/BiasAdd/BiasAddGrad(1u“VfQ@9u“VfQ@Au“VfQ@Iu“VfQ@aJëÎOËb?iä‚$hà¦í?ŠUnknown
-ˆ'Host
-_MklMatMul"0gradient_tape/sequential/hidden_layer_2/MatMul_1(1h‘í|?5Q@9h‘í|?5Q@Ah‘í|?5Q@Ih‘í|?5Q@a~/J–b?is•S²v¹í?ŠUnknown
-ƒ(HostResourceApplyAdam"$Adam/Adam/update_1/ResourceApplyAdam(1¾Ÿ/İQ@9¾Ÿ/İQ@A¾Ÿ/İQ@I¾Ÿ/İQ@a¥¡0|Osb?iÆÏêËí?ŠUnknown
-†)HostReluGrad"0gradient_tape/sequential/hidden_layer_3/ReluGrad(1{®GázO@9{®GázO@A{®GázO@I{®GázO@a×ó“4] a?i	Z_êÜí?ŠUnknown
-e*Host
-LogicalAnd"
-LogicalAnd(1^ºI;O@9^ºI;O@A^ºI;O@I^ºI;O@aÃ\ÇbŞİ`?if!g=Èíí?ŠUnknown
-r+HostDataset"Iterator::Root::ParallelMapV2(1R¸…ëAM@9R¸…ëAM@AR¸…ëAM@IR¸…ëAM@a|sKÉ+š_?i ÇKS•ıí?ŠUnknown
-~,HostAssignAddVariableOp"Adam/Adam/AssignAddVariableOp(1¼t“L@9¼t“L@A¼t“L@I¼t“L@aS¼;óD^?i~RéÌ·î?ŠUnknown
-‰-HostDataset"4Iterator::Root::ParallelMapV2::Zip[1]::ForeverRepeat(1q=
-×£ĞO@9q=
-×£ĞO@AÛù~j¼¤K@IÛù~j¼¤K@aEl½ßÛ]?i4È¼¥î?ŠUnknown
-†.Host
-_MklMatMul".gradient_tape/sequential/hidden_layer_2/MatMul(1mçû©ñ¢K@9mçû©ñ¢K@Amçû©ñ¢K@Imçû©ñ¢K@a3:9ğÙ]?i=·ä´’*î?ŠUnknown
-t/HostAssignAddVariableOp"AssignAddVariableOp(1ö(\ÂµJ@9ö(\ÂµJ@Aö(\ÂµJ@Iö(\ÂµJ@aÒzÏ¿Ù\?iúg”ÿ8î?ŠUnknown
-ƒ0HostResourceApplyAdam"$Adam/Adam/update_7/ResourceApplyAdam(1J+‡6J@9J+‡6J@AJ+‡6J@IJ+‡6J@a…8#QQP\?i–°½'Gî?ŠUnknown
-ˆ1Host
-_MklMatMul"0gradient_tape/sequential/hidden_layer_1/MatMul_1(1
-×£p=úH@9
-×£p=úH@A
-×£p=úH@I
-×£p=úH@aØíI”®úZ?iÕY¥Tî?ŠUnknown
-†2HostReluGrad"0gradient_tape/sequential/hidden_layer_5/ReluGrad(1¸…ëQèH@9¸…ëQèH@A¸…ëQèH@I¸…ëQèH@a_ôhSçZ?i½O¾bî?ŠUnknown
-”3HostBiasAddGrad";gradient_tape/sequential/hidden_layer_1/BiasAdd/BiasAddGrad(1?5^ºILH@9?5^ºILH@A?5^ºILH@I?5^ºILH@aåÊ>Z?i0Ø#8oî?ŠUnknown
-i4HostWriteSummary"WriteSummary(1Ï÷Sã¥H@9Ï÷Sã¥H@AÏ÷Sã¥H@IÏ÷Sã¥H@a=ML@
-Z?iÏş9C=|î?ŠUnknown
-ˆ5HostTile"6gradient_tape/binary_crossentropy/weighted_loss/Tile_1(1J+‡H@9J+‡H@AJ+‡H@IJ+‡H@aÜ8‰¸Z?ië†~Ÿ?‰î?ŠUnknown
-ƒ6HostResourceApplyAdam"$Adam/Adam/update_3/ResourceApplyAdam(1j¼t“ÈG@9j¼t“ÈG@Aj¼t“ÈG@Ij¼t“ÈG@a?Œ…°Y?i‹ÎDâ–î?ŠUnknown
-v7HostAssignAddVariableOp"AssignAddVariableOp_2(1bX9´G@9bX9´G@AbX9´G@IbX9´G@aÉTòX?i5ŞQ)‘¢î?ŠUnknown
-m8HostSigmoid"sequential/dense/Sigmoid(1-²ï÷F@9-²ï÷F@A-²ï÷F@I-²ï÷F@akÓ˜8)ÏX?iŸ*î½ø®î?ŠUnknown
-c9HostDataset"Iterator::Root(1B`åĞ"ÓY@9B`åĞ"ÓY@A1¬ZdF@I1¬ZdF@aÆÚÜ¿/X?i¢—Ü»î?ŠUnknown
-ƒ:HostResourceApplyAdam"$Adam/Adam/update_5/ResourceApplyAdam(1î|?5^ŠE@9î|?5^ŠE@Aî|?5^ŠE@Iî|?5^ŠE@a2@”ÄKDW?iÂá¾Ã²Æî?ŠUnknown
-†;HostReluGrad"0gradient_tape/sequential/hidden_layer_4/ReluGrad(1?5^ºI\D@9?5^ºI\D@A?5^ºI\D@I?5^ºI\D@aœG„ÅşU?iæ£¡Ä±Ñî?ŠUnknown
-V<HostMean"Mean(17‰A`åD@97‰A`åD@A7‰A`åD@I7‰A`åD@aøÏ¡ª’¬U?iÎôöˆÜî?ŠUnknown
-v=HostSum"%binary_crossentropy/weighted_loss/Sum(1İ$•cC@9İ$•cC@Aİ$•cC@Iİ$•cC@aÀgĞ_ñT?iİƒ½ çî?ŠUnknown
-Š>HostSelect"6gradient_tape/binary_crossentropy/logistic_loss/Select(1sh‘í|_B@9sh‘í|_B@Ash‘í|_B@Ish‘í|_B@aëÄ´[nØS?id·±ôìğî?ŠUnknown
-ˆ?HostNeg"7gradient_tape/binary_crossentropy/logistic_loss/sub/Neg(1D‹lçûé@@9D‹lçûé@@AD‹lçûé@@ID‹lçûé@@a]yşDR?i3@îsúî?ŠUnknown
-~@HostMaximum")gradient_tape/binary_crossentropy/Maximum(15^ºI@@95^ºI@@A5^ºI@@I5^ºI@@aİ?ä®À[Q?iS²ET½ï?ŠUnknown
-†AHostReluGrad"0gradient_tape/sequential/hidden_layer_2/ReluGrad(1Âõ(\Ï<@9Âõ(\Ï<@AÂõ(\Ï<@IÂõ(\Ï<@a65ÖnO?iàçËï„
-ï?ŠUnknown
-VBHostSum"Sum_2(1V-²½;@9V-²½;@AV-²½;@IV-²½;@aĞàX•ÕöM?i>1¥ï?ŠUnknown
-vCHostMul"%binary_crossentropy/logistic_loss/mul(1ƒÀÊ¡:@9ƒÀÊ¡:@AƒÀÊ¡:@IƒÀÊ¡:@a{ƒœÈ€L?i9ec…	ï?ŠUnknown
-vDHostAssignAddVariableOp"AssignAddVariableOp_4(1ÙÎ÷Sã¥9@9ÙÎ÷Sã¥9@AÙÎ÷Sã¥9@IÙÎ÷Sã¥9@a~§´K?iÏäŠöï?ŠUnknown
-”EHostBiasAddGrad";gradient_tape/sequential/hidden_layer_0/BiasAdd/BiasAddGrad(1ìQ¸…ë6@9ìQ¸…ë6@AìQ¸…ë6@IìQ¸…ë6@ahÜ$ÿ¿ÁH?iP˜äú&&ï?ŠUnknown
-vFHostSub"%binary_crossentropy/logistic_loss/sub(1'1¬6@9'1¬6@A'1¬6@I'1¬6@a®IåMßG?i¢¸Ş,ï?ŠUnknown
-[GHostAddV2"Adam/add(1h‘í|?õ5@9h‘í|?õ5@Ah‘í|?õ5@Ih‘í|?õ5@a%ø-Ğ½·G?i ,Î2ï?ŠUnknown
-”HHostBiasAddGrad";gradient_tape/sequential/hidden_layer_2/BiasAdd/BiasAddGrad(1L7‰A`¥5@9L7‰A`¥5@AL7‰A`¥5@IL7‰A`¥5@aÒvêwaG?i§º&,å7ï?ŠUnknown
-†IHostBroadcastTo"-gradient_tape/binary_crossentropy/BroadcastTo(1Ûù~j¼t5@9Ûù~j¼t5@AÛù~j¼t5@IÛù~j¼t5@aËt²+î,G?iD§±g°=ï?ŠUnknown
-†JHostAddV2"3gradient_tape/binary_crossentropy/logistic_loss/add(1;ßO—N5@9;ßO—N5@A;ßO—N5@I;ßO—N5@a4â+½ºG?i=ò`VqCï?ŠUnknown
-jKHostMean"binary_crossentropy/Mean(1!°rh‘-5@9!°rh‘-5@A!°rh‘-5@I!°rh‘-5@aÔSâàF?iÒj%Z)Iï?ŠUnknown
-eLHostAddN"Adam/gradients/AddN(19´Èv¾5@99´Èv¾5@A9´Èv¾5@I9´Èv¾5@a@•½‚ ÑF?i7F¢İNï?ŠUnknown
-†MHostReluGrad"0gradient_tape/sequential/hidden_layer_0/ReluGrad(1}?5^ºé4@9}?5^ºé4@A}?5^ºé4@I}?5^ºé4@aÜù6È–F?i®ØSTƒTï?ŠUnknown
-gNHostStridedSlice"strided_slice(1î|?5^4@9î|?5^4@Aî|?5^4@Iî|?5^4@a^±ÒÓÍ¶E?iZÍÈñYï?ŠUnknown
-“OHostDataset">Iterator::Root::ParallelMapV2::Zip[0]::FlatMap[0]::Concatenate(1{®GáÚA@9{®GáÚA@A\Âõ(3@I\Âõ(3@aÇ9=69¤D?i¨\_ï?ŠUnknown
-bPHostDivNoNan"div_no_nan_1(1+‡Y2@9+‡Y2@A+‡Y2@I+‡Y2@a¦¨§„ÑC?iÈF@wdï?ŠUnknown
-}QHostDivNoNan"'binary_crossentropy/weighted_loss/value(1‰A`åĞ"1@9‰A`åĞ"1@A‰A`åĞ"1@I‰A`åĞ"1@aºæ6pa‚B?i‚Tœ¯hï?ŠUnknown
-vRHostNeg"%binary_crossentropy/logistic_loss/Neg(1yé&1Ì0@9yé&1Ì0@Ayé&1Ì0@Iyé&1Ì0@a¬ìB¤$B?i­­88mï?ŠUnknown
-XSHostCast"Cast_5(1ÍÌÌÌÌ¬0@9ÍÌÌÌÌ¬0@AÍÌÌÌÌ¬0@IÍÌÌÌÌ¬0@aĞxøèB?iË´ò¸qï?ŠUnknown
-£THostDataset"NIterator::Root::ParallelMapV2::Zip[0]::FlatMap[0]::Concatenate[0]::TensorSlice(1š™™™™™0@9š™™™™™0@Aš™™™™™0@Iš™™™™™0@a©Óÿ*îA?iµt}4vï?ŠUnknown
-†UHostReluGrad"0gradient_tape/sequential/hidden_layer_1/ReluGrad(1L7‰A`…0@9L7‰A`…0@AL7‰A`…0@IL7‰A`…0@a,¥¢¼RØA?i^+#’ªzï?ŠUnknown
-XVHostCast"Cast_3(1åĞ"Ûù>0@9åĞ"Ûù>0@AåĞ"Ûù>0@IåĞ"Ûù>0@a<« HŒA?iI2#¤ï?ŠUnknown
-^WHostGatherV2"GatherV2(1NbX9ô/@9NbX9ô/@ANbX9ô/@INbX9ô/@a^ÿ&şåAA?i	¼¢^ƒï?ŠUnknown
-“XHost	ZerosLike"<gradient_tape/binary_crossentropy/logistic_loss/zeros_like_1(1×£p=
-×/@9×£p=
-×/@A×£p=
-×/@I×£p=
-×/@aÃ¹#2A?iO*g¦ª‡ï?ŠUnknown
-lYHostIteratorGetNext"IteratorGetNext(1F¶óıÔx.@9F¶óıÔx.@AF¶óıÔx.@IF¶óıÔx.@axV’üÿt@?iåNfæÇ‹ï?ŠUnknown
-tZHostAddV2"!binary_crossentropy/logistic_loss(1ƒÀÊ¡E.@9ƒÀÊ¡E.@AƒÀÊ¡E.@IƒÀÊ¡E.@afAa,YY@?i5g±<Şï?ŠUnknown
-ˆ[HostGreaterEqual".binary_crossentropy/logistic_loss/GreaterEqual(1é&1¬-@9é&1¬-@Aé&1¬-@Ié&1¬-@anïğq??i'µzÌ“ï?ŠUnknown
-x\HostCast"&gradient_tape/binary_crossentropy/Cast(1/İ$Õ,@9/İ$Õ,@A/İ$Õ,@I/İ$Õ,@awm%??iiÕ±—ï?ŠUnknown
-‘]Host	ZerosLike":gradient_tape/binary_crossentropy/logistic_loss/zeros_like(1¢E¶óı”*@9¢E¶óı”*@A¢E¶óı”*@I¢E¶óı”*@atùH#Z¶<?i4ÒèG›ï?ŠUnknown
-…^HostCast"3binary_crossentropy/weighted_loss/num_elements/Cast(1¸…ëQ8*@9¸…ëQ8*@A¸…ëQ8*@I¸…ëQ8*@a—“xÕ@R<?iF40Òï?ŠUnknown
-z_HostLog1p"'binary_crossentropy/logistic_loss/Log1p(1 /İ$Æ)@9 /İ$Æ)@A /İ$Æ)@I /İ$Æ)@a×è§SíÖ;?iCöŞM¢ï?ŠUnknown
-Œ`HostReadVariableOp"0sequential/hidden_layer_4/BiasAdd/ReadVariableOp(1      )@9      )@A      )@I      )@a•’îOç ;?iôÈ*­¥ï?ŠUnknown
-`aHostDivNoNan"
-div_no_nan(1sh‘í|¿(@9sh‘í|¿(@Ash‘í|¿(@Ish‘í|¿(@aæÃí³8»:?iÍqß‘©ï?ŠUnknown
-€bHostFloorDiv"*gradient_tape/binary_crossentropy/floordiv(1#Ûù~j<(@9#Ûù~j<(@A#Ûù~j<(@I#Ûù~j<(@ap¾Ó-¥-:?iE,…FJ¬ï?ŠUnknown
-vcHostExp"%binary_crossentropy/logistic_loss/Exp(1-²ï§'@9-²ï§'@A-²ï§'@I-²ï§'@a@DêD9?i)ï{¯ï?ŠUnknown
-ŒdHostReadVariableOp"0sequential/hidden_layer_1/BiasAdd/ReadVariableOp(1+‡™'@9+‡™'@A+‡™'@I+‡™'@a¢Q¹Y:}9?i¸`R–«²ï?ŠUnknown
-ŒeHostSelect"8gradient_tape/binary_crossentropy/logistic_loss/Select_2(1P—nƒ'@9P—nƒ'@AP—nƒ'@IP—nƒ'@a¸ò2’re9?i§¤DØµï?ŠUnknown
-’fHost
-Reciprocal":gradient_tape/binary_crossentropy/logistic_loss/Reciprocal(1)\Âõè&@9)\Âõè&@A)\Âõè&@I)\Âõè&@aLZ†ü¾8?iáW($ğ¸ï?ŠUnknown
-TgHostMul"Mul(1ºI+‡&@9ºI+‡&@AºI+‡&@IºI+‡&@a9ğx[U8?iÿæ‰Ïú»ï?ŠUnknown
-`hHostGatherV2"
-GatherV2_1(1ÙÎ÷Sã%&@9ÙÎ÷Sã%&@AÙÎ÷Sã%&@IÙÎ÷Sã%&@a, ñGì7?i3Å{Xø¾ï?ŠUnknown
-ŠiHostSum"9gradient_tape/binary_crossentropy/logistic_loss/sub/Sum_1(1/İ$&@9/İ$&@A/İ$&@I/İ$&@a£N:vÄ7?i}ì=çğÁï?ŠUnknown
-XjHostEqual"Equal(1ÓMbX¹%@9ÓMbX¹%@AÓMbX¹%@IÓMbX¹%@a§äc	w7?iÿhjÈßÄï?ŠUnknown
-–kHostDivNoNan"@gradient_tape/binary_crossentropy/weighted_loss/value/div_no_nan(1Ï÷Sã¥›%@9Ï÷Sã¥›%@AÏ÷Sã¥›%@IÏ÷Sã¥›%@aj.‚÷õV7?iEY)§ÊÇï?ŠUnknown
-„lHostSum"3gradient_tape/binary_crossentropy/logistic_loss/Sum(1ÁÊ¡E¶3%@9ÁÊ¡E¶3%@AÁÊ¡E¶3%@IÁÊ¡E¶3%@aŒ+ü±æ6?i·Şh}§Êï?ŠUnknown
-ˆmHostMul"7gradient_tape/binary_crossentropy/logistic_loss/mul/Mul(1'1¬%@9'1¬%@A'1¬%@I'1¬%@awú+Ë6?i^ÎŞ€Íï?ŠUnknown
-~nHostRealDiv")gradient_tape/binary_crossentropy/truediv(1bX9´%@9bX9´%@AbX9´%@IbX9´%@aK+”=¸6?ifã€æWĞï?ŠUnknown
-voHostAssignAddVariableOp"AssignAddVariableOp_1(1š™™™™Ù$@9š™™™™Ù$@Aš™™™™Ù$@Iš™™™™Ù$@aU¨ù\…6?i›â’(Óï?ŠUnknown
-vpHostAssignAddVariableOp"AssignAddVariableOp_3(1+‡ÙÎ·!@9+‡ÙÎ·!@A+‡ÙÎ·!@I+‡ÙÎ·!@aïz¦!P#3?ijüŒÕï?ŠUnknown
-•qHostDataset"@Iterator::Root::ParallelMapV2::Zip[1]::ForeverRepeat::FromTensor(1V-²¯ @9V-²¯@AV-²¯ @IV-²¯@aîZÇò2?i«pºÍ×ï?ŠUnknown
-wrHostDataset""Iterator::Root::ParallelMapV2::Zip(1çû©ñÒ5\@9çû©ñÒ5\@A^ºI« @I^ºI« @a¼£—ø 2?i÷‚ÙÚï?ŠUnknown
-‹sHostReadVariableOp"/sequential/hidden_layer_1/MatMul/ReadVariableOp(1¨ÆK7‰Á@9¨ÆK7‰Á@A¨ÆK7‰Á@I¨ÆK7‰Á@aP÷¸÷…&1?i.îAª2Üï?ŠUnknown
-utHostReadVariableOp"div_no_nan/ReadVariableOp(1ï§ÆK·@9ï§ÆK·@Aï§ÆK·@Iï§ÆK·@aó{4ş 1?i¬}ÊVŞï?ŠUnknown
-ˆuHostSum"7gradient_tape/binary_crossentropy/logistic_loss/sub/Sum(1é&1¬œ@9é&1¬œ@Aé&1¬œ@Ié&1¬œ@a­9¦!ª+?iGá"làï?ŠUnknown
-YvHostPow"Adam/Pow(11¬Zä@91¬Zä@A1¬Zä@I1¬Zä@an¥1
-ã*?i˜ûÅœ¿áï?ŠUnknown
-awHostIdentity"Identity(1      @9      @A      @I      @aBíß×(?i'½¶Mãï?ŠUnknown
-XxHostCast"Cast_4(1{®Gáú@9{®Gáú@A{®Gáú@I{®Gáú@aéÛHWÒ(?iæJ+@Úäï?ŠUnknown
-†yHostMul"5gradient_tape/binary_crossentropy/logistic_loss/mul_1(1–C‹lçû@9–C‹lçû@A–C‹lçû@I–C‹lçû@amJıMî¾'?i»*/Væï?ŠUnknown
-yzHostReadVariableOp"div_no_nan_1/ReadVariableOp_1(1î|?5^º@9î|?5^º@Aî|?5^º@Iî|?5^º@aui c&?i»i¼çï?ŠUnknown
-ƒ{HostDataset".Iterator::Root::ParallelMapV2::Zip[0]::FlatMap(1ÇK7‰ApD@9ÇK7‰ApD@A^ºI«@I^ºI«@adhN	S&?iù¯¨™!éï?ŠUnknown
-†|HostSum"5gradient_tape/binary_crossentropy/logistic_loss/Sum_1(1…ëQ¸…@9…ëQ¸…@A…ëQ¸…@I…ëQ¸…@aĞâŠz*&?i§Xp;„êï?ŠUnknown
-w}HostReadVariableOp"div_no_nan/ReadVariableOp_1(1D‹lçû)@9D‹lçû)@AD‹lçû)@ID‹lçû)@aËLç«Ç%?itÍ.¶àëï?ŠUnknown
-‚~HostReadVariableOp"&sequential/dense/MatMul/ReadVariableOp(1¼t“Ö@9¼t“Ö@A¼t“Ö@I¼t“Ö@a„deùl%?i¶#Å…7íï?ŠUnknown
-wHostReadVariableOp"div_no_nan_1/ReadVariableOp(1¼t“V@9¼t“V@A¼t“V@I¼t“V@a/¶nT·â$?i¡j:±…îï?ŠUnknown
-…€HostNeg"3gradient_tape/binary_crossentropy/logistic_loss/Neg(1
-×£p=Š@9
-×£p=Š@A
-×£p=Š@I
-×£p=Š@a²Aòù›$?iÅ	úÆïï?ŠUnknown
-‰HostSum"7gradient_tape/binary_crossentropy/logistic_loss/mul/Sum(1—nƒ@@9—nƒ@@A—nƒ@@I—nƒ@@a ƒşø¶#?iÿñ‰Šñï?ŠUnknown
-W‚HostCast"Cast(1š™™™™@9š™™™™@Aš™™™™@Iš™™™™@aXÉmx"?işZ)òï?ŠUnknown
-^ƒHostCast"Adam/Cast_1(15^ºI‚@95^ºI‚@A5^ºI‚@I5^ºI‚@aüº}ºÔ!?i@Ú]Fóï?ŠUnknown
-Œ„HostReadVariableOp"/sequential/hidden_layer_2/MatMul/ReadVariableOp(1•C‹lç@9•C‹lç@A•C‹lç@I•C‹lç@aºJü:!?iì{ÇZôï?ŠUnknown
-w…HostReadVariableOp"Adam/Cast_2/ReadVariableOp(1×£p=
-×@9×£p=
-×@A×£p=
-×@I×£p=
-×@aˆ»±½¹&?izi•BSõï?ŠUnknown
-†HostReadVariableOp"0sequential/hidden_layer_5/BiasAdd/ReadVariableOp(1ÙÎ÷Sã¥@9ÙÎ÷Sã¥@AÙÎ÷Sã¥@IÙÎ÷Sã¥@a|ùgk¢ñ?iºÄ¨ÏJöï?ŠUnknown
-…‡HostMul"3gradient_tape/binary_crossentropy/logistic_loss/mul(1{®Gáz@9{®Gáz@A{®Gáz@I{®Gáz@a|á©®?iŸĞ÷D8÷ï?ŠUnknown
-ˆHostReadVariableOp"0sequential/hidden_layer_2/BiasAdd/ReadVariableOp(1¶óıÔxé
-@9¶óıÔxé
-@A¶óıÔxé
-@I¶óıÔxé
-@aø¾·8š?i]–ÉÑ øï?ŠUnknown
-p‰HostReadVariableOp"Adam/ReadVariableOp(1F¶óıÔx@9F¶óıÔx@AF¶óıÔx@IF¶óıÔx@aô¼£-çn?i{Iôøï?ŠUnknown
-ŒŠHostReadVariableOp"/sequential/hidden_layer_4/MatMul/ReadVariableOp(1Zd;ßO@9Zd;ßO@AZd;ßO@IZd;ßO@a@›»©B?iX¡K^Æùï?ŠUnknown
-Œ‹HostReadVariableOp"/sequential/hidden_layer_5/MatMul/ReadVariableOp(1¨ÆK7‰A@9¨ÆK7‰A@A¨ÆK7‰A@I¨ÆK7‰A@a¦Âñ,3?iŞ)³÷—úï?ŠUnknown
-wŒHostReadVariableOp"Adam/Cast_3/ReadVariableOp(1ÙÎ÷Sã@9ÙÎ÷Sã@AÙÎ÷Sã@IÙÎ÷Sã@aº®èjÍ?iNo
-cfûï?ŠUnknown
-„HostReadVariableOp"'sequential/dense/BiasAdd/ReadVariableOp(1oƒÀÊ¡@9oƒÀÊ¡@AoƒÀÊ¡@IoƒÀÊ¡@aV9¶r?i òó)üï?ŠUnknown
-\HostPow"
-Adam/Pow_1(1q=
-×£p@9q=
-×£p@Aq=
-×£p@Iq=
-×£p@aIwl±=?id Üëüï?ŠUnknown
-HostReadVariableOp"0sequential/hidden_layer_0/BiasAdd/ReadVariableOp(1+‡ÙÎ@9+‡ÙÎ@A+‡ÙÎ@I+‡ÙÎ@aâ…ùu¿y?i0ÈªŸıï?ŠUnknown
-HostReadVariableOp"0sequential/hidden_layer_3/BiasAdd/ReadVariableOp(1ã¥›Ä °@9ã¥›Ä °@Aã¥›Ä °@Iã¥›Ä °@aFÇµˆ/?iŞ½`&Aşï?ŠUnknown
-Œ‘HostReadVariableOp"/sequential/hidden_layer_3/MatMul/ReadVariableOp(1\Âõ(\@9\Âõ(\@A\Âõ(\@I\Âõ(\@aIâúQÀ?iğ”ğ(×şï?ŠUnknown
-§’HostCast"Tbinary_crossentropy/ArithmeticOptimizer/ReorderCastLikeAndValuePreserving_int64_Cast(1R¸…ëQ@9R¸…ëQ@AR¸…ëQ@IR¸…ëQ@a°@htBµ?i28Ólÿï?ŠUnknown
-u“HostReadVariableOp"Adam/Cast/ReadVariableOp(1Õxé&1@9Õxé&1@AÕxé&1@IÕxé&1@aùxŸe?iÿÿÿÿÿÿï?ŠUnknown2CPU
