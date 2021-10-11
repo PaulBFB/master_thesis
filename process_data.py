@@ -8,7 +8,6 @@ from sklearn.impute import IterativeImputer
 from sklearn.preprocessing import OneHotEncoder, StandardScaler, MinMaxScaler
 
 
-
 def process_data(
     include_synthetic: bool=True):
     
@@ -66,8 +65,7 @@ def process_data(
         'x_test_processed': x_test_processed, 
         'y_train': y_train.values,
         'y_test': y_test.values,
-        'pipeline': pipeline}
-    
+        'pipeline': pipeline}    
     
     return result
 
