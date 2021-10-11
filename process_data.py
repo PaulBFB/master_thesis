@@ -9,7 +9,9 @@ from sklearn.preprocessing import OneHotEncoder, StandardScaler, MinMaxScaler
 
 
 
-def process_data():
+def process_data(
+    include_synthetic: bool=True):
+    
     with open('./data/titanic.csv', mode='r') as file:
         df = pd.read_csv(file)
 
