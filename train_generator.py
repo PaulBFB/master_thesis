@@ -79,216 +79,232 @@ def preprocess(
     passenger = tf.convert_to_tensor(passenger)
     
     if mode == 'uniform':
-        input_z = tf.random.uniform(
+        input_z = generator.uniform(
             shape=latent_space_shape, 
             minval=-1.0, maxval=1.0)
     
     elif mode == 'normal':
-        input_z = tf.random.normal(shape=latent_space_shape)
+        input_z = generator.normal(shape=latent_space_shape)
     
     return input_z, passenger
 
 
-# shape of output data - experiment with the relation, latent space should be smaller in order to compress data?
-data_shape = (12,)
-# dimension of the latent space
-z_size = 20
-mode_z = 'normal'
-
-# pull data from processing function
-data = process_data()    
-x_train = data['x_train_processed']
-y_train = data['y_train']
-
-# stack labels back to training data
-x_train = np.column_stack((x_train, y_train))
-
-# convert to tensorflow dataset, in order to map preprocess function on it
-x_train_tf = tf.data.Dataset.from_tensor_slices(x_train)
-x_train_tf = x_train_tf.map(lambda x: preprocess(x, latent_space_shape=(z_size,)))
-
-# training params - :todo wrap into a function
-num_epochs = 50
-batch_size = 32
-
-generator_hidden_layers = 1
-generator_hidden_units = 100
-
-discriminator_hidden_layers = 1
-discriminator_hidden_units = 100
-
-# setup latent space distribution
-if mode_z == 'uniform':
-    fixed_z = tf.random.uniform(
-        shape=(batch_size, z_size),
-        minval=-1, maxval=1)
-elif mode_z == 'normal':
-    fixed_z = tf.random.normal(
-        shape=(batch_size, z_size))
-
-
-def create_samples(g_model, input_z):
-    g_output = g_model(input_z, training=False)
-    images = tf.reshape(g_output, (batch_size, *data_shape))    
-    return (images+1)/2.0
-
-
-x_train_tf = x_train_tf.shuffle(10000)
-x_train_tf = x_train_tf.batch(
-    batch_size, drop_remainder=True)
-
-# create the models
-with tf.device(device_name):
-    generator_model = create_generator_network(
-        number_hidden_layers=generator_hidden_layers,
-        number_hidden_units=generator_hidden_units,
-        number_output_units=np.product(data_shape))
+def train_generator(
+    training_data: np.ndarray,
+    latent_space_shape: int,
+    latent_space_mode: str,
+    generator: tf.random.Generator,
+    generator_hidden_layers: int = 1,
+    generator_hidden_units: int = 100,
+    discriminator_hidden_layers: int = 1,
+    discriminator_hidden_units: int = 100,
+    n_epochs: int = 50,
+    batch_size: int = 32,
+    tensorflow_device: str = device_name,
+    generate_img: bool = True,
+    export_generator: bool = True) -> tf.keras.Model:
     
-    generator_model.build(input_shape=(None, z_size))
     
-    discriminator_model = create_discriminator_network(
-        number_hidden_layers=discriminator_hidden_layers,
-        number_hidden_units=discriminator_hidden_units)
+    data_shape = training_data.shape[1]
+    data_shape = (data_shape,)
     
-    discriminator_model.build(input_shape=(None, np.prod(data_shape)))
-
-# Loss functions and optimizers
-loss_fn = tf.keras.losses.BinaryCrossentropy(from_logits=True)
-g_optimizer = tf.keras.optimizers.Adam()
-d_optimizer = tf.keras.optimizers.Adam()
-
-# lists to store losses and values
-all_losses = []
-all_d_vals = []
-epoch_samples = []
-
-start_time = time.time()
-for epoch in range(1, num_epochs+1):
-    epoch_losses, epoch_d_vals = [], []
-    for i,(input_z,input_real) in enumerate(x_train_tf):
+    training_data = tf.data.Dataset.from_tensor_slices(x_train)
+    training_data = training_data.map(lambda x: preprocess(x, latent_space_shape=(latent_space_shape,), mode=latent_space_mode))
+    
+#    if latent_space_mode == 'uniform':
+#        fixed_z = generator.uniform(
+#            shape=(batch_size, latent_space_shape),
+#            minval= -1, maxval = 1)
+#    elif latent_space_mode == 'normal':
+#        fixed_z = generator.normal(
+#            shape=(batch_size, latent_space_shape))
         
-        # generator loss, record gradients
-        with tf.GradientTape() as g_tape:
-            g_output = generator_model(input_z)
-            d_logits_fake = discriminator_model(g_output, training=True)
-            labels_real = tf.ones_like(d_logits_fake)
-            g_loss = loss_fn(y_true=labels_real, y_pred=d_logits_fake)
+    training_data = training_data.shuffle(10000)
+    training_data = training_data.batch(
+        batch_size, drop_remainder=True)
+    
+    with tf.device(tensorflow_device):
+        generator_model = create_generator_network(
+            number_hidden_layers=generator_hidden_layers,
+            number_hidden_units=generator_hidden_units,
+            number_output_units=np.product(data_shape))
         
-        # get loss derivatives from tabe, only for trainable vars, in case of regularization / batchnorm
-        g_grads = g_tape.gradient(g_loss, generator_model.trainable_variables)
+        generator_model.build(input_shape=(None, latent_space_shape))
         
-        # apply optimizer for generator
-        g_optimizer.apply_gradients(
-            grads_and_vars=zip(g_grads, generator_model.trainable_variables))
-
-        # discriminator loss, gradients
-        with tf.GradientTape() as d_tape:
-            d_logits_real = discriminator_model(input_real, training=True)
-
-            d_labels_real = tf.ones_like(d_logits_real)
+        discriminator_model = create_discriminator_network(
+            number_hidden_layers=discriminator_hidden_layers,
+            number_hidden_units=discriminator_hidden_units)
+        
+        discriminator_model.build(input_shape=(None, np.prod(data_shape)))
+        
+    # Loss functions and optimizers
+    loss_fn = tf.keras.losses.BinaryCrossentropy(from_logits=True)
+    g_optimizer = tf.keras.optimizers.Adam()
+    d_optimizer = tf.keras.optimizers.Adam()
+    
+    # lists to store losses and values
+    all_losses = []
+    all_d_vals = []
+    
+    start_time = time.time()
+    for epoch in range(1, n_epochs+1):
+        epoch_losses, epoch_d_vals = [], []
+        for i,(input_z,input_real) in enumerate(training_data):
             
-            # loss for the real examples - labeles as 1
-            d_loss_real = loss_fn(
-                y_true=d_labels_real, y_pred=d_logits_real)
-
-            # loss for the fakes - labeled as 0 
+            # generator loss, record gradients
+            with tf.GradientTape() as g_tape:
+                g_output = generator_model(input_z)
+                d_logits_fake = discriminator_model(g_output, training=True)
+                labels_real = tf.ones_like(d_logits_fake)
+                g_loss = loss_fn(y_true=labels_real, y_pred=d_logits_fake)
+            # get loss derivatives from tabe, only for trainable vars, in case of regularization / batchnorm
+            g_grads = g_tape.gradient(g_loss, generator_model.trainable_variables)
             
-            # apply discriminator to generator output like a function
-            d_logits_fake = discriminator_model(g_output, training=True)
-            d_labels_fake = tf.zeros_like(d_logits_fake)
-
-            # loss function
-            d_loss_fake = loss_fn(
-                y_true=d_labels_fake, y_pred=d_logits_fake)
-
-            # compute component loss for real & fake
-            d_loss = d_loss_real + d_loss_fake
-
-        # get the loss derivatives from the tape
-        d_grads = d_tape.gradient(d_loss, discriminator_model.trainable_variables)
-        
-        # apply optimizer to discriminator gradients - only trainable :todo: add regularization here
-        d_optimizer.apply_gradients(
-            grads_and_vars=zip(d_grads, discriminator_model.trainable_variables))
-                           
-        # add step loss to epoch list
-        epoch_losses.append(
-            (g_loss.numpy(), d_loss.numpy(), 
-             d_loss_real.numpy(), d_loss_fake.numpy()))
-        
-        # probabilities from logits for predcitions, using tf builtin
-        d_probs_real = tf.reduce_mean(tf.sigmoid(d_logits_real))
-        d_probs_fake = tf.reduce_mean(tf.sigmoid(d_logits_fake))
-        epoch_d_vals.append((d_probs_real.numpy(), d_probs_fake.numpy()))        
+            # apply optimizer for generator
+            g_optimizer.apply_gradients(
+                grads_and_vars=zip(g_grads, generator_model.trainable_variables))
     
-    # record loss
-    all_losses.append(epoch_losses)
-    all_d_vals.append(epoch_d_vals)
-    print(
-        'Epoch {:03d} | ET {:.2f} min | Avg Losses >>'
-        ' G/D {:.4f}/{:.4f} [D-Real: {:.4f} D-Fake: {:.4f}]'
-        .format(
-            epoch, (time.time() - start_time)/60, 
-            *list(np.mean(all_losses[-1], axis=0))))
-    epoch_samples.append(
-        create_samples(generator_model, fixed_z).numpy())
+            # discriminator loss, gradients
+            with tf.GradientTape() as d_tape:
+                d_logits_real = discriminator_model(input_real, training=True)
+    
+                d_labels_real = tf.ones_like(d_logits_real)
+                
+                # loss for the real examples - labeles as 1
+                d_loss_real = loss_fn(
+                    y_true=d_labels_real, y_pred=d_logits_real)
+    
+                # loss for the fakes - labeled as 0 
+                
+                # apply discriminator to generator output like a function
+                d_logits_fake = discriminator_model(g_output, training=True)
+                d_labels_fake = tf.zeros_like(d_logits_fake)
+    
+                # loss function
+                d_loss_fake = loss_fn(
+                    y_true=d_labels_fake, y_pred=d_logits_fake)
+    
+                # compute component loss for real & fake
+                d_loss = d_loss_real + d_loss_fake
+    
+            # get the loss derivatives from the tape
+            d_grads = d_tape.gradient(d_loss, discriminator_model.trainable_variables)
+            
+            # apply optimizer to discriminator gradients - only trainable :todo: add regularization here
+            d_optimizer.apply_gradients(
+                grads_and_vars=zip(d_grads, discriminator_model.trainable_variables))
+                               
+            # add step loss to epoch list
+            epoch_losses.append(
+                (g_loss.numpy(), d_loss.numpy(), 
+                 d_loss_real.numpy(), d_loss_fake.numpy()))
+            
+            # probabilities from logits for predcitions, using tf builtin
+            d_probs_real = tf.reduce_mean(tf.sigmoid(d_logits_real))
+            d_probs_fake = tf.reduce_mean(tf.sigmoid(d_logits_fake))
+            epoch_d_vals.append((d_probs_real.numpy(), d_probs_fake.numpy()))        
+        
+        # record loss
+        all_losses.append(epoch_losses)
+        all_d_vals.append(epoch_d_vals)
+        print(
+            'Epoch {:03d} | ET {:.2f} min | Avg Losses >>'
+            ' G/D {:.4f}/{:.4f} [D-Real: {:.4f} D-Fake: {:.4f}]'
+            .format(
+                epoch, (time.time() - start_time)/60, 
+                *list(np.mean(all_losses[-1], axis=0))))
+    result = {
+        'all_losses': all_losses,
+        'all_d_vals': all_d_vals,
+        'generator': generator_model,
+        'discriminator': discriminator_model}
+
+    model_name = f'e_{n_epochs}_gl_{generator_hidden_layers}_gu_{generator_hidden_units}_dl_{discriminator_hidden_layers}_du_{discriminator_hidden_units}'
+
+    
+    if generate_img:
+        
+        print()
+        print('generating training log image')
+        
+        fig = plt.figure(figsize=(20, 10))
+    
+        ## Plotting the losses
+        ax = fig.add_subplot(1, 2, 1)
+        g_losses = [item[0] for item in itertools.chain(*all_losses)]
+        d_losses = [item[1]/2.0 for item in itertools.chain(*all_losses)]
+        plt.plot(g_losses, label='Generator loss', alpha=0.75)
+        plt.plot(d_losses, label='Discriminator loss', alpha=0.75)
+        plt.legend(fontsize=20)
+        ax.set_xlabel('Iteration', size=15)
+        ax.set_ylabel('Loss', size=15)
+        
+        epochs = np.arange(1, n_epochs + 1)
+        epoch2iter = lambda e: e*len(all_losses[-1])
+        epoch_ticks = np.arange(0, n_epochs, 20)
+        
+        newpos = [epoch2iter(e) for e in epoch_ticks]
+        ax2 = ax.twiny()
+        ax2.set_xticks(newpos)
+        ax2.set_xticklabels(epoch_ticks)
+        ax2.xaxis.set_ticks_position('bottom')
+        ax2.xaxis.set_label_position('bottom')
+        ax2.spines['bottom'].set_position(('outward', 60))
+        ax2.set_xlabel('Epoch', size=15)
+        ax2.set_xlim(ax.get_xlim())
+        ax.tick_params(axis='both', which='major', labelsize=15)
+        ax2.tick_params(axis='both', which='major', labelsize=15)
+        
+        # Plotting the outputs of the discriminator
+        ax = fig.add_subplot(1, 2, 2)
+        d_vals_real = [item[0] for item in itertools.chain(*all_d_vals)]
+        d_vals_fake = [item[1] for item in itertools.chain(*all_d_vals)]
+        plt.plot(d_vals_real, alpha=0.75, label=r'Real: $D(\mathbf{x})$')
+        plt.plot(d_vals_fake, alpha=0.75, label=r'Fake: $D(G(\mathbf{z}))$')
+        plt.legend(fontsize=20)
+        ax.set_xlabel('Iteration', size=15)
+        ax.set_ylabel('Discriminator output', size=15)
+        
+        ax2 = ax.twiny()
+        ax2.set_xticks(newpos)
+        ax2.set_xticklabels(epoch_ticks)
+        ax2.xaxis.set_ticks_position('bottom')
+        ax2.xaxis.set_label_position('bottom')
+        ax2.spines['bottom'].set_position(('outward', 60))
+        ax2.set_xlabel('Epoch', size=15)
+        ax2.set_xlim(ax.get_xlim())
+        ax.tick_params(axis='both', which='major', labelsize=15)
+        ax2.tick_params(axis='both', which='major', labelsize=15)
+        
+        
+        plt.savefig(f'./img/{model_name}.png')
+        
+        print(f'image saved to: ./img/{model_name}.png')
+    
+    if export_generator:
+        
+        print()
+        print('saving generator model')
+        
+        tf.keras.models.save_model(generator_model, f'./models/generator_{model_name}.h5')
+        print(f'generator model saved to: ./models/{model_name}.h5')
+        
+    return result
 
 
 if __name__ == '__main__':
     
-    samples = create_samples(generator_model, fixed_z).numpy()
-    np.save(f'./data/titanic_generated.npy', samples)
+    data = process_data()    
+    x_train = data['x_train_processed']
+    y_train = data['y_train']
+    generator = tf.random.Generator.from_seed(42)
+
+    # stack labels back to training data
+    x_train = np.column_stack((x_train, y_train))
+
     
-    tf.keras.models.save_model(generator_model, f'./models/generator__{time.strftime("%Y_%m_%d_%H_%M")}.h5')
-    
-    fig = plt.figure(figsize=(20, 10))
-    
-    ## Plotting the losses
-    ax = fig.add_subplot(1, 2, 1)
-    g_losses = [item[0] for item in itertools.chain(*all_losses)]
-    d_losses = [item[1]/2.0 for item in itertools.chain(*all_losses)]
-    plt.plot(g_losses, label='Generator loss', alpha=0.95)
-    plt.plot(d_losses, label='Discriminator loss', alpha=0.95)
-    plt.legend(fontsize=20)
-    ax.set_xlabel('Iteration', size=15)
-    ax.set_ylabel('Loss', size=15)
-    
-    epochs = np.arange(1, num_epochs + 1)
-    epoch2iter = lambda e: e*len(all_losses[-1])
-    epoch_ticks = np.arange(0, num_epochs, 20)
-    
-    newpos = [epoch2iter(e) for e in epoch_ticks]
-    ax2 = ax.twiny()
-    ax2.set_xticks(newpos)
-    ax2.set_xticklabels(epoch_ticks)
-    ax2.xaxis.set_ticks_position('bottom')
-    ax2.xaxis.set_label_position('bottom')
-    ax2.spines['bottom'].set_position(('outward', 60))
-    ax2.set_xlabel('Epoch', size=15)
-    ax2.set_xlim(ax.get_xlim())
-    ax.tick_params(axis='both', which='major', labelsize=15)
-    ax2.tick_params(axis='both', which='major', labelsize=15)
-    
-    # Plotting the outputs of the discriminator
-    ax = fig.add_subplot(1, 2, 2)
-    d_vals_real = [item[0] for item in itertools.chain(*all_d_vals)]
-    d_vals_fake = [item[1] for item in itertools.chain(*all_d_vals)]
-    plt.plot(d_vals_real, alpha=0.75, label=r'Real: $D(\mathbf{x})$')
-    plt.plot(d_vals_fake, alpha=0.75, label=r'Fake: $D(G(\mathbf{z}))$')
-    plt.legend(fontsize=20)
-    ax.set_xlabel('Iteration', size=15)
-    ax.set_ylabel('Discriminator output', size=15)
-    
-    ax2 = ax.twiny()
-    ax2.set_xticks(newpos)
-    ax2.set_xticklabels(epoch_ticks)
-    ax2.xaxis.set_ticks_position('bottom')
-    ax2.xaxis.set_label_position('bottom')
-    ax2.spines['bottom'].set_position(('outward', 60))
-    ax2.set_xlabel('Epoch', size=15)
-    ax2.set_xlim(ax.get_xlim())
-    ax.tick_params(axis='both', which='major', labelsize=15)
-    ax2.tick_params(axis='both', which='major', labelsize=15)
-    
-    plt.savefig('./img/gan_convergence.png')
-    
+    result = train_generator(
+        training_data=x_train,
+        latent_space_shape=10,
+        latent_space_mode='normal',
+        generator=generator)
