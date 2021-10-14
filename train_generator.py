@@ -48,7 +48,7 @@ def create_discriminator_network(
     number_hidden_units: int = 100,
     hidden_activation_function: str = 'LeakyReLU',
     use_dropout: bool = True,
-    dropout_rate: float = 0.5,
+    dropout_rate: float = 0.3,
     number_output_units: int = 1) -> tf.keras.Model:
 
     model = tf.keras.Sequential()
@@ -96,8 +96,10 @@ def train_generator(
     generator: tf.random.Generator,
     generator_hidden_layers: int = 1,
     generator_hidden_units: int = 100,
+    generator_hidden_activation: str = 'LeakyReLU',
     discriminator_hidden_layers: int = 1,
     discriminator_hidden_units: int = 100,
+    discriminator_hidden_activation: str = 'LeakyReLU',
     n_epochs: int = 50,
     batch_size: int = 32,
     tensorflow_device: str = device_name,
@@ -110,15 +112,7 @@ def train_generator(
     
     training_data = tf.data.Dataset.from_tensor_slices(x_train)
     training_data = training_data.map(lambda x: preprocess(x, latent_space_shape=(latent_space_shape,), mode=latent_space_mode))
-    
-#    if latent_space_mode == 'uniform':
-#        fixed_z = generator.uniform(
-#            shape=(batch_size, latent_space_shape),
-#            minval= -1, maxval = 1)
-#    elif latent_space_mode == 'normal':
-#        fixed_z = generator.normal(
-#            shape=(batch_size, latent_space_shape))
-        
+            
     training_data = training_data.shuffle(10000)
     training_data = training_data.batch(
         batch_size, drop_remainder=True)
@@ -127,20 +121,22 @@ def train_generator(
         generator_model = create_generator_network(
             number_hidden_layers=generator_hidden_layers,
             number_hidden_units=generator_hidden_units,
+            hidden_activation_function=generator_hidden_activation,
             number_output_units=np.product(data_shape))
         
         generator_model.build(input_shape=(None, latent_space_shape))
         
         discriminator_model = create_discriminator_network(
             number_hidden_layers=discriminator_hidden_layers,
-            number_hidden_units=discriminator_hidden_units)
+            number_hidden_units=discriminator_hidden_units,
+            hidden_activation_function=discriminator_hidden_activation)
         
         discriminator_model.build(input_shape=(None, np.prod(data_shape)))
         
     # Loss functions and optimizers
     loss_fn = tf.keras.losses.BinaryCrossentropy(from_logits=True)
-    g_optimizer = tf.keras.optimizers.Adam()
-    d_optimizer = tf.keras.optimizers.Adam()
+    g_optimizer = tf.keras.optimizers.RMSprop()
+    d_optimizer = tf.keras.optimizers.RMSprop()
     
     # lists to store losses and values
     all_losses = []
@@ -305,6 +301,13 @@ if __name__ == '__main__':
     
     result = train_generator(
         training_data=x_train,
-        latent_space_shape=10,
+        latent_space_shape=20,
         latent_space_mode='normal',
-        generator=generator)
+        n_epochs=250,
+        generator=generator,
+        generator_hidden_layers=5,
+        generator_hidden_units=40,
+        generator_hidden_activation='selu',
+        discriminator_hidden_layers=5,
+        discriminator_hidden_units=40,
+        discriminator_hidden_activation='selu')
