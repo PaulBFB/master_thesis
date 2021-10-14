@@ -6,6 +6,8 @@ from process_data import process_data
 from matplotlib import pyplot as plt
 
 
+# todo: change RNG! 
+# https://www.tensorflow.org/guide/random_numbers
 tf.random.set_seed(42)
 np.random.seed(42)
 
@@ -20,7 +22,7 @@ def create_generator_network(
     number_hidden_layers: int = 1,
     number_hidden_units: int = 100,
     hidden_activation_function: str = 'LeakyReLU',
-    use_dropout: bool = False,
+    use_dropout: bool = True,
     dropout_rate: float = 0.3,
     number_output_units: int = 12,
     output_activation_function: str = 'tanh') -> tf.keras.Model:
@@ -87,6 +89,12 @@ def preprocess(
     return input_z, passenger
 
 
+# shape of output data - experiment with the relation, latent space should be smaller in order to compress data?
+data_shape = (12,)
+# dimension of the latent space
+z_size = 20
+mode_z = 'normal'
+
 # pull data from processing function
 data = process_data()    
 x_train = data['x_train_processed']
@@ -97,13 +105,7 @@ x_train = np.column_stack((x_train, y_train))
 
 # convert to tensorflow dataset, in order to map preprocess function on it
 x_train_tf = tf.data.Dataset.from_tensor_slices(x_train)
-x_train_tf = x_train_tf.map(preprocess)
-
-# shape of output data - experiment with the relation, latent space should be smaller in order to compress data?
-data_shape = (12,)
-# dimension of the latent space
-z_size = 12 
-mode_z = 'normal'
+x_train_tf = x_train_tf.map(lambda x: preprocess(x, latent_space_shape=(z_size,)))
 
 # training params - :todo wrap into a function
 num_epochs = 50
@@ -237,7 +239,7 @@ if __name__ == '__main__':
     samples = create_samples(generator_model, fixed_z).numpy()
     np.save(f'./data/titanic_generated.npy', samples)
     
-    tf.keras.models.save_model(generator_model, './models/generator_latest.h5')
+    tf.keras.models.save_model(generator_model, f'./models/generator__{time.strftime("%Y_%m_%d_%H_%M")}.h5')
     
     fig = plt.figure(figsize=(20, 10))
     
