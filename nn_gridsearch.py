@@ -101,8 +101,9 @@ def nn_gridsearch(
 if __name__ == '__main__':
     from process_data import process_data
     
+    include_synthetic = True
     
-    data = process_data()
+    data = process_data(include_synthetic=include_synthetic)
     
     test_model = make_model()
 #    print(logdir('changed_batch_size_32'))
@@ -122,10 +123,11 @@ if __name__ == '__main__':
         make_model, 
         data['x_train_processed'], data['y_train'],
         grid_parameters,
-        n_iterations=300)
+        n_iterations=100)
 
     
     best_model = grid.best_estimator_.model
-    best_model.save(f'./models/titanic_gridsearch_{time.strftime("%Y_%m_%d_%H_%M")}.h5')
+    model_path = f'./models/titanic_gridsearch{"_synthetic" if include_synthetic else ""}_{time.strftime("%Y_%m_%d_%H_%M")}.h5'
+    best_model.save(model_path)
     
     print(best_model.summary())
