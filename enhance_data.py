@@ -1,4 +1,5 @@
 import numpy as np
+import tensorflow as tf
 from process_data import process_data
 from generate_data import generate_data
 from train_generator import train_generator
@@ -15,7 +16,7 @@ def enhance_data(
     x_train_processed = data['x_train_processed']
     y_train = data['y_train']
     
-    if real_share != 1.0:
+    if real_share != 1.0 and include_synthetic:
         # shorten real data
         number_real_samples = int(x_train_processed.shape[0] * real_share)
         # create permutation index in order to not just omit last samples in order
@@ -27,6 +28,7 @@ def enhance_data(
         
         # important! if real data is made smaller, the GENERATOR NEEDS TO BE RETRAINED
         # otherwise, information will implicitly "leak" from the complete training set into the synthetic data
+        print('fitting new generator on smaller data')
         generator = train_generator(
             training_data=np.column_stack((x_train_processed, y_train)),
             generate_img=False,
@@ -67,7 +69,7 @@ def enhance_data(
 
 
 if __name__ == '__main__':
-    data = enhance_data(include_synthetic=True, real_share=0.5)
+    data = enhance_data(include_synthetic=False, real_share=0.5)
 
     for k, v in filter(lambda x: x[0] != 'pipeline', data.items()):
         
