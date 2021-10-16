@@ -100,10 +100,18 @@ def nn_gridsearch(
 
 if __name__ == '__main__':
     from process_data import process_data
+    from enhance_data import enhance_data
     
     include_synthetic = True
+    synthetic_share = 1.0
+    real_share = 0.5
     
-    data = process_data(include_synthetic=include_synthetic)
+    data = enhance_data(
+        include_synthetic=include_synthetic,
+        synthetic_share=synthetic_share,
+        real_share=real_share)
+    
+    print(data['x_train_processed'].shape)
     
     test_model = make_model()
 #    print(logdir('changed_batch_size_32'))
@@ -123,7 +131,7 @@ if __name__ == '__main__':
         make_model, 
         data['x_train_processed'], data['y_train'],
         grid_parameters,
-        n_iterations=100)
+        n_iterations=33)
 
     
     best_model = grid.best_estimator_.model

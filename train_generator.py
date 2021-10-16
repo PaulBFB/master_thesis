@@ -6,7 +6,6 @@ from process_data import process_data
 from matplotlib import pyplot as plt
 
 
-# todo: change RNG! 
 # https://www.tensorflow.org/guide/random_numbers
 tf.random.set_seed(42)
 np.random.seed(42)
@@ -86,6 +85,7 @@ def create_discriminator_network(
 @tf.function
 def preprocess(
     passenger: np.ndarray,
+    rng: tf.random.Generator,
     output_shape: tuple = (12,),
     latent_space_shape: tuple = (12,),
     mode: str='uniform'):
@@ -95,25 +95,25 @@ def preprocess(
     passenger = tf.convert_to_tensor(passenger)
     
     if mode == 'uniform':
-        input_z = generator.uniform(
+        input_z = rng.uniform(
             shape=latent_space_shape, 
             minval=-1.0, maxval=1.0)
     
     elif mode == 'normal':
-        input_z = generator.normal(shape=latent_space_shape)
+        input_z = rng.normal(shape=latent_space_shape)
     
     return input_z, passenger
 
 
 def train_generator(
     training_data: np.ndarray,
-    latent_space_shape: int,
-    latent_space_mode: str,
-    generator: tf.random.Generator,
-    number_hidden_layers: int = 3,
+    latent_space_shape: int=8,
+    latent_space_mode: str='normal',
+    rng: tf.random.Generator=tf.random.Generator.from_seed(42),
+    number_hidden_layers: int = 2,
     number_hidden_units_power: int = 5,
-    hidden_activation: str = 'LeakyReLU',
-    n_epochs: int = 50,
+    hidden_activation: str = 'selu',
+    n_epochs: int = 40,
     batch_size: int = 32,
     tensorflow_device: str = device_name,
     generate_img: bool = True,
@@ -124,8 +124,8 @@ def train_generator(
     data_shape = training_data.shape[1]
     data_shape = (data_shape,)
     
-    training_data = tf.data.Dataset.from_tensor_slices(x_train)
-    training_data = training_data.map(lambda x: preprocess(x, latent_space_shape=(latent_space_shape,), mode=latent_space_mode))
+    training_data = tf.data.Dataset.from_tensor_slices(training_data)
+    training_data = training_data.map(lambda x: preprocess(x, rng=rng, latent_space_shape=(latent_space_shape,), mode=latent_space_mode))
             
     training_data = training_data.shuffle(10000)
     training_data = training_data.batch(
@@ -139,7 +139,7 @@ def train_generator(
             number_output_units=np.product(data_shape))
         
         generator_model.build(input_shape=(None, latent_space_shape))
-        print(generator_model.summary())
+#        print(generator_model.summary())
         
         discriminator_model = create_discriminator_network(
             number_hidden_layers=number_hidden_layers,
@@ -147,7 +147,7 @@ def train_generator(
             hidden_activation_function=hidden_activation)
         
         discriminator_model.build(input_shape=(None, np.prod(data_shape)))
-        print(discriminator_model.summary())
+#        print(discriminator_model.summary())
         
     # Loss functions and optimizers
     loss_fn = tf.keras.losses.BinaryCrossentropy(from_logits=True)
@@ -309,17 +309,8 @@ if __name__ == '__main__':
     data = process_data()    
     x_train = data['x_train_processed']
     y_train = data['y_train']
-    generator = tf.random.Generator.from_seed(42)
 
-    # stack labels back to training data
     x_train = np.column_stack((x_train, y_train))
 
     
-    result = train_generator(
-        training_data=x_train,
-        latent_space_shape=8,
-        latent_space_mode='normal',
-        n_epochs=50,
-        generator=generator,
-        number_hidden_layers=2,
-        hidden_activation='selu')
+    result = train_generator(training_data=x_train)

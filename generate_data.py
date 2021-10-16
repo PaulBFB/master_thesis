@@ -2,7 +2,7 @@ import tensorflow as tf
 import numpy as np
 
 
-generator = tf.keras.models.load_model('./models/best_model.h5', compile=False)
+generator = tf.keras.models.load_model('./models/best_generator.h5', compile=False)
 tf.random.set_seed(42)
 noise_generator = tf.random.Generator.from_seed(42)
 
