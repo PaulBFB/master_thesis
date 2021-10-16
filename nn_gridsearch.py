@@ -102,9 +102,9 @@ if __name__ == '__main__':
     from process_data import process_data
     from enhance_data import enhance_data
     
-    include_synthetic = True
-    synthetic_share = 1.0
-    real_share = 0.5
+    include_synthetic = False
+    synthetic_share = 3.0
+    real_share = 0.2
     
     data = enhance_data(
         include_synthetic=include_synthetic,
