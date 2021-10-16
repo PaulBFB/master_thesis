@@ -16,7 +16,7 @@ def enhance_data(
     x_train_processed = data['x_train_processed']
     y_train = data['y_train']
     
-    if real_share != 1.0 and include_synthetic:
+    if real_share != 1.0:
         # shorten real data
         number_real_samples = int(x_train_processed.shape[0] * real_share)
         # create permutation index in order to not just omit last samples in order
@@ -27,18 +27,22 @@ def enhance_data(
         y_train = y_train.take(shortened_index, axis=0)
         
         # important! if real data is made smaller, the GENERATOR NEEDS TO BE RETRAINED
-        # otherwise, information will implicitly "leak" from the complete training set into the synthetic data
-        print('fitting new generator on smaller data')
-        generator = train_generator(
-            training_data=np.column_stack((x_train_processed, y_train)),
-            generate_img=False,
-            export_generator=False)
-        generator = generator['generator']
-        
+        # otherwise, information will implicitly "leak" from the complete training set into the synthetic data    
     else:
-        generator = tf.keras.models.load_model('./models/best_generator.h5')
+        pass
     
     if include_synthetic:
+        
+        if real_share < 1:
+            print('fitting new generator on smaller data')
+            generator = train_generator(
+                training_data=np.column_stack((x_train_processed, y_train)),
+                generate_img=False,
+                export_generator=False)
+            generator = generator['generator']
+        else:
+            generator = tf.keras.models.load_model('./models/best_generator.h5', compile=False)
+    
         number_samples = x_train_processed.shape[0] * synthetic_share
         number_samples = int(number_samples)
         synthetic_data = generate_data(model=generator, 
