@@ -13,6 +13,7 @@ def enhance_data(
     y_train: np.array = data['y_train'],
     include_synthetic: bool=True,
     force_generator: bool=False,
+    generator_epochs: int=40,
     synthetic_share: float=0.2,
     real_share: float=1.0):
     
@@ -44,7 +45,8 @@ def enhance_data(
             generator = train_generator(
                 training_data=np.column_stack((x_train, y_train)),
                 generate_img=True,
-                export_generator=False)
+                export_generator=False,
+                n_epochs=generator_epochs)
             generator = generator['generator']
         else:
             generator = tf.keras.models.load_model('./models/best_generator.h5', compile=False)
