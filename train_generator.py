@@ -125,7 +125,7 @@ def train_generator(
     data_shape = (data_shape,)
     
     training_data = tf.data.Dataset.from_tensor_slices(training_data)
-    training_data = training_data.map(lambda x: preprocess(x, rng=rng, latent_space_shape=(latent_space_shape,), mode=latent_space_mode))
+    training_data = training_data.map(lambda x: preprocess(x, rng=rng, latent_space_shape=(latent_space_shape,), mode=latent_space_mode, output_shape=data_shape))
             
     training_data = training_data.shuffle(10000)
     training_data = training_data.batch(
