@@ -71,6 +71,8 @@ def nn_gridsearch(
     patience: int = 10,
     batch_size: int = 16,
     n_iterations: int = 10,
+    early_stop: bool = True,
+    save_logs: bool = False,
     verbose: int = 1):
     
     keras_cl = KerasClassifier(
@@ -87,13 +89,17 @@ def nn_gridsearch(
         verbose=2, 
         n_jobs=-1)
     
+    callbacks = []
+    if early_stop:
+        callbacks.append(EarlyStopping(patience=patience, monitor='val_loss', mode='min'))
+    if save_logs:
+        callbacks.append(TensorBoard(logdir()))
+    
     rnd_search_cv.fit(
         x_train, y_train, 
         epochs=epochs,
         validation_split=validation_split,
-        callbacks=[
-#            EarlyStopping(patience=patience, monitor='val_loss', mode='min'),
-            TensorBoard(logdir())])
+        callbacks=callbacks)
     
     return rnd_search_cv
 
@@ -131,7 +137,7 @@ if __name__ == '__main__':
         make_model, 
         data['x_train_processed'], data['y_train'],
         grid_parameters,
-        n_iterations=33)
+        n_iterations=3)
 
     
     best_model = grid.best_estimator_.model
