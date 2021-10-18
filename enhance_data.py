@@ -3,6 +3,7 @@ import tensorflow as tf
 from process_data import process_data
 from generate_data import generate_data
 from train_generator import train_generator
+from train_wasserstein_generator import train_generator as train_wasserstein_generator
 
 
 data = process_data()
@@ -15,6 +16,7 @@ def enhance_data(
     force_generator: bool=False,
     generator_epochs: int=40,
     synthetic_share: float=0.2,
+    wasserstein: bool=False,
     real_share: float=1.0):
     
     assert real_share <= 1, 'can only take 100% of all real data'
@@ -41,13 +43,23 @@ def enhance_data(
     if include_synthetic:
         
         if real_share < 1 or force_generator:
-            print('fitting new generator on smaller data')
-            generator = train_generator(
-                training_data=np.column_stack((x_train, y_train)),
-                generate_img=True,
-                export_generator=False,
-                n_epochs=generator_epochs)
-            generator = generator['generator']
+            print()
+            print(f'fitting new {"wasserstein" if wasserstein else ""} generator on smaller data')
+            if wasserstein:
+                generator = train_wasserstein_generator(
+                    training_data=np.column_stack((x_train, y_train)),
+                    generate_img=True,
+                    export_generator=False,
+                    n_epochs=generator_epochs)
+                generator = generator['generator']
+            else:
+                generator = train_generator(
+                    training_data=np.column_stack((x_train, y_train)),
+                    generate_img=True,
+                    export_generator=False,
+                    n_epochs=generator_epochs)
+                generator = generator['generator']
+
         else:
             generator = tf.keras.models.load_model('./models/best_generator.h5', compile=False)
     
@@ -82,7 +94,7 @@ def enhance_data(
 
 
 if __name__ == '__main__':
-    data = enhance_data(include_synthetic=False, real_share=0.5)
+    data = enhance_data(include_synthetic=True, real_share=0.5)
 
     for k, v in filter(lambda x: x[0] != 'pipeline', data.items()):
         
