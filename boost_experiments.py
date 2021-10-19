@@ -31,10 +31,10 @@ grid_parameters = {
 models_tested = []
 
 # boost data progressively bigger to check results
-for data_boost_x in [.2, .3, .5, 1]:
+for data_boost_x in [.2, .3, .5, 1, 2]:
 
     # progressive rate of the full training set
-    for data_rate in np.linspace(.3, .8, 6):
+    for wasserstein in (True, False):
         
         # test each rate with boosted and non-boosted data
         for boost in (True, False):            
@@ -44,7 +44,7 @@ for data_boost_x in [.2, .3, .5, 1]:
             print(f'creating data: {data_rate} of data boosted: {boost}')
             print(f'boosting real data times: {data_boost_x + 1}')
     
-            data = enhance_data(real_share=data_rate, synthetic_share=data_boost_x, include_synthetic=boost)
+            data = enhance_data(synthetic_share=data_boost_x, include_synthetic=boost, wasserstein=wasserstein)
             
             print(f'real')
             print(f'created training data: {data["x_train_processed"].shape[0]} samples total')
@@ -64,26 +64,17 @@ for data_boost_x in [.2, .3, .5, 1]:
                 'accuracy': stats[1],
                 'share_real_data': data_rate,
                 'boosted_data': boost,
-                'number_training_samples': data['y_train'].shape[0]}
+                'number_training_samples': data['y_train'].shape[0],
+                'boostint_type': 'not_boosted' if not boost else 'wasserstein' if wasserstein else 'dcgan'}
             
             print('finished grid - results:')
             pprint(results)
             models_tested.append(results)
-    
-# note = the wrapper takes a FUNCTION as input!
-#grid = nn_gridsearch(
-#    make_model, 
-#    data['x_train_processed'], data['y_train'],
-#    grid_parameters,
-#    n_iterations=33,
-#    verbose=0)
-    
-#best_model = grid.best_estimator_.model
-#best_model.evaluate(data['x_test_processed'], data['y_test'])
 
 df = pd.DataFrame(models_tested)
 df = df.drop_duplicates(subset=['share_real_data', 'boosted_data', 'data_boosted_x']).sort_values(['share_real_data', 'data_boosted_x'])
+df['boostint_type'] = 'wasserstein'
 
-with open('./boosting_results_new.csv', mode='w') as file:
+with open('./boosting_results_whole_data_new_w.csv', mode='w') as file:
     df.to_csv(file)
 
