@@ -64,8 +64,7 @@ for data_boost_x in [.2, .3, .5, 1, 2]:
             models_tested.append(results)
 
 df = pd.DataFrame(models_tested)
-df = df.drop_duplicates(subset=['share_real_data', 'boosted_data', 'data_boosted_x']).sort_values(['share_real_data', 'data_boosted_x'])
-df['boostint_type'] = 'wasserstein'
+#df = df.drop_duplicates(subset=['share_real_data', 'boosted_data', 'data_boosted_x', 'boostint_type']).sort_values(['share_real_data', 'data_boosted_x'])
 
-with open('./boosting_results_whole_data_new_w.csv', mode='w') as file:
+with open('./boosting_results_whole_data_new_w2.csv', mode='w') as file:
     df.to_csv(file)
