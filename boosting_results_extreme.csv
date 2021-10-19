@@ -1,0 +1,9 @@
+,model,data_boosted_x,accuracy,share_real_data,boosted_data,number_training_samples,boostint_type
+0,<keras.engine.sequential.Sequential object at 0x7efbdc69eeb0>,4,0.767175555229187,1.0,True,4188,wasserstein
+1,<keras.engine.sequential.Sequential object at 0x7efbb4f24bb0>,4,0.767175555229187,1.0,True,4188,dcgan
+2,<keras.engine.sequential.Sequential object at 0x7efbb3cf76a0>,6,0.7595419883728027,1.0,True,6282,wasserstein
+3,<keras.engine.sequential.Sequential object at 0x7efbde282ee0>,6,0.7442747950553894,1.0,True,6282,dcgan
+4,<keras.engine.sequential.Sequential object at 0x7efbb3268520>,11,0.7557252049446106,1.0,True,11517,wasserstein
+5,<keras.engine.sequential.Sequential object at 0x7efbdc993670>,11,0.7519084215164185,1.0,True,11517,dcgan
+6,<keras.engine.sequential.Sequential object at 0x7efbac2a3f70>,21,0.7709923386573792,1.0,True,21987,wasserstein
+7,<keras.engine.sequential.Sequential object at 0x7efbb27c61c0>,21,0.7480915784835815,1.0,True,21987,dcgan
