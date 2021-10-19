@@ -61,7 +61,9 @@ def enhance_data(
                 generator = generator['generator']
 
         else:
-            generator = tf.keras.models.load_model('./models/best_generator.h5', compile=False)
+            print()
+            print(f'loading pre-trained {"wasserstein" if wasserstein else "dcgan"} generator')
+            generator = tf.keras.models.load_model(f'./models/best_{"wasserstein_" if wasserstein else ""}generator.h5', compile=False)
     
         number_samples = x_train.shape[0] * synthetic_share
         number_samples = int(number_samples)
@@ -94,7 +96,7 @@ def enhance_data(
 
 
 if __name__ == '__main__':
-    data = enhance_data(include_synthetic=True, real_share=0.5)
+    data = enhance_data(include_synthetic=True, wasserstein=True)
 
     for k, v in filter(lambda x: x[0] != 'pipeline', data.items()):
         
