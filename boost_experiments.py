@@ -23,13 +23,13 @@ models_tested = []
 data_rate = 1.
 
 # boost data progressively bigger to check results
-for data_boost_x in [.2, .3, .5, 1, 2]:
+for data_boost_x in [3, 5, 10, 20]:
 
     # progressive rate of the full training set
     for wasserstein in (True, False):
 
         # test each rate with boosted and non-boosted data
-        for boost in (True, False):
+        for boost in (True,):
 
             print()
             print('================')
@@ -66,5 +66,5 @@ for data_boost_x in [.2, .3, .5, 1, 2]:
 df = pd.DataFrame(models_tested)
 #df = df.drop_duplicates(subset=['share_real_data', 'boosted_data', 'data_boosted_x', 'boostint_type']).sort_values(['share_real_data', 'data_boosted_x'])
 
-with open('./boosting_results_whole_data_new_w2.csv', mode='w') as file:
+with open('./boosting_results_extreme.csv', mode='w') as file:
     df.to_csv(file)
