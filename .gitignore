@@ -19,4 +19,5 @@ tmp/
 logs/
 __pycache__/
 custom_logs/
+.idea/
 
