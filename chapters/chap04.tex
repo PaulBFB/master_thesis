@@ -95,6 +95,71 @@ Specifically \cite{buitinck2013api} suggest design lessons from scikit-learn, on
 
 In order to automatically create both generators and discriminators dynamically based on input shape (but with strong default settings which ideally do not have to be adjusted during experimentation at all) a small package was created which encapsulates the entire training loop.
 
-Key part here is the 
+Key part here is the training loop shown here:
 
+\newpage
 
+\lstinputlisting[language=Python, basicstyle=\tiny, caption=training loop, label=lst:train_loop]{./lst/train_generator_simplified.py}
+
+Listing~\ref{lst:train_loop} shows the python function which trains the network. Note that this function is \textbf{quite strongly simplified}, 
+the actual code used can be found at \url{https://github.com/PaulBFB/master_thesis/blob/main/train_generator.py} and would not likely be germane to the paper in its' entirety in any case.
+
+\pagebreak
+
+The above training loop was developed together with the network architecture and also produced the training graphics shown so far. Before it was used in experimentation however, adjusting its' loss function was tested.
+Specifically, as proposed by \cite{arjovsky2017wasserstein}, implementing the \ac{EM} as a loss function. 
+
+\fig{img/wasserstein_distance}{Wasserstein distance formula}{fig:wasserstein}{.5}
+
+As mentioned in the paper, this distance denotes the amount of work that is necessary to transform one distribution in to another, given an optimal transfer plan $\gamma$ which actually denotes \textbf{how} the work is done.
+Furthermore, and probably most importantly, the \ac{EM}, in contrast to other loss functions, is actually a function of the parameters $\theta$ of the distributions in question, i.e. it can express partial derivatives with respect to the single parameters!
+
+However, finding $\gamma$ is an optimization problem by itself, since it constitutes an \textbf{optimal} solution. As \cite{arjovsky2017wasserstein} mention therefore, it is approximated during training.
+A complete explication of the metric and its' approximation is out of scope of this paper.
+
+What this achieves in practice, is that it enables the discriminator to act as a \textbf{critic}, essentially reporting the distance that the generator has yet to move back during training, 
+which the generator then backpropagates to its' parameters. Thereby,the loss during training actually becomes more meaningfully readable.
+
+\pagebreak
+
+\cite{arjovsky2017wasserstein} recommend in their paper to clip the gradients reported back to the generator to be clipped. This led to substantial instability in the network, as can be seen here:
+
+\fig{img/wasserstein_3_layers_unstable}{Wasserstein GAN, 3 layers; left - losses of generator/discriminator right - the probabilities real/fake assigned by the discriminator}{fig:wasserstein_train}{.8}
+
+As can be seen clearly here, the equilibrium between the components is fairly unstable.
+\cite{gulrajani2017improved} pose that gradient clipping here actually leads to exploding and vanishing gradients, which seems to describe this result fairly well. 
+In the actual implementation therefore, the \textbf{Gradient Penalty} method they recommend is implemented, namely:
+
+\begin{itemize}
+	\item between real and fake examples in a batch, choose a random number sampled from a uniform distribution
+	\item interpolate between real and fake examples
+	\item calculate discriminator loss for all interpolated examples
+	\item add the gradient penalty based on the interpolations
+	\item remove batch normalization from the discriminator, since it shifts example gradients based on the entire batch
+\end{itemize}
+
+\pagebreak
+
+Therefore, the training loop was modified:
+
+\lstinputlisting[language=Python, basicstyle=\tiny, caption=training loop, label=lst:train_loop_wasserstein]{./lst/train_generator_wasserstein_simplified.py}
+
+Note that according to \cite{gulrajani2017improved} a $\lambda$ value of 10.0 worked well in all examples, which is what was used here. Again, this is a strongly truncated version of the code, the full version can be found at \url{https://github.com/PaulBFB/master_thesis/blob/main/train_wasserstein_generator.py} - this also contains modified functions to create a \textbf{discriminator} without BatchNormalization.
+
+The resulting training loop with the same layers and upsampling-downsampling symmetry between generator and discriminator resulted in this:
+
+\fig{img/wasserstein_2layers_50_epochs_promising}{Wasserstein GAN with gradient penalty, 2 layers; left - losses of generator/discriminator right - the probabilities real/fake assigned by the discriminator}{fig:wasserstein_gp_train}{.8}
+
+The equilibrium is quite tightly clustered around a probability of real and fake samples, which indicates that the discriminator and generator quickly reach a stable equilibrium 
+in which the discriminator is essentially forced to guess between real and fake examples.
+
+Both training loops, the basic DCGAN-adapted including BatchNormalization as well as the Wasserstein loop including penalty were preserved as separate modules. 
+In order to perform efficient experiments on entire datasets, again with sensible default values as recommended by \cite{buitinck2013api} those loops were wrapped into a python module, which enables:
+
+\begin{itemize}
+	\item accept preprocessed data in the form of numpy arrays, keep the original size or take a random sample from it (in order to experiment with even smaller data-subsets)
+	\item retrain either a Wasserstein-GP or DCGAN-adapted generator if the data was decreased (or the generator is forced to be trained)
+	\item create a number of samples based on the amount of original data and mix it into the original data
+\end{itemize}
+
+Especially important here is the second point, 
