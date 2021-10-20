@@ -234,10 +234,14 @@ All training data have then been used to fit a Wasserstein-GP generator and incr
 For clarity, the baseline for a "naive" prediction (that is, always simply predicting the most common class) is also shown, 
 in order to demonstrate whether any of the models exhibit predictive power beyond simply making the safest guess (i.e. a static model).
 
-\fig{img/titanic_all_models_boosting_experiments}{Comparing all model type performance, training data size boosted by 20\% with Wasserstein-GP generator}{fig:all_titanic}{1}
+\fig{img/titanic_all_models_boosting_experiments}{Comparing all model type performances, training data size boosted by 20\% with Wasserstein-GP generator}{fig:all_titanic}{1}
+
+\pagebreak
 
 The outcome here seems quite consistent, with no change in most models, deterioration of performance does not actually occur, which is promising. 
 Given the fact that this dataset is the one the Wasserstein-GP architecture was built on any further deductions seem spurious.
+
+\clearpage
 
 \subsection{Fitting the Generator and models on completely new data}
 
@@ -245,6 +249,43 @@ Two new datasets were selected as test sets for the architecture that was used:
 
 \subsubsection{The Wine Quality Dataset}
 
-Described by \cite{winequality}
+Described by \cite{winequality}. The dataset contains 6000+ observations of wine quality with 11 attributes and one binary target variable (quality).
+The attributes describe characteristics such as citric acid, chlorides, residual sugar, alcohol...
 
-\subsubsection{The Pima }
+Data preparation steps (using sklearn Pipelines):
+\begin{itemize}
+	\item target variable (quality) changed to binary (any quality over 6 is considered quality wine)
+	\item imputation of median value into columns with missing data ("fixed acidity", "pH", "volatile acidity", "sulphates", "citric acid", "residual sugar", "chlorides", number of missing values <10)
+	\item OneHotEncoding of categorical attribute "wine type"
+	\item MinMaxScaling of numerical attributes
+\end{itemize}
+
+Again, feature engineering of the data was deliberately excluded, just as with the titanic dataset. The steps taken are the bare minimum in order to enable machine learning at all by design.
+As a final note, the dataset used here is fairly unbalanced, roughly 80\% falling into the more common class (low quality wine). More on this in the discussion.
+
+Fitting the Wasserstein-GP model on this data, after preprocessing but without changing any of the default values (layers, number of epochs, architecture, loss function, dynamically building the models from the input shape) yielded the following training log:
+
+\fig{img/generator_wasserstein_wine_quality}{Wasserstein GAN with gradient penalty, 2 layers; left - losses of generator/discriminator right - the probabilities real/fake assigned by the discriminator}{fig:wasserstein_wine}{1}
+
+Note, details on the training module found here: \ref{subsection:training_loop}
+
+The result of all boosted models, again using default values, analogous to the comparison on the titanic dataset:
+
+\pagebreak
+
+\fig{img/winequality_boosting_experiments.jpg}{Comparing all model type performances, training data size boosted by 20\% with Wasserstein-GP generator}{fig:all_wine}{1}
+
+\pagebreak
+
+Now immediately apparent here seems the fact that most models barely exhibit any predictive power "out of the box" at all - which seems fair, given that there appears to be a rare class problem. 
+The \ac{nn} seems to be fairly robust against this, even gaining some predictive power from boosting the data. 
+Also, the models with the biggest (negative) impact in performance appear to be the most brittle models, Decision Tree and Naive Bayes. 
+Promisingly, the other models (while not gaining performance) appear to barely be affected at all, which seems to indicate that the generated data overall reflects the pattern in the training data.
+
+A more detailed analysis follows in the discussion.
+
+\clearpage
+
+\subsubsection{The Pima Indians Diabetes Dataset}
+
+Described by \cite{diabetes}
