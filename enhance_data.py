@@ -17,14 +17,10 @@ def enhance_data(
     generator_epochs: int=40,
     synthetic_share: float=0.2,
     wasserstein: bool=False,
-    real_share: float=1.0):
+    real_share: float=1.0) -> dict:
     
     assert real_share <= 1, 'can only take 100% of all real data'
 
-#    data = process_data()
-#    x_train_processed = data['x_train_processed']
-#    y_train = data['y_train']
-    
     if real_share != 1.0:
         # shorten real data
         number_real_samples = int(x_train.shape[0] * real_share)
@@ -86,11 +82,7 @@ def enhance_data(
     
     result = {
         'x_train_processed': x_train, 
-        'y_train': y_train
-#        'x_test': data['x_test'], 
-#        'x_test_processed': data['x_test_processed'], 
-#        'y_test': data['y_test']
-    }    
+        'y_train': y_train}    
     
     return result
 

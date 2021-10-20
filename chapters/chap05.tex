@@ -1,3 +1,43 @@
-\chapter{Results}
+\chapter{Data Boosting Experiment Results}
+
+\section{Experiments on the original dataset}
+
+The technical implementation that has been described in \ref{chapter:technical_application} has been entirely developed on the titanic dataset described by \cite{titanic}. 
+Therefore the first experiments were also done on this dataset.
+
+\subsection{Experiments with decreased amounts of data}
+
+Initially, the question posed had been whether or not increasing the amount of training data available using a \ac{GAN} could increase neural network performance.
+To examine this in detail, the data was systematically decreased in steps, and neural networks were then trained in parallel 
+
+\begin{itemize}
+	\item on the shrunken data 
+	\item on progressively boosted data
+\end{itemize}
+
+using parameter gridsearch. Gridsearch on neural networks is not yet well automated, therefore in order to do this, some helper modules were created:
+
+\subsubsection{A model creation function}
+
+To ensure that the models that were trained on the shrunken and boosted data partitions, these models had to be created using the same parameters.
+This was done with a simple model creation function that encapsulated all the necessary defaults;
+
+\lstinputlisting[language=Python, basicstyle=\tiny, caption=training loop, label=lst:model_creation_function]{./lst/model_generator_base.py}
+
+The module mostly creates a standard Sequential-class Keras model with minimal dynamic changes (such as BatchNormalization based on the number of layers).
+
+\pagebreak
+
+\subsubsection{Sklearn-style Gridsearch} 
+
+Using the KerasClassifier wrapper \url{https://www.tensorflow.org/api_docs/python/tf/keras/wrappers/scikit_learn/KerasClassifier}, a basic gridsearch function was created to be applied to all models.
+
+\lstinputlisting[language=Python, basicstyle=\tiny, caption=training loop, label=lst:gridsearch]{./lst/gridsearch_simplified.py}
+
+Note that both the gridsearch and model function are slightly simplified here, the original is again found at \url{https://github.com/PaulBFB/master_thesis/blob/main/nn_gridsearch.py}. 
+Also, to quickly apply the gridsearch function to progressively larger segments of the original data, a script \url{https://github.com/PaulBFB/master_thesis/blob/main/boost_experiments.py} was used; 
+which is nothing more than an iteration over the different sized data parts, applying gridsearch to all of them, in order to run in the background (or on remote machines, as some of these tests may take an exceedingly long time, based on the size of the grid and the hardware they run on).
+
+
 
 %\Blindtext[4][1]
