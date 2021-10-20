@@ -22,7 +22,6 @@ def create_generator_network(
     number_hidden_units_power: int = 5,
     hidden_activation_function: str = 'selu',
     use_dropout: bool = False,
-    use_batchnorm: bool = False,
     upsampling: bool = True,
     dropout_rate: float = 0.3,
     number_output_units: int = 12,
@@ -38,7 +37,7 @@ def create_generator_network(
         
         else:
             model.add(tf.keras.layers.Dense(2 ** number_hidden_units_power, use_bias=False))
-        
+                
         model.add(tf.keras.layers.Activation(hidden_activation_function))
         
         if use_dropout:
@@ -72,7 +71,7 @@ def create_discriminator_network(
         
         else:
             model.add(tf.keras.layers.Dense(2 ** number_hidden_units_power))
-            
+                    
         model.add(tf.keras.layers.Activation(hidden_activation_function))
         
         if use_dropout:

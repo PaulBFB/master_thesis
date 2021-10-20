@@ -63,8 +63,38 @@ What \textbf{did} make a difference was implementing the symmetry of upsampling 
 Furthermore, \cite{dcgan} propose other guidelines for building \acp{DCGAN} which proved helpful:
 
 \begin{itemize}
-	\item implementing BatchNormalization \cite{batchnorm}
-	\item 
+	\item implementing BatchNormalization in the generator and discriminator \cite{batchnorm}
+	\item using ReLU activation in all layers in the generator except for the output, which would use tanh
+	\item using LeakyReLU in all layers in the discriminator, except for the output which uses sigmoid
 \end{itemize}
 
+After implementing these guidelines, using Binary Categorical Crossentropy loss, the generator and discriminator actually converged fairly well already, as seen in \ref{fig:gan5}
+
+\fig{img/best_dense_generator}{Dense GAN, 2 layers, 32 neurons/layer; left - losses of generator/discriminator right - the probabilities real/fake assigned by the discriminator}{fig:gan5}{.8}
+
+Importantly, in this architecture the \textbf{generator} model starts with a dense layer containing 32 neurons, which doubles in every layer (once in this case, although this is a variable parameter). The final dense hidden layer is then downsampled again to reflect the original data - like this:
+
+\lstinputlisting[language=Python, basicstyle=\tiny, caption=generator network, label=lst:generator]{./lst/create_generator_network.py}
+Listing~\ref{lst:generator} shows the python function which creates the generator network.
+
 \pagebreak 
+
+The discriminator implements the exact mirror image of this pattern, beginning with the same amount of neurons after the input layer and downsampling by half each layer; 
+
+\lstinputlisting[language=Python, basicstyle=\tiny, caption=discriminator network, label=lst:discriminator]{./lst/create_discriminator_network.py}
+Listing~\ref{lst:discriminator} shows the python function which creates the discriminator network.
+
+\pagebreak 
+
+\subsection{Network Training Implementation}
+
+With the basic architecture for the Network in place, the functions are put together into a custom training loop. While there are multiple approaches to training \acp{GAN}, starting with the seminal paper by \cite{goodfellow2014generative}, such as training the discriminator and generator in an epoch separately, here a custom training loop with separate optimizers was chosen from the beginning, in order to accommodate more exotic loss functions.
+
+Since a number of experiments on the efficacy of the generated data has to be done, the entire \ac{GAN} system was set up to be set up with sensible defaults, dynamically adapting to 1D datasets. 
+Specifically \cite{buitinck2013api} suggest design lessons from scikit-learn, one of which is sensible defaults.
+
+In order to automatically create both generators and discriminators dynamically based on input shape (but with strong default settings which ideally do not have to be adjusted during experimentation at all) a small package was created which encapsulates the entire training loop.
+
+Key part here is the 
+
+

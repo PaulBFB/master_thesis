@@ -20,9 +20,10 @@ else:
 def create_generator_network(
     number_hidden_layers: int = 1,
     number_hidden_units_power: int = 5,
-    hidden_activation_function: str = 'LeakyReLU',
-    use_dropout: bool = True,
+    hidden_activation_function: str = 'ReLU',
+    use_dropout: bool = False,
     upsampling: bool = True,
+    use_batchnorm: bool = True,
     dropout_rate: float = 0.3,
     number_output_units: int = 12,
     output_activation_function: str = 'tanh') -> tf.keras.Model:
@@ -36,6 +37,11 @@ def create_generator_network(
         
         else:
             model.add(tf.keras.layers.Dense(2 ** number_hidden_units_power, use_bias=False))
+        
+        if use_batchnorm:
+            model.add(tf.keras.layers.BatchNormalization())
+        else:
+            pass
         
         model.add(tf.keras.layers.Activation(hidden_activation_function))
         
@@ -51,11 +57,12 @@ def create_generator_network(
 
 
 def create_discriminator_network(
-    number_hidden_layers: int = 1,
+    number_hidden_layers: int = 2,
     number_hidden_units_power: int = 5,
     hidden_activation_function: str = 'LeakyReLU',
     use_dropout: bool = True,
     upsampling: bool = True,
+    use_batchnorm: bool = True,
     dropout_rate: float = 0.3,
     number_output_units: int = 1) -> tf.keras.Model:
 
@@ -70,6 +77,11 @@ def create_discriminator_network(
         else:
             model.add(tf.keras.layers.Dense(2 ** number_hidden_units_power))
         
+        if use_batchnorm:
+            model.add(tf.keras.layers.BatchNormalization())
+        else:
+            pass
+            
         model.add(tf.keras.layers.Activation(hidden_activation_function))
         
         if use_dropout:

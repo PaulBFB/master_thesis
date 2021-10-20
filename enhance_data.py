@@ -96,7 +96,7 @@ def enhance_data(
 
 
 if __name__ == '__main__':
-    data = enhance_data(include_synthetic=True, wasserstein=True)
+    data = enhance_data(include_synthetic=True, wasserstein=False, force_generator=True)
 
     for k, v in filter(lambda x: x[0] != 'pipeline', data.items()):
         
