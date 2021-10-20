@@ -3,7 +3,16 @@
 \section{Experiments on the original dataset}
 
 The technical implementation that has been described in \ref{chapter:technical_application} has been entirely developed on the titanic dataset described by \cite{titanic}. 
-Therefore the first experiments were also done on this dataset.
+Therefore the first experiments were also performed on this dataset.
+
+It is important to \textbf{note} here, that due to the fact that this dataset is extremely widely used, there have been significantly higher performances in accuracy achieved.
+These performances are mostly due to extensive feature engineering, since some of the features of the dataset contain implicit information. 
+Take for example the cabin number, which contains information on where the passenger was staying, which would logically have bearing on their odds of survival, if it was mapped to the cabin's
+distance from the deck and/or lifeboats.
+
+This is, however, explicitly \textbf{not} the purpose of this experiment, a notebook that does this fairly well can be found here: \url{https://www.kaggle.com/vinothan/titanic-model-with-90-accuracy} 
+
+The purpose of this experiment however, is to see if gains in performance can be achieved by simply applying larger compute power to the dataset in an agnostic fashio (more details in the discussion).
 
 \subsection{Experiments with decreased amounts of data}
 
@@ -17,6 +26,8 @@ To examine this in detail, the data was systematically decreased in steps, and n
 
 using parameter gridsearch. Gridsearch on neural networks is not yet well automated, therefore in order to do this, some helper modules were created:
 
+\clearpage
+
 \subsubsection{A model creation function}
 
 To ensure that the models that were trained on the shrunken and boosted data partitions, these models had to be created using the same parameters.
@@ -26,7 +37,7 @@ This was done with a simple model creation function that encapsulated all the ne
 
 The module mostly creates a standard Sequential-class Keras model with minimal dynamic changes (such as BatchNormalization based on the number of layers).
 
-\pagebreak
+\clearpage
 
 \subsubsection{Sklearn-style Gridsearch} 
 
@@ -37,6 +48,58 @@ Using the KerasClassifier wrapper \url{https://www.tensorflow.org/api_docs/pytho
 Note that both the gridsearch and model function are slightly simplified here, the original is again found at \url{https://github.com/PaulBFB/master_thesis/blob/main/nn_gridsearch.py}. 
 Also, to quickly apply the gridsearch function to progressively larger segments of the original data, a script \url{https://github.com/PaulBFB/master_thesis/blob/main/boost_experiments.py} was used; 
 which is nothing more than an iteration over the different sized data parts, applying gridsearch to all of them, in order to run in the background (or on remote machines, as some of these tests may take an exceedingly long time, based on the size of the grid and the hardware they run on).
+
+\clearpage
+
+As for the results with decreased data, the following steps were automatically performed: 
+
+\begin{itemize}
+	\item shuffle the data randomly, take a small subset from it
+	\item train a generator on it, either a Wasserstein-GP or DCGAN-adapted style generator
+	\item perform gridsearch on it, from the base model creation function
+	\item record the results
+\end{itemize}
+
+The resulting graphic is always formatted in the same way; height of the bar denotes accuracy of the best model, color of the bar denotes the type of boosting that was applied, 
+and the bar position on the x-axis denotes by how much the data was boosted. 
+
+Boosting factor ranges are (somewhat arbitrarily chosen, after multiple experiments):
+
+\begin{itemize}
+	\item +20\%
+	\item +30\%
+	\item +50\%
+	\item +200\%
+	
+\end{itemize}
+
+For clarity, the accuracy of the unboosted data is marked by a line with its' exact value, to clearly denote performance differences.
+
+\clearpage
+
+\subsubsection{Data Size 0.3 - 0.8}
+
+\fig{img/titanic_boosting_experiments_part_1}{Experiment with data sizes 30\%, 40\% of original data}{fig:ex1}{1}
+\fig{img/titanic_boosting_experiments_part_2}{Experiment with data sizes 50\%, 60\% of original data}{fig:ex2}{1}
+\fig{img/titanic_boosting_experiments_part_3}{Experiment with data sizes 70\%, 80\% of original data}{fig:ex3}{1}
+
+\pagebreak
+
+As can be seen quite plainly, while at some sizes there appears to be a (very very slight) but static gain in performance, 
+the variation is well within the range of simple random fluctuations due to the random grid search performed on the networks.
+
+\clearpage
+
+\subsubsection{Data Size 1}
+
+Performing the same test on the entire data:
+
+\fig{img/titanic_boosting_experiments_part_4}{Experiment with data size 100\% of original data}{fig:ex4}{1}
+
+appears to yield a performance gain, which is not significant either, but seems more consistent.
+
+\subsubsection{Larger Data Sizes}
+
 
 
 
