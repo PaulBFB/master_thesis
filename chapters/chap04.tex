@@ -1,3 +1,30 @@
-\chapter{Results}
+\chapter{Technical Application}
 
-%\Blindtext[4][1]
+\section{Theoretical applicability}
+
+In their landmark paper in 2014, \cite{goodfellow2014generative} demonstrated the viability of \acp{GAN} on creating image data on the classic MNIST dataset (\cite{mnist}), by generating - among other things - convincing handwritten digits.
+As mentioned in \ref{enhace_imagedata}, some of the architecture specifics and evaluation are quite specific to image data in that 
+
+\begin{itemize}
+	\item the data contains a notion of locality, as neighboring data points (i.e. pixels) are strongly dependent
+	\item dimensionality of the generated data is higher than the \textbf{latent space} 
+	\item results lend themselves to visual quality inspection by humans (it is easy to see even degrees of quality between different architectures)
+\end{itemize}
+
+specifically the former points are strongly relevant to \ac{GAN} architecture, as will become obvious shortly.
+
+\section{Technical implementation steps}
+
+Since the goal of this paper is to evaluate whether or not \ac{GAN} may be used to not only generate more data of a small non-image dataset (which is fairly trivial) but whether or not this data actually serves to \textbf{boost model performance} of models trained on the resulting data, a small, well-understood standard dataset was used to develop the initial architecture; \cite{titanic}.
+Specifically, the iconic titanic dataset constitutes a binary classification problem, which facilitates quick model evaluation and ameliorates some of the more typical difficulties of training \acp{GAN} - see below.
+
+The first attempts to create a basic, dense \ac{GAN} actually failed to converge for a significant number of experiments with different amounts of layers, neurons and size of the latent space. Somewhat unsurprisingly, achieving the classic Nash Equilibrium between discriminator and generator was fairly difficult and the initial models all proved unstable. \acp{GAN} provide several unique challenges:
+
+\begin{itemize}
+	\item mode collapse \cite{mode_collapse}
+	\item oscillation \cite{gan_continual_learning}
+	\item catastrophic forgetting \cite{catastrophic_forgetting}
+\end{itemize}
+
+Mode collapse is especially relevant in a task like MNIST, where there are multiple classes to be generated, and the generator becomes increasingly proficient in generating one class explicitly - thankfully, this is less of an issue in a binary classification task.
+
