@@ -34,17 +34,37 @@ The other failure modes, however \textbf{did} all make an appearance at one time
 
 \fig{img/gan_insufficient_power}{Initial simple dense GAN - left side shows the losses of generator and discriminator, right side shows the probabilities assigned to real and fake samples by the discriminator}{fig:gan1}{.8}
 
+\pagebreak 
+
 Further experiments, with increased numbers of layers and neurons, produced first a very textbook oscillation pattern, shown in \ref{fig:gan2}:
  
 \fig{img/gan_oscillation_2}{Dense GAN, 3 layers, 64 neurons/layer; left - losses of generator/discriminator right - the probabilities real/fake assigned by the discriminator}{fig:gan2}{.8}
 
 \pagebreak 
+
 Finally, it has to be stressed that finding the ideal combination learning rates, dropout in the discriminator and number of training epochs, is really quite difficult, especially since there appears no good substitute to visually examining the pattern that is produced by a given architecture and then to adjust. A process that has to be iterated for quite a while, and is fairly manual and heavy on trial-and-error.
  
 Ultimately, a a promising architecture appeared to be dense networks with 3 layers each, but a higher number of neurons, and still these networks diverged rather quickly shown here \ref{fig:gan3}:
  
 \fig{img/gan_divergence_3_layers_128_units.png}{Dense GAN, 3 layers, 128 neurons/layer, reduced learning rate and dropout in discriminator - losses of generator/discriminator right - the probabilities real/fake assigned by the discriminator}{fig:gan3}{.8}
 
+Unfortunately, from here on out simply optimizing the number of neurons and learning rate and learning rate scheduling was not enough to mitigate this divergence. Although implementing the popular 1Cycle learning rate decay (described by \cite{smith_1cycle}) did ameliorate the issue somewhat, it did not fix the network.
+
+\pagebreak
+
 What ultimately made the difference is an adaptation of the architecture proposed by \cite{dcgan}. The architecture proposed here for image generation constitutes a \textbf{symmetrical} upsampling from the latent space in the generator (in case of images, a \textbf{transposed convolution}) and downsampling in the discriminator. As shown by \cite{oversampling_gan} here:
 
+\fig{img/convolutional_architecture.png}{Architecture of Discriminator and Generator}{fig:gan4}{.8}
 
+Initially, implementing convolution actually deteriorated performance and completely prevented convergence of the network, a probable explanation would be the fact that convolution and transposed convolution not only upsample the latent space but more fundamentally relate to locality in the data; i.e. multiple convolutional layers over a picture effectively create hierarchical feature extraction. A paper that illustrates the mechanics of this fairly well was \cite{convolution_arithmetic}. Effectively, these convolutions would initially find small features in images, subsequent convolutions would assemble these features into feature maps and their presence would indicate the presence of objects in an image. The entire concept of strides and adjacent data points however, does not make sense in the concept of a dataset where an observation consists of a feature vector, in which the order does not convey any information. While 1D convolutions are quite widely used in sequence and time-series processing - which are quite comfortably out of scope of this paper - they fundamentally seem unsuited to a dataset which would not lose any information if the order of its' attributes was permutated.
+
+What \textbf{did} make a difference was implementing the symmetry of upsampling and condensing in the generator and discriminator.
+
+Furthermore, \cite{dcgan} propose other guidelines for building \acp{DCGAN} which proved helpful:
+
+\begin{itemize}
+	\item implementing BatchNormalization \cite{batchnorm}
+	\item 
+\end{itemize}
+
+\pagebreak 
