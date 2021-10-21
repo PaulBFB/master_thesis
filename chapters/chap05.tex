@@ -410,7 +410,7 @@ this drift will be greatly magnified.
 
 Taking a look at the training log (taken from TensorBoard) seems to confirm this:
 
-\fig{img/epoch_accuracy.png}{model accuracy history during training; data entirely replaced by synthetic data of same size with Wasserstein-GP generator}{fig:training_logs_tensorboard}{1}
+\fig{img/epoch_accuracy_n.png}{model accuracy history during training; data entirely replaced by synthetic data of same size with Wasserstein-GP generator}{fig:training_logs_tensorboard}{1}
 
 So it would seem from this training log, that the accuracy recorded during training quickly increases above 90\%. As a side note, with the titanic dataset the generalization error, that is the difference between validation accuracy calculated on the withheld subset of training data in each epoch and accuracy on the test set was always around 3-4 percentage points.
 

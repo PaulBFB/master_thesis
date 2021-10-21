@@ -94,16 +94,73 @@ The fact remains, that on the original dataset, with a large amount of manual \a
 
 \section{Conclusions from application to other datasets}
 
+The entire approach of selecting a mini-battery of models using default parameters and applying them to datasets without any feature engineering with and without boosted data seemed essential after the amount of time, architecture optimization (of the generator) and processing power (on finding the ideal model architecture) that had been applied to the original dataset.
+
+After all of this, there was simply no way that information leakage (and by extension, overfitting on the test data) had not occurred, \textbf{especially} the dataset in question was small by design and the model applied to it had a fairly outsized amount of representational power. While this was fairly intentional since the explicit goal was to evaluate whether using more complex models (i.e. \acp{nn}) on such datasets by increasing their size.
+
+Thankfully, a large and diverse amount of machine learning datasets are now publicly available, and the additional work of selecting new datasets as a "blank canvas" to perform a sanity check on is tractable. 
+
+As a side note, before the explosion of machine learning popularity and the resulting immense increase in availability of resources online this would not have been possible at all, simply due to the fact that sufficiently analogous datasets were not to be found.
+
+In terms of applying the modules that were developed on new data (without any configuration) the result could not have been more promising. 
+
+The generator logs that are included (for wine classification here \ref{fig:wasserstein_wine} and diabetes here \ref{fig:wasserstein_diabetes}) were genuinely produced with the finished data enhancement module completely out of the box. 
+
+Especially after the initial difficulties of creating any architecture that would converge on vector data at all, and the resulting effort involved in creating the training loop and adding functionality for Wasserstein-GP style generator training, to say this was promising would be an understatement.
+
+The training logs for new data did show some instability though, and from the detailed results of the standard models applied to unchanged and boosted data of these datasets, some have become quite clear:
+
+\begin{itemize}
+	\item the degree to which the dataset is \textbf{analogous} to the original dataset makes a significant difference. Specifically the fact that the wine quality dataset has a class balance of roughly 1-4 in contrast to the titanic and diabetes datasets with roughly 1-2 seemed to make a large impace
+	\item any data from an automatic \ac{GAN} architecture that is not well tuned to the specific training data will immediately degrade performance
+\end{itemize} 
+
+Concerning the second part, I \textbf{suspect} that this has to do specifically with the ratio of the size of the latent space to the attributes of the training data and the starting number of neurons (before the first upsampling in the generator).
+
+This is purely speculation at this point, but for the initial architecture convergence was completely impossible until the latent space was set at a standard dimension of (8,). The titanic dataset has 9 attributes and the initial layer of the generator has 32 neurons by default. The fact that there is a good degree of symmetry here may be a contributing factor.
+
+\label{note:hypothesis}
+
+This hypothesis would be difficult to confirm though, without finding a large number of similar and dissimilar datasets and then evaluating the approach on them. Even then, the effect might be too small to completely confirm or deny it with confidence.
+
 \pagebreak
 
 \section{Conclusions from complete data replacement}
 
-\cite{ares_utility}
+As discussed, there are plenty of more proven methods of synthetic data generation, some of which offer model performance which is fairly consistent with the original data already, as discussed here \cite{ares_utility}.
+
+While using this method of data generation to create anonymous data was decidedly not the goal from the start, training models on completely synthetic data as mentioned in the paper offers a useful benchmark whether or not the generated data is actually meaningfully reflective of the original data at all. 
+
+If we consider the extraction of a model out of a training data set as an efficient representation of the information contained in the data with regard to the target variable, the degradation of the predictive power of the same model with respect to the target variable on synthetic data can be constructed as a useful indicator whether or not the actual meaning of the data was preserved.
+
+Also, and even more acutely relevant, after performing gridsearch on the original data and training models on synthetically increased datasets other than titanic, it was still unclear whether the models trained on such synthetic data retained some predictive power simply due to the degree to which they managed to identify (and ignore) the synthetic data and thereby effectively acting in part like a pseudo-discriminator.
+
+Concerning the specific results of completely synthetic data model performance, I suspect that this is likely - especially considering the models that preserved the most predictive power with partly synthetic data were random forest models, which are notoriously robust (due to them being ensemble models).
+
+Perhaps most interestingly here, all things considered, is the fact that the diabetes dataset experiences the smallest relative loss of predictive power (here: \ref{fig:all_replaced_diabetes}), in relative terms, when data has been completely replaced by synthetic data. Naively, it would make more sense to see the dataset the architecture was originally fit on to experience the smallest loss (actual loss seen here: \ref{fig:replacing_titanic}).
 
 \pagebreak
 
 \section{Final Thoughts}
 
-the general approach... fit the gan to the dataset better... architecture search... no free lunch... automatic search? inference?
+Ultimately, some parts of the approach taken show promise and may even be reused, specifically:
+
+\begin{itemize}
+	\item the \ac{GAN} architecture pattern using up-downsampling
+	\item the Wasserstein-GP training loop
+	\item the \ac{nn} gridsearch
+\end{itemize}
+
+However, the key issue seems to be the fit between the exact \ac{GAN} architecture and the specific dataset.
+
+The fact that \ac{GAN} training is not only notoriously difficult but also difficult to automate and the quality of vector data generated by them may not be feasible to be automatically assessed, completely automating this approach using the guidelines proposed by \cite{buitinck2013api} in scikit-learn is probably not feasible.
+
+The purpose of this paper was mainly to show the trade-off between data scientist time investment (in feature engineering, data enrichment and - worst case - even data labeling) and increased processing power; i.e. using outsized representational power and computation to draw increased meaning from an otherwise unchanged dataset, as it is done in approaches like \ac{boosting}.
+
+What appears to be the case here is that the time investment using this approach would - in the ideal case - mainly shift from feature engineering to \ac{GAN} architecture search.
+
+In cases where only a small amount of data is available and increasing the training dataset it otherwise impossible \textbf{and} feature engineering and data enrichment has been completely exhausted, the approach may hold some promise. Whether or not the ideal architecture can be found dynamically as mentioned here \ref{note:hypothesis} is an open question.
+
+As for now, there appears to be no free lunch available.
 
 \pagebreak
