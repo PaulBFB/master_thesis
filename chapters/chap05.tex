@@ -164,7 +164,7 @@ The relevant documentation is linked in all sections.
 
 \clearpage
 
-\subsection{Logistic Regression}
+\subsubsection{Logistic Regression}
 
 Logistic Regression classification, based on scikit-learn. 
 using a liblinear solver as described by \cite{fan2008liblinear}.
@@ -177,7 +177,7 @@ The regularization that was applied (by scikit-learn default) was $\ell_2$ regul
 
 Documentation can be found here: \url{https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html},
 
-\subsection{Support Vector Machine Classification}
+\subsubsection{Support Vector Machine Classification}
 
 \ac{SVC} attempts to formulate a decision boundary around training instances. The goal is to formulate a hyperplane, n-1 dimensional space (where n is the number of attributes in the training data) 
 which maximizes the distance to the nearest training instance. 
@@ -188,7 +188,7 @@ Documentation found here: \url{https://scikit-learn.org/stable/modules/generated
  
 \clearpage
 
-\subsection{Random Forest \& Decision Tree Classification}
+\subsubsection{Random Forest \& Decision Tree Classification}
 
 Decision trees, first described by \cite{quinlan1986induction}, attempt to iteratively bisect the data in a fashion which increases the resulting halves in terms of their "purity".
 Purity in this case is described as how "unbalanced" the classes of the target variable are in the resulting halves, the more unbalanced the better (usually tracked in terms of gini impurity or entropy). 
@@ -205,14 +205,14 @@ Documentation can be found here: \url{https://scikit-learn.org/stable/modules/ge
 
 \clearpage
 
-\subsection{K-Nearest-Neighbor Classification}
+\subsubsection{K-Nearest-Neighbor Classification}
 
 \ac{KNN} calculates all distances between training observations based on their attributes in n-dimensional space (where n is the number of attributes in the training data) 
 and classifies each observation by its' K nearest other observations. The default value of neighbors that is used here is 3 (in order to be less prone to overfitting the training data).
 
 Documentation can be found here: \url{https://scikit-learn.org/stable/modules/generated/sklearn.neighbors.KNeighborsClassifier.html}
 
-\subsection{Gaussian Naive Bayes Classification}
+\subsubsection{Gaussian Naive Bayes Classification}
 
 The Naive Bayes Algorithm estimates the probability of a given outcome (1/0 in this case) given the value of a given attribute; as per Bayes' Theorem of conditional probability.
 Here, the key assumption is that all attributes are normally distributed (hence gaussian) 
@@ -243,11 +243,11 @@ Given the fact that this dataset is the one the Wasserstein-GP architecture was 
 
 \clearpage
 
-\subsection{Fitting the Generator and models on completely new data}
+\section{Fitting the Generator and models on completely new data}
 
 Two new datasets were selected as test sets for the architecture that was used:
 
-\subsubsection{The Wine Quality Dataset}
+\subsection{The Wine Quality Dataset}
 
 Described by \cite{winequality}. The dataset contains 6000+ observations of wine quality with 11 attributes and one binary target variable (quality).
 The attributes describe characteristics such as citric acid, chlorides, residual sugar, alcohol...
@@ -292,7 +292,7 @@ A more detailed analysis follows in the discussion.
 
 \clearpage
 
-\subsubsection{The Pima Indians Diabetes Dataset}
+\subsection{The Pima Indians Diabetes Dataset}
 
 A dataset originally created by the National Institute of Diabetes and Digestive and Kidney Diseases in order to classify diabetes
 in female patients. 
@@ -334,4 +334,55 @@ The Wasserstein-GP model was fit automatically on the data, after preprocessing 
 
 Once again, even with the data being quite similar to the original dataset the architecture was built on, the components seem to establish an acceptable equilibrium quickly, which also appears to be fairly stable. With more details in the discussion, this seems to point towards the architecture being fundamentally sensible.
 
-After training the generator agnostically i.e. out of the box only using the default values, the training data was boosted by 20\% and the standard models were trained on the data for comparison.
+After training the generator agnostically i.e. out of the box only using the default values, the training data was boosted by 20\% and the standard models were trained on the data for comparison:
+
+\pagebreak
+
+\fig{img/diabetes_boosting_experiments}{Comparing all model type performances, training data size boosted by 20\% with Wasserstein-GP generator}{fig:all_diabetes}{1}
+
+\pagebreak
+
+The impact of inserting synthetic data seems to be less pronounced than on the performance of classifiers in the wine quality dataset (\ref{fig:all_wine}) which may be due to the structural similarities between this dataset and the titanic dataset (specifically its' class balance).
+A detailed discussion in the final chapter.
+
+\clearpage
+
+\section{Replacing Training Data with Synthetic Data}
+
+Finally, since it seems pertinent, it was tested what the effect of \textbf{entirely replacing the training data} would have on the performance of models trained on entirely synthetic data.
+
+To test this, the following steps were performed on the titanic, diabetes and wine datasets: 
+
+\begin{itemize}
+	\item splitting the data into training and test data (20\% withheld)
+	\item fitting a a Wasserstein-GP \ac{GAN} on the training data
+	\item completely discard the real training data and replacing it with synthetic data of identical size
+\end{itemize}
+
+\textbf{Note} that both the attributes of the data as well as the target attribute was replaced with synthetic data.
+
+\clearpage
+
+\subsection{Models on purely synthetic Titanic Data}
+
+\pagebreak
+
+\fig{img/titanic_replacing_experiments}{Comparing all model type performances, training data entirely replaced by synthetic data of same size with Wasserstein-GP generator}{fig:replacing_titanic}{.6}
+
+
+\subsection{Models on purely synthetic Wine Data}
+
+\pagebreak
+
+\fig{img/winequality_replacing_experiments}{Comparing all model type performances, training data entirely replaced by synthetic data of same size with Wasserstein-GP generator}{fig:replacing_wine}{.6}
+
+\pagebreak
+
+\subsection{Models on purely synthetic Diabetes Data}
+
+\pagebreak
+
+\fig{img/diabetes_replacing_experiments}{Comparing all model type performances, training data entirely replaced by synthetic data of same size with Wasserstein-GP generator}{fig:replacing_diabetes}{.6}
+
+\pagebreak
+
