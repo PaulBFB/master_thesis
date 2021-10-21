@@ -17,6 +17,7 @@ def enhance_data(
     generator_epochs: int=40,
     synthetic_share: float=0.2,
     wasserstein: bool=False,
+    replace_real_data: bool=False,
     real_share: float=1.0) -> dict:
     
     assert real_share <= 1, 'can only take 100% of all real data'
@@ -66,16 +67,21 @@ def enhance_data(
         synthetic_data = generate_data(model=generator, 
                                        number_samples=number_samples)
         
-        # stack data together
-        x_train = np.vstack((x_train, synthetic_data['x_train']))
-        y_train = np.concatenate((y_train, synthetic_data['y_train']))
-        
-        # create random index permutation to shuffle both arrays randomly, but preserve label match
-        permutation_index = np.random.permutation(x_train.shape[0])
-        
-        # overwrite with shuffled arrays along the index
-        x_train = x_train.take(permutation_index, axis=0)
-        y_train = y_train.take(permutation_index, axis=0)
+        if replace_real_data:
+            x_train = synthetic_data['x_train']
+            y_train = synthetic_data['y_train']
+            
+        else:
+            # stack data together
+            x_train = np.vstack((x_train, synthetic_data['x_train']))
+            y_train = np.concatenate((y_train, synthetic_data['y_train']))
+            
+            # create random index permutation to shuffle both arrays randomly, but preserve label match
+            permutation_index = np.random.permutation(x_train.shape[0])
+            
+            # overwrite with shuffled arrays along the index
+            x_train = x_train.take(permutation_index, axis=0)
+            y_train = y_train.take(permutation_index, axis=0)
     
     else:
         pass
@@ -88,7 +94,11 @@ def enhance_data(
 
 
 if __name__ == '__main__':
-    data = enhance_data(include_synthetic=True, wasserstein=False, force_generator=True)
+    data = enhance_data(
+        include_synthetic=True,
+        wasserstein=False, 
+        force_generator=True,
+        replace_real_data=True)
 
     for k, v in filter(lambda x: x[0] != 'pipeline', data.items()):
         
