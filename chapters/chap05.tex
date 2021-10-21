@@ -267,6 +267,10 @@ Fitting the Wasserstein-GP model on this data, after preprocessing but without c
 
 \fig{img/generator_wasserstein_wine_quality}{Wasserstein GAN with gradient penalty, 2 layers; left - losses of generator/discriminator right - the probabilities real/fake assigned by the discriminator}{fig:wasserstein_wine}{1}
 
+\pagebreak
+
+Encouragingly, the loss for both modules seems to decrease in much the same way as on the original dataset, and the equilibrium denoted by real and generated data clustering together, each at around 0.5 probability by the discriminator seems to hold fairly stable as well, even though the dataset has different size and shape from the original.
+
 Note, details on the training module found here: \ref{subsection:training_loop}
 
 The result of all boosted models, again using default values, analogous to the comparison on the titanic dataset:
@@ -276,6 +280,8 @@ The result of all boosted models, again using default values, analogous to the c
 \fig{img/winequality_boosting_experiments.jpg}{Comparing all model type performances, training data size boosted by 20\% with Wasserstein-GP generator}{fig:all_wine}{1}
 
 \pagebreak
+
+After the generator was trained on the entire training data (withholding a test set completely to avoid information leakage), in the interest of consistency with the original model, the training data was boosted by 20\%.
 
 Now immediately apparent here seems the fact that most models barely exhibit any predictive power "out of the box" at all - which seems fair, given that there appears to be a rare class problem. 
 The \ac{nn} seems to be fairly robust against this, even gaining some predictive power from boosting the data. 
@@ -288,4 +294,44 @@ A more detailed analysis follows in the discussion.
 
 \subsubsection{The Pima Indians Diabetes Dataset}
 
-Described by \cite{diabetes}
+A dataset originally created by the National Institute of Diabetes and Digestive and Kidney Diseases in order to classify diabetes
+in female patients. 
+
+The dataset includes 8 diagnostic markers:
+\begin{itemize}
+	\item Pregnancies
+	\item Glucose
+	\item BloodPressure
+	\item SkinThickness
+	\item Insulin
+	\item BMI 
+	\item DiabetesPedigreeFunction
+	\item Age	
+\end{itemize}
+
+As well as an outcome column.
+
+Initially described by \cite{diabetes}, classifying diabetes using neural networks.
+
+The dataset is fairly balanced, with around 65\% of outcomes in the more common class, making it fairly similar to the titanic dataset in this regard (63\%, for comparison).
+
+Data preparation steps (using sklearn Pipelines):
+\begin{itemize}
+	\item Imputation of missing values
+	\item smoothing of extreme outliers (.05 - .95 percentiles)
+	\item MinMaxScaling of numerical attributes
+\end{itemize}
+
+Again, extensive preprocessing or feature engineering was excluded. The steps taken are the bare minimum in order to enable machine learning at all by design.
+
+\clearpage
+
+The Wasserstein-GP model was fit automatically on the data, after preprocessing but without changing any of the default values (layers, number of epochs, architecture, loss function, dynamically building the models from the input shape) yielded the following training log:
+
+\fig{img/generator_training_diabetes_n}{Wasserstein GAN with gradient penalty, 2 layers; left - losses of generator/discriminator right - the probabilities real/fake assigned by the discriminator}{fig:wasserstein_diabetes}{1}
+
+\pagebreak
+
+Once again, even with the data being quite similar to the original dataset the architecture was built on, the components seem to establish an acceptable equilibrium quickly, which also appears to be fairly stable. With more details in the discussion, this seems to point towards the architecture being fundamentally sensible.
+
+After training the generator agnostically i.e. out of the box only using the default values, the training data was boosted by 20\% and the standard models were trained on the data for comparison.
