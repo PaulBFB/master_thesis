@@ -43,7 +43,7 @@ The module mostly creates a standard Sequential-class Keras model with minimal d
 
 Using the KerasClassifier wrapper \url{https://www.tensorflow.org/api_docs/python/tf/keras/wrappers/scikit_learn/KerasClassifier}, a basic gridsearch function was created to be applied to all models.
 
-\lstinputlisting[language=Python, basicstyle=\tiny, caption=training loop, label=lst:gridsearch]{./lst/gridsearch_simplified.py}
+\lstinputlisting[language=Python, basicstyle=\tiny, caption=gridsearch simplified, label=lst:gridsearch]{./lst/gridsearch_simplified.py}
 
 Note that both the gridsearch and model function are slightly simplified here, the original is again found at \url{https://github.com/PaulBFB/master_thesis/blob/main/nn_gridsearch.py}. 
 Also, to quickly apply the gridsearch function to progressively larger segments of the original data, a script \url{https://github.com/PaulBFB/master_thesis/blob/main/boost_experiments.py} was used; 
