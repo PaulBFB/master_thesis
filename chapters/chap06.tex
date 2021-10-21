@@ -37,6 +37,7 @@ Successfully creating a \ac{GAN} system without any additional parameters that a
 		\item neurons
 		\item learning rate / learning rate scheduling
 		\item activation function(s)
+		\item dimension and type (uniform versus normal) of the latent space
 		\item number of epochs
 	\end{itemize} has simply not been found yet, or if there is no such architecture for just this case
 	\item whether or not the network has established a semi-stable equilibrium yet is difficult to check for automatically (at least, no universal method has been established in the literature)
@@ -65,6 +66,30 @@ This is also the reason it was not actually applied to the new datasets, as it w
 
 \section{Conclusions from shrinking and boosting the original dataset}
 
+In this section, the approach that was chosen actually showed the most promise. 
+
+Interestingly enough, model performance never degraded at all. While it was strange to see that the model hardly suffered from decreased data size at all, the results on all datasets here seem to indicate that this \ac{GAN} architecture is aligned to the specific dataset to such a degree as to not degrade model performance, when it is used to augment either subsets of the data or the entire training data - in which case it may be even beneficial.
+
+A \textbf{strong} caveat here is, again, the fact that this data was used to create the architecture so information leakage can hardly be avoided.
+
+It is also possible that models trained on a boosted dataset here learned to ignore the boosted data by identifying patterns created by the generator here. 
+
+This is only speculation, but an indicator seems to be the fact that in experiments with significantly larger data boosts (up to +20x, see \ref{fig:ex5}) model performance did not decrease, but with complete replacement (see \ref{fig:replacing_titanic}) model performance did in fact decrease. 
+
+Although as noted in the section on replacement conclusions, part of the effect, spefifically on \acp{nn} is most likely due to the nature of the training process
+
+\pagebreak
+
+A passable conjecture here is a composite effect of multiple individual effects, that is: 
+
+\begin{itemize}
+	\item performance deterioration due to the training specifics used in the \ac{nn} as seen here \ref{fig:training_logs_tensorboard}
+	\item differences in representation power between real and synthetic training data
+	\item the fact that gridsearch, by searching a large hyperparameter space, is uniquely likely to result in information leakage (and ignoring synthetic training data)
+\end{itemize}
+
+The fact remains, that on the original dataset, with a large amount of manual \ac{GAN} design and searching for ideal hyperparameters, in the right circumstances \textbf{slight improvements} may be possible.
+
 \pagebreak
 
 \section{Conclusions from application to other datasets}
@@ -78,5 +103,7 @@ This is also the reason it was not actually applied to the new datasets, as it w
 \pagebreak
 
 \section{Final Thoughts}
+
+the general approach... fit the gan to the dataset better... architecture search... no free lunch... automatic search? inference?
 
 \pagebreak
