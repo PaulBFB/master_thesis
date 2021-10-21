@@ -367,26 +367,7 @@ To test this, the following steps were performed on the titanic, diabetes and wi
 
 \fig{img/titanic_replacing_experiments}{Comparing all model type performances, training data entirely replaced by synthetic data of same size with Wasserstein-GP generator}{fig:replacing_titanic}{.6}
 
-Obviously, the effect on model performance is fairly stark. As a note, the line represents a static model, always predicting the most common class in the training data. Given, some models seem to preserve a small amount of predictive power above purely guessing, but this is negligible. Two interesting notes here, firstly the model that preserves the most predictive power is the Random Forest Classifier, which given the fact that it constitutes an ensemble model is not overly surprising. Secondly, the stark drop in performance of the \ac{nn} is - in part - due to the fact how it is trained.
-
-In lieu of more traditional regularization techniques, the model uses keras's EarlyStopping Callback \url{https://keras.io/api/callbacks/early_stopping/} which monitors a key metric and stops the training if the model does not improve for a set number of epochs. 
-In the case of the model used here, the metric used for stopping was the validation loss, calculated on a subset of the training data during the epoch (20\%, randomly chosen).
-
-The code for the sample neural network:
-
-\lstinputlisting[language=Python, basicstyle=\tiny, caption=discriminator network, label=lst:nn_experiments]{./lst/model_sample_experiments.py}
-
-Listing~\ref{lst:nn_experiments} shows the python function which creates the base neural network used in all experiments.
-
-
-While this is beneficial in a standard sequential model, if the trained data is not closely enough representing all data,
-this drift will be greatly magnified. 
-
-\pagebreak
-
-Taking a look at the training log (taken from TensorBoard) seems to confirm this:
-
-\fig{img/epoch_accuracy.png}{Comparing all model type performances, training data entirely replaced by synthetic data of same size with Wasserstein-GP generator}{fig:training_logs_tensorboard}{1}
+Obviously, the effect on model performance is fairly stark. As a note, the line represents a static model, always predicting the most common class in the training data. Given, some models seem to preserve a small amount of predictive power above purely guessing, but this is negligible. 
 
 \pagebreak
 
@@ -395,13 +376,42 @@ Taking a look at the training log (taken from TensorBoard) seems to confirm this
 
 \fig{img/winequality_replacing_experiments}{Comparing all model type performances, training data entirely replaced by synthetic data of same size with Wasserstein-GP generator}{fig:replacing_wine}{.6}
 
+Quite similarly to the titanic dataset, the effect on predictive power is devastating. Given that the models all barely outperformed a naive majority classifier this is fairly disappointing. Interesting to note here seems to be the marked symmetry between model classes trained on the original data and the replaced data. Also, the fact that all models created would actually perform better if they were to be inverted is almost an achievement; dubiously epitomized by the decision tree classifier.
+
+Maybe the fact that the training log of the Wasserstein-GP model (shown here \ref{fig:wasserstein_wine}) appears to show a slight drift out of equilibrium in the later epochs is a contributing factor to this effect.
+
 \pagebreak
 
 \subsection{Models on purely synthetic Diabetes Data}
 
-\pagebreak
-
 \fig{img/diabetes_replacing_experiments}{Comparing all model type performances, training data entirely replaced by synthetic data of same size with Wasserstein-GP generator}{fig:all_replaced_diabetes}{1}
 
+The analogous experiments were performed with the diabetes dataset, and while the performance decreases markedly, it does so substantially less so than in relation to the wine dataset. It stands to reason that this hints at a fundamentally better fit of the Wasserstein-GP architecture chosen to the diabetes dataset, probably due to its' structural similarity to the titanic dataset.
+
 \pagebreak
 
+\subsection{Replacement Conclusions}
+
+Two interesting notes here, firstly the model class that preserves the most predictive power is the Random Forest Classifier, which given the fact that it constitutes an ensemble model is not overly surprising. Secondly, the stark drop in performance of the \ac{nn} is - in part - due to the fact how it is trained;
+
+In lieu of more traditional regularization techniques, the model uses keras's EarlyStopping Callback \url{https://keras.io/api/callbacks/early_stopping/} which monitors a key metric and stops the training if the model does not improve for a set number of epochs. 
+In the case of the model used here, the metric used for stopping was the validation loss, calculated on a subset of the training data during the epoch (20\%, randomly chosen).
+
+The code for the sample neural network:
+
+\lstinputlisting[language=Python, basicstyle=\tiny, caption=base model, label=lst:nn_experiments]{./lst/model_sample_experiments.py}
+
+Listing~\ref{lst:nn_experiments} shows the python function which creates the base neural network used in all experiments.
+
+While this is beneficial in a standard sequential model, if the trained data is not closely enough representing all data,
+this drift will be greatly magnified. 
+
+\pagebreak
+
+Taking a look at the training log (taken from TensorBoard) seems to confirm this:
+
+\fig{img/epoch_accuracy.png}{model accuracy history during training; data entirely replaced by synthetic data of same size with Wasserstein-GP generator}{fig:training_logs_tensorboard}{1}
+
+So it would seem from this training log, that the accuracy recorded during training quickly increases above 90\%. As a side note, with the titanic dataset the generalization error, that is the difference between validation accuracy calculated on the withheld subset of training data in each epoch and accuracy on the test set was always around 3-4 percentage points.
+
+Ultimately, if the synthetic data \textbf{were} to be representative of the test data, an accuracy of this magnitude with the same architecture would not be possible. There is a strong chance then, that the network trained here is actually learning some of the patterns that the generator uses to create new data from the random distribution in its' latent space.
