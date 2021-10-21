@@ -365,14 +365,33 @@ To test this, the following steps were performed on the titanic, diabetes and wi
 
 \subsection{Models on purely synthetic Titanic Data}
 
-\pagebreak
-
 \fig{img/titanic_replacing_experiments}{Comparing all model type performances, training data entirely replaced by synthetic data of same size with Wasserstein-GP generator}{fig:replacing_titanic}{.6}
 
+Obviously, the effect on model performance is fairly stark. As a note, the line represents a static model, always predicting the most common class in the training data. Given, some models seem to preserve a small amount of predictive power above purely guessing, but this is negligible. Two interesting notes here, firstly the model that preserves the most predictive power is the Random Forest Classifier, which given the fact that it constitutes an ensemble model is not overly surprising. Secondly, the stark drop in performance of the \ac{nn} is - in part - due to the fact how it is trained.
+
+In lieu of more traditional regularization techniques, the model uses keras's EarlyStopping Callback \url{https://keras.io/api/callbacks/early_stopping/} which monitors a key metric and stops the training if the model does not improve for a set number of epochs. 
+In the case of the model used here, the metric used for stopping was the validation loss, calculated on a subset of the training data during the epoch (20\%, randomly chosen).
+
+The code for the sample neural network:
+
+\lstinputlisting[language=Python, basicstyle=\tiny, caption=discriminator network, label=lst:nn_experiments]{./lst/model_sample_experiments.py}
+
+Listing~\ref{lst:nn_experiments} shows the python function which creates the base neural network used in all experiments.
+
+
+While this is beneficial in a standard sequential model, if the trained data is not closely enough representing all data,
+this drift will be greatly magnified. 
+
+\pagebreak
+
+Taking a look at the training log (taken from TensorBoard) seems to confirm this:
+
+\fig{img/epoch_accuracy.png}{Comparing all model type performances, training data entirely replaced by synthetic data of same size with Wasserstein-GP generator}{fig:training_logs_tensorboard}{1}
+
+\pagebreak
 
 \subsection{Models on purely synthetic Wine Data}
 
-\pagebreak
 
 \fig{img/winequality_replacing_experiments}{Comparing all model type performances, training data entirely replaced by synthetic data of same size with Wasserstein-GP generator}{fig:replacing_wine}{.6}
 
@@ -382,7 +401,7 @@ To test this, the following steps were performed on the titanic, diabetes and wi
 
 \pagebreak
 
-\fig{img/diabetes_replacing_experiments}{Comparing all model type performances, training data entirely replaced by synthetic data of same size with Wasserstein-GP generator}{fig:replacing_diabetes}{.6}
+\fig{img/diabetes_replacing_experiments}{Comparing all model type performances, training data entirely replaced by synthetic data of same size with Wasserstein-GP generator}{fig:all_replaced_diabetes}{1}
 
 \pagebreak
 

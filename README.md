@@ -16,7 +16,7 @@ The document was initially based on the Template by Michael Kohlegger.
 
 ### simplified code (used in listings)
 
-Contained in the /lst directory\
+Contained in the /lst directory
 
 ## Data
 
@@ -33,3 +33,8 @@ Strict requirements are listed in the requirements.txt - Python version used was
 ### on Tensorflow installation
 
 Since the installation of tensorflow is notoriously finnicky and this was written on arch linux with tensorflow installed from the AUR, your mileage may vary.
+
+
+## Training Logs
+
+Some sample training logs can be found in the /custom_logs directory - to be viewed using TensorBoard
