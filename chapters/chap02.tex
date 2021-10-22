@@ -1,11 +1,40 @@
-\chapter{Synthetic Data in other Areas}
+\chapter{Data augmentation and synthesis in other Areas}
 \label{chapter:synthetic_data}
 
-cite --> paper from source, different models on synthetic data!
+Due to the importance of the amount of training data available and its' large impact on machine learning outcomes, using existing training data to maximum effect is a topic that has been approached from multiple sides. More established approaches involve K-Fold Crossvalidation as explored by \cite{kfold} and \ac{bagging}. 
+
+In these approaches, broadly speaking, the available data is sub-sampled in different ways to simulate the presence of multiple - subtly differing - training sets, which makes them analogous to \ac{nn} dropout as described by \cite{srivastava2014dropout} in their paper and ensemble methods as described by \cite{dietterich2000ensemble}.
+
+\textbf{Creating} entirely new synthetic training data or \textbf{altering} existing data to fit machine learning models is separate area of research. 
+
+\pagebreak
 
 \section{Synthetic Data for Privacy / Data Protection}
 
-\subsection{Synthetic Data Vault Data Synthesizer}
+A significant amount of the impetus behind this area of research stems from privacy concerns and attendant legislation. 
+Especially noteworthy here is of course the \ac{GDPR} which imposes potentially devastating penalties on the misuse of data regarding to natural persons ("natural person" in the legal sense, as opposed to a legal person such as a corporation). 
+
+A full discussion of data privacy is out of scope in this paper, but the motivation to sidestep concerns involving specific persons which arises from the potential sanctions arising from the \ac{GDPR} or \ac{HIPAA} and similar legislation by data anonymization is clear and understandable.
+
+\cite{el2020practical} explores the topic well in his book. As illustrated here:
+
+\fig{img/synthetic_data_el2020}{from \cite{el2020practical}}{fig:synthetic_el}{.8}
+
+As the graphic shows quite succinctly, the logical process involves extracting relevant patterns from the original data, explicitly or implicitly, and then producing new data which preserves these patterns. 
+The generated data may then be used, without legal or ethical concerns regarding the privacy interests of the subjects of the original data, in order to extract insights and conduct research.
+
+The implicit assumption in this concept is, however: that the patterns which are relevant may be known beforehand and/or separated from the types of research conducted on the new data. More directly put, extracting patterns from a table of data with some attributes may be fairly trivial since there is only a limited if not always small number of interrelations possible between multiple attributes. 
+The situation changes dramatically if the data in question is stored in a relational database or distributed system, or is semi-structured or unstructured.
+
+In these cases, it may be difficult to even identify patterns in the data which need to be preserved in order to facilitate its' use in possible use cases in the future.
+
+This assumption may not always hold true but there is existing research which has been conducted to mitigate this problem.
+
+\pagebreak
+
+\subsection{Synthetic Data Vault}
+
+\cite{patki2016synthetic} describe an interesting approach to solve the issue of anonymization of an entire relational database specifically. 
 
 \section{Data Enhancement for Image Data}
 
@@ -24,3 +53,4 @@ effectively, these operations transform an Image while preserving the underlying
 
 \section{SMOTE}
 
+\section{Efficacy of synthetic data}
