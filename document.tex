@@ -47,22 +47,7 @@
     % written in English.
     \include{frontmatter/erklarung}
 
-    % This will include a "Sperrvermerk". This document
-    % is always in German, even if your work is written
-    % in English. Please remove this line, if necessary.
-    % \include{frontmatter/sperrvermerk}
-
-    % This inserts all necessary tables into your work.
     \tableofcontents
-    \listoffigures
-    \listoftables
-
-    % Use this if you have any code listings
-    \lstlistoflistings
-
-    % Use this if you want to use acronyms
-    \include{frontmatter/acronyms}
-
     \markboth{}{}
 
     % This adds a german and an english summary to your work.
@@ -106,7 +91,11 @@
         % if necessary
         % \include{appendix/app01}
         \include{appendix/app02}
-
+        \include{frontmatter/acronyms}
+        \lstlistoflistings
+        \listoffigures
+%        \listoftables
+    
     \end{appendices}
 
 \end{document}
