@@ -140,6 +140,8 @@ Concerning the specific results of completely synthetic data model performance, 
 
 Perhaps most interestingly here, all things considered, is the fact that the diabetes dataset experiences the smallest relative loss of predictive power (here: \ref{fig:all_replaced_diabetes}), in relative terms, when data has been completely replaced by synthetic data. Naively, it would make more sense to see the dataset the architecture was originally fit on to experience the smallest loss (actual loss seen here: \ref{fig:replacing_titanic}).
 
+While the fact that data generation with a such a \ac{GAN} is an intriguing option, especially since it does not rely on any assessment of similarity to generated data in an iterative fashion as the \ac{SDV} described by \cite{patki2016synthetic} or the \ac{DS} described by \cite{ping2017datasynthesizer} and is a much more unsupervised method, its' results are not in any way comparable. In the future, there may be a way to use conditional \acp{GAN} as described by \cite{conditional_gans} to achieve the best of both worlds.
+
 \pagebreak
 
 \section{Final Thoughts}
