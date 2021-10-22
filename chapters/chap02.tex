@@ -47,6 +47,7 @@ there was no significant difference in predictive power between features generat
 \pagebreak
 
 \subsection{DataSynthesizer}
+\label{subsection:datasynthesizer}
 
 \cite{ping2017datasynthesizer} propose a method with a stronger focus on tabular data in their paper.
 
@@ -83,18 +84,39 @@ As a note here, \cite{ares_utility} used tabular datasets for evaluation which p
 
 \pagebreak
 
-\section{SMOTE}
+\section{Synthetic Minority Oversampling Technique}
+\label{section:smote}
+
+A popular approach in which synthetic data is used, \ac{SMOTE} focuses on strongly imbalanced datasets. As \cite{smote} argue in their paper, real-world data is often unbalanced in such a way in which the case which needs to be detected constitutes only an extremely small part of the data, while detection of these samples is critical. Noteworthy examples include the detection of cancer and fraudulent bank transactions.
+
+The focus of \ac{SMOTE} is on the identification of interesting feature spaces, and not only sampling from these regions with small perturbations in the data, while undersampling the majority class. 
+Interestingly, this approach was inspired in part by work on data augmentation in image data (in the next section \ref{section:image_augmentation}).
+
+The salient difference here is that while image augmentation follows vector operations (in most cases) \ac{SMOTE} searches for the nearest neighbors in the feature spaces in the rare class and "interpolates" synthetic samples along the lines between nearest neighbors in the rare class.
+
+Furthermore, in the original paper \cite{smote} evaluate \ac{SMOTE} using another dataset that is of interest, the Pima Indians Diabetes dataset described by \cite{diabetes}.
 
 \pagebreak
 
-\section{Data Enhancement for Image Data}
+Due to thee fact that the objective here is the detection of a rare class, the authors evaluate their approach using the \ac{ROC} \ac{AUC} as seen here:
 
-While the approaches for synthetic data generation discussed in previous sections involve the addition of noise into the dataset (specifically \ac{SDV} as proposed by \cite{patki2016synthetic}), they do not constitute the alteration of existing training data.
+\fig{img/smote_pima}{from \cite{smote}}{fig:pima_smote}{.8}
 
-Image data is quite distinct - notion of locality - visual assessment - convolutions - GANS
+Comparison to the relevant section here: \ref{subsection:pima}
+Note that while interesting, \ac{SMOTE} is a strongly opinionated approach that would probably not be suited to application to balanced datasets.
 
-When training \acp{nn} for image classification, a common practice is \textbf{data augmentation}, a range of semi-random transformations applied to images in order to artificially increase the breadth of data that the model is exposed to while presenting the underlying meaning.
-Such operations include 
+\clearpage
+
+\section{Data Augmentation for Image Data}
+\label{section:image_augmentation}
+
+While the approaches for synthetic data generation discussed in previous sections involve the addition of noise into the dataset (specifically \ac{SDV} as proposed by \cite{patki2016synthetic} and the interpolation in \ac{SMOTE} proposed by \cite{smote}), they do not constitute the alteration of existing training data proposed by \cite{image_augmentation}.
+
+On a conceptual level, image data is quite distinct in the way that it includes a notion of locality (neighboring pixels are in relation to one another) and that it lends itself to rapid visual assessment by humans. In contrast to vectors of attributes constituted by other datasets, humans are capable of immediately assess whether or not an image representation has been preserver after alteration. This eliminates 
+
+When training \acp{nn} for image classification therefore, a common practice is \textbf{data augmentation}, a range of semi-random transformations applied to images in order to artificially increase the breadth of data that the model is exposed to while presenting the underlying meaning. 
+
+Such operations include:
 \begin{itemize}
 	\item rotation
 	\item shearing
@@ -102,4 +124,19 @@ Such operations include
 	\item height \& width shift
 \end{itemize}
 
-effectively, these operations transform an Image while preserving the underlying signals in the data. However, with other types of data this might be possible. Attributes of another dataset may not be feasibly 'shifted' in one direction or another without fundamentally changing the signal and misleading the model.
+effectively, these operations transform an Image while preserving the underlying signals in the data. 
+
+\pagebreak
+
+To illustrate the effect, examples can be seen here:
+
+\fig{img/image_augmentation}{showing classical image transformations from \cite{perez2017effectiveness}}{fig:ares}{1}
+
+While These transformations seem trivial to a human, it is important to note that effectively all pixels in these images are changed and to a machine learning model, each perturbation represents an entirely new observation. 
+Only the underlying meaning has been preserved, forcing the network to learn representations of the subjects in the data. As a note, in this very paper \cite{perez2017effectiveness} mention image augmentation with style-transfer \acp{GAN}, a currently very active field of study.
+
+However, with other types of data this might not be possible. Attributes of another dataset may not be feasibly 'shifted' in one direction or another without fundamentally changing the signal and misleading the model. Furthermore, humans cannot immediately assess the loss of this meaning in the data, which is why other methods of creating synthetic data (such as \ac{DS} in particular \ref{subsection:datasynthesizer}) have to rely on statistical indicators of similarity to assess the actual quality of the data.
+
+As alluded to in the previous section, the approach described by \cite{image_augmentation} partly inspired \ac{SMOTE} noted here: \ref{section:smote}.
+
+A large comprehensive survey on the effectiveness on such techniques was composed by \cite{shorten2019survey}, comparing the efficacy of a large array of variations.
