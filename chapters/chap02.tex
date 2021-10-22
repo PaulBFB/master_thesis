@@ -36,6 +36,53 @@ This assumption may not always hold true but there is existing research which ha
 
 \cite{patki2016synthetic} describe an interesting approach to solve the issue of anonymization of an entire relational database specifically. 
 
+Their approach, briefly, proposes to model relations between tables specifically, in an iterative manner:
+
+\fig{img/synthetic_data_vault}{from \cite{patki2016synthetic}}{fig:synthetic_data_vault}{.8}
+
+The model of the database then exposes these tables via an \ac{API} to be queried and generates synthetic tables based on the tables queried and their interrelations.
+In their paper \cite{patki2016synthetic} assess the efficacy of their approach by crowd-sourcing prediction tasks on datasets generated with their approach to data scientists and find that in over 50\% of cases 
+there was no significant difference in predictive power between features generated on the original dataset vs. generated data (an independent comparison to another approach is found here: \ref{subsection:efficacy}).
+
+\pagebreak
+
+\subsection{DataSynthesizer}
+
+\cite{ping2017datasynthesizer} propose a method with a stronger focus on tabular data in their paper.
+
+Their method, the DataSynthesizer focuses more strongly on the inference of data types, supporting most common types
+
+\begin{itemize}
+	\item integer
+	\item float
+	\item string
+	\item datetime
+\end{itemize} 
+
+and then infers their meaning from there, attempting to recognize whether an attribute describes a category it it is a string for example.
+
+\pagebreak
+
+The resulting generation and assessment process is illustrated here:
+
+\fig{img/data_synthesizer}{from \cite{ping2017datasynthesizer}}{fig:data_synthesizer}{.8}
+
+It is really quite an elegant approach which attempts to produce a statistically similar generated dataset.
+
+\clearpage
+
+\subsection{Efficacy of synthesized data}
+
+\label{subsection:efficacy}
+
+\cite{ares_utility} compare these two approaches to each other in detail and assess their efficacy in creating classification models in comparison to each other and to real data:
+
+\fig{img/ares}{showing the decision boundary of an \ac{SVM} classifier trained on data generated on original data (left), data generated using the \ac{DS} (middle) and \ac{SDV} (right) from \cite{ares_utility}}{fig:ares}{1}
+
+As a note here, \cite{ares_utility} used tabular datasets for evaluation 
+
+\pagebreak
+
 \section{Data Enhancement for Image Data}
 
 When training \acp{nn} for image classification, (source) a common practice is \textbf{data augmentation}, a range of random transformation applied to images in order to synthetically increase the breadth of data that the model is exposed to. 
@@ -52,5 +99,3 @@ effectively, these operations transform an Image while preserving the underlying
 \textbf{note - the infeasibility of pretraining on non-image datasets - representations of the visual world}
 
 \section{SMOTE}
-
-\section{Efficacy of synthetic data}
