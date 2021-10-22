@@ -80,7 +80,7 @@ It is really quite an elegant approach which attempts to produce a statistically
 
 \fig{img/ares}{showing the decision boundary of an \ac{SVM} classifier trained on data generated on original data (left), data generated using the \ac{DS} (middle) and \ac{SDV} (right) from \cite{ares_utility}}{fig:ares}{1}
 
-As a note here, \cite{ares_utility} used tabular datasets for evaluation which plays to the strength of the \ac{DG} approach. Some further notes in the conclusion, their paper is quite pertinent to the objective here.
+As a note here, \cite{ares_utility} used tabular datasets for evaluation which plays to the strength of the \ac{DS} approach. Some further notes in the conclusion, their paper is quite pertinent to the objective here.
 
 \pagebreak
 
@@ -130,7 +130,7 @@ effectively, these operations transform an Image while preserving the underlying
 
 To illustrate the effect, examples can be seen here:
 
-\fig{img/image_augmentation}{showing classical image transformations from \cite{perez2017effectiveness}}{fig:ares}{1}
+\fig{img/image_augmentation}{showing classical image transformations from \cite{perez2017effectiveness}}{fig:image_augmentation}{1}
 
 While These transformations seem trivial to a human, it is important to note that effectively all pixels in these images are changed and to a machine learning model, each perturbation represents an entirely new observation. 
 Only the underlying meaning has been preserved, forcing the network to learn representations of the subjects in the data. As a note, in this very paper \cite{perez2017effectiveness} mention image augmentation with style-transfer \acp{GAN}, a currently very active field of study.

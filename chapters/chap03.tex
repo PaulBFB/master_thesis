@@ -1,7 +1,67 @@
 \chapter{Generative Adversarial Networks}
 \label{chapter:gan}
 
+Since the technical implementation chosen here rests on \acp{GAN}, a brief introduction into the topic will be given here. Currently a very active field of study and experimentation a history and complete list of applications of \acp{GAN} is out of scope of this paper, especially since due to their development on image data, \acp{GAN} have been historically quite strongly focused on image data. Some additional thoughts in this regard are found in the section on image data augmentation here \ref{section:image_augmentation} and in the discussion here \ref{chapter:discussion}.
 
-\section{introduction and principles}
+Furthermore, many of the points here will be touched upon in the technical implementation here \ref{chapter:technical_application} and will not be repeated here.
 
-\section{development}
+\pagebreak
+
+\section{A brief summary of Generative Adversarial Networks}
+
+\cite{goodfellow2014generative} showed in their original paper proposing the method, that by connecting two \acp{nn}; a \textbf{generator} and a \textbf{discriminator}, these two networks can be induced to engage in a zero-sum competition with each other and thereby teaching the generator to produce realistic synthetic samples. 
+
+\subsection{The Generator Network}
+
+Receives random input from a latent space, in the form of a vector sampled from a distribution which is either uniform or normally distributed, performs transformations on them and outputs samples with the same dimensionality as the "real" examples.
+
+\subsection{The Discriminator Network}
+
+Receives samples produced by the generator as well as real examples and attempts to predict which are which. Importantly, the inverse of the Discriminator's input constitutes the loss function of the generator, i.e. the generator is learning to "fool" the discriminator.
+
+\pagebreak
+
+\subsection{GAN loss function}
+
+The loss function for a \ac{GAN} as proposed by \cite{goodfellow2014generative}:
+
+$$\min_G \max_D V(D, G)=
+\mathbb{E}_{x\sim p_{data}(x)}[\log D(x)]
++ \mathbb{E}_{z\sim p_z(z)}[\log(1 - D(G(z)))]$$
+
+So essentially, what is being optimized for is a composite of:
+
+\begin{itemize}
+	\item the discriminator payoff; $\mathbb{E}_{x\sim p_{data}(x)}[\log D(x)]$ ; how well the discriminator distinguishes between the samples
+	\item the generator payoff; initially $\mathbb{E}_{z\sim p_z(z)}[\log(D(G(z)))]$ ; how well the discriminator is fooled by the generator
+\end{itemize}
+
+as noted by \cite{raschka2017python} the generator payoff is \textbf{inverted} in the loss function proposed by \cite{goodfellow2014generative}. 
+
+This is due to the fact that at the very beginning of the training process, the examples produced by the generator are simply noise, and the discriminator is certain which samples are real. Thereby, $\log(D(G(z))$ (the probability assigned by the discriminator to samples produced by the generator) will be very close to zero, providing a weak signal to the generator (and suffering from vanishing gradients). 
+
+Therefore in the complete loss function this is inverted to $\mathbb{E}_{z\sim p_z(z)}[\log(1 - D(G(z)))]$ and maximized.
+
+Note that this loss function provides diametrically opposed incentives to the two parts of the network, resulting in a \textbf{nash equilibrium} between the two parts (ideally).
+\acp{GAN} are notoriously difficult to balance, which is elaborated on in the technical implementation here \ref{subsection:training_loop}.
+
+\pagebreak
+
+\subsection{GAN training loop}
+
+More details on the training loop are mentioned and shown in the relevant section here \ref{subsection:training_loop} - briefly however the steps in the training loop are:
+
+\begin{itemize}
+	\item sample random data from the latent space and provide the input to the generator
+	\item create output from the generator, label it automatically, mix it with real data and input into the discriminator
+	\item create discriminator predictions, compute the loss function and adjust the discriminator weights
+	\item provide feedback from the discriminator output to the generator and adjust its' weights
+\end{itemize}
+
+\clearpage
+
+To illustrate, \cite{goodfellow2014generative} trained their first \ac{GAN} on the \cite{mnist} dataset on handwritten digits and showed that the composite network converged on an equilibrium and produced acceptable fake handwritten digits:
+
+\fig{img/gan_digits_goodfellow}{from \cite{goodfellow2014generative}}{fig:gan_digits}{1}
+
+Further developments are mentioned and implemented in the architecture section of the next chapter here \ref{subsection:architecture}.
