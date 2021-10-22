@@ -1,24 +1,50 @@
 \chapter{Introduction \& Problem Statement}
+\label{chapter:intro}
 
-(alluding to "the unreasonable effectiveness of mathematics in the natural sciences" by \cite{mathematics_unreasonable})
+In their paper "The unreasonable effectiveness of data" \cite{norvig_eod} (alluding to "the unreasonable effectiveness of mathematics in the natural sciences" by \cite{mathematics_unreasonable}) the authors allude to one of the fundamental facts in machine learning today, often even invoked as shorthand for the fact that a larger set of training data would \textbf{always} be preferable, all other things being equal.
 
-In 2012 Krizhevsky and his colleagues entered and won the ImageNet classification contest with a deep convolutional neural network \ac{cnn}, outperforming other models by a significant margin \cite{krizhevsky2012imagenet}. This marked a turning point in machine learning in general, and in perceptual tasks specifically. 
+Ultimately, predictive power of machine learning models seems to be driven by
 
-\cite{norvig_eod} is often invoked as a shorthand to the core problem of Machine Learning, the fact that a larger training corpus would always be preferable.
+\begin{itemize}
+	\item Size and quality of training data
+	\item Expressive power of models (itself limited by processing capabilities)
+\end{itemize}
 
-Currently, data scientists spend a significant amount (how much? sources!) of their time, when solving 'shallow' machine learning tasks (such as???) in feature engineering / preprocessing. Source! examples!
-This is due to the fact that shallow approaches such as decision trees, GBM and SVM models require features that 'directly' connect the prepared data to the searched-for outcome. (source) 
+That is, assuming that a model which fits the task at hand exists and has sufficient power to learn, the deciding factor in successful application of machine learning becomes the data.
 
-Deep learning (neural networks) create intermediate representations via \textbf{stacked layers} at the cost of increased training data (source). 
-Thereby enabling a more abstract understanding of patterns within the data.
+The number of books (such as the one by \cite{dataprep}) on the topic of data preparation - that is, reformulation of existing data to facilitate the extraction of patterns from it -  gives some indication on the importance of this step. 
 
-\citet{Shearer2000}
+The example given by \cite{geron2019hands} in his book of predicting time of day from the image of a clock face illustrates this most clearly: while it would be possible to train a neural network on a large number of images of clock faces, forcing them to infer the times the hands of the clock point at eventually - by simply reformulating the image into a polar coordinate system of hands pointing at certain angles, however, the problem may be solved directly with a few lines of code.
 
-\section{Objectives}
+\cite{datawrangling_time} showed in their survey on the importance of different steps in the process that the preparation of data occupies a significant share of time spent by data scientists attempting to apply machine learning methodologies.
 
+Of significance is the implied notion that while data preparation is a comparatively time-intensive part of the process of machine learning, this is the case since effort spent in data preparation is a lever to increase model performance through more data scientist work. Not all steps of the process offer the same (potential) tradeoff between work and predictive power. In the same paper \cite{datawrangling_time} notes that model tuning only consumes on the order of 14\% of data scientist's time. This allocation of time follows from the assumption that it is \textbf{more likely} that the ultimate degree of success on a task will be affected by enriching the data at hand than it is to innovate an entirely new method of prediction, data clustering or inference.
 
-\section{Methods}
+Furthermore, while most books on the topic mention the acquisition of additional data and the benefits of enriching and reformulating the data at hand, it almost axiomatic that the tasks consists in making ideal use of the data at hand.
 
+On the amount of data that is necessary to solve a given task can usually not be defined, \cite{raudys1991small} attempt to quantify the effect of small sample size, on classification tasks specifically.
 
-\section{Structure}
+\pagebreak
 
+Data size and model complexity are usually inversely correlated depending on the task. Scikit-learn, the de-facto standard library for python "shallow" machine learning (that is, not using \acp{nn}) offers a "decision map" on the right model:
+
+\fig{img/ml_map}{Decision Map for choosing the right estimator, from scikit learn \url{https://scikit-learn.org/stable/tutorial/machine_learning_map/index.html}}{fig:ml_map}{.8}
+
+The takeaway here is the fact that many key "decision nodes" here are based on the data size available.
+
+The goal of this paper is to empirically test whether or not this strict relationship may be ameliorated by boosting the available training data.
+
+\pagebreak
+
+\section{Objectives \& Methods}
+
+In contrast to "shallow" learning methods, deep learning refers to creating intermediate representations in \acp{nn} via \textbf{stacked layers} at the cost of increased training data as \cite{swingler1996applying} alludes to.
+
+In his excellent book on deep learning, keras author \cite{chollet2017deep} construes neural networks as structured hierarchical models which extract progressive representations from data,thereby enabling a more abstract understanding of patterns within the data.
+
+The objective is therefore to test whether more complex deep learning models may be applied to a small dataset by synthetically enlarging the training data, effectively bypassing the need for extensive feature engineering by employing an outsized amount of computational power to a small dataset, trading computation for data preparation time.
+
+After a review of different approaches to creating synthetic data and their results in a later chapter (\ref{chapter:synthetic_data}), the practical viability of this approach will be tested.
+
+The method used to increase training data is a \ac{GAN} to be introduced in a later chapter. (\ref{chapter:gan})
+The \ac{GAN} will be developed on a well-known small machine learning dataset. After boosting the dataset size, different models will be trained on this dataset to compare their performance. If the results are promising, the method will be encapsulated into a python package.
