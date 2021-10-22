@@ -79,13 +79,21 @@ It is really quite an elegant approach which attempts to produce a statistically
 
 \fig{img/ares}{showing the decision boundary of an \ac{SVM} classifier trained on data generated on original data (left), data generated using the \ac{DS} (middle) and \ac{SDV} (right) from \cite{ares_utility}}{fig:ares}{1}
 
-As a note here, \cite{ares_utility} used tabular datasets for evaluation 
+As a note here, \cite{ares_utility} used tabular datasets for evaluation which plays to the strength of the \ac{DG} approach. Some further notes in the conclusion, their paper is quite pertinent to the objective here.
+
+\pagebreak
+
+\section{SMOTE}
 
 \pagebreak
 
 \section{Data Enhancement for Image Data}
 
-When training \acp{nn} for image classification, (source) a common practice is \textbf{data augmentation}, a range of random transformation applied to images in order to synthetically increase the breadth of data that the model is exposed to. 
+While the approaches for synthetic data generation discussed in previous sections involve the addition of noise into the dataset (specifically \ac{SDV} as proposed by \cite{patki2016synthetic}), they do not constitute the alteration of existing training data.
+
+Image data is quite distinct - notion of locality - visual assessment - convolutions - GANS
+
+When training \acp{nn} for image classification, a common practice is \textbf{data augmentation}, a range of semi-random transformations applied to images in order to artificially increase the breadth of data that the model is exposed to while presenting the underlying meaning.
 Such operations include 
 \begin{itemize}
 	\item rotation
@@ -95,7 +103,3 @@ Such operations include
 \end{itemize}
 
 effectively, these operations transform an Image while preserving the underlying signals in the data. However, with other types of data this might be possible. Attributes of another dataset may not be feasibly 'shifted' in one direction or another without fundamentally changing the signal and misleading the model.
-
-\textbf{note - the infeasibility of pretraining on non-image datasets - representations of the visual world}
-
-\section{SMOTE}
