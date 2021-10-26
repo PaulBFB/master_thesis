@@ -12,7 +12,8 @@ for epoch in range(1, n_epochs+1):
             d_logits_fake = discriminator_model(g_output, training=True)
             labels_real = tf.ones_like(d_logits_fake)
             g_loss = loss_fn(y_true=labels_real, y_pred=d_logits_fake)
-        # get loss derivatives from tabe, only for trainable vars, in case of regularization / batchnorm
+        
+        # get loss derivatives from tape, only for trainable vars, in case of regularization / batchnorm
         g_grads = g_tape.gradient(g_loss, generator_model.trainable_variables)
         
         # apply optimizer for generator
@@ -25,14 +26,14 @@ for epoch in range(1, n_epochs+1):
 
             d_labels_real = tf.ones_like(d_logits_real)
             
-            # loss for the real examples - labeles as 1
+            # loss for the real examples - labeled as 1
             d_loss_real = loss_fn(
                 y_true=d_labels_real, y_pred=d_logits_real)
-
-            # loss for the fakes - labeled as 0 
             
             # apply discriminator to generator output like a function
             d_logits_fake = discriminator_model(g_output, training=True)
+            
+            # loss for the fakes - labeled as 0 
             d_labels_fake = tf.zeros_like(d_logits_fake)
 
             # loss function
@@ -45,7 +46,7 @@ for epoch in range(1, n_epochs+1):
         # get the loss derivatives from the tape
         d_grads = d_tape.gradient(d_loss, discriminator_model.trainable_variables)
         
-        # apply optimizer to discriminator gradients - only trainable :todo: add regularization here
+        # apply optimizer to discriminator gradients - only trainable
         d_optimizer.apply_gradients(
             grads_and_vars=zip(d_grads, discriminator_model.trainable_variables))
                            

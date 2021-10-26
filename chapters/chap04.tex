@@ -8,9 +8,9 @@ In their landmark paper in 2014, \cite{goodfellow2014generative} demonstrated th
 As mentioned in \ref{section:image_augmentation}, some of the architecture specifics and evaluation are quite specific to image data in that 
 
 \begin{itemize}
-	\item the data contains a notion of locality, as neighboring data points (i.e. pixels) are strongly dependent
+	\item the data contains a notion of locality, as neighboring data points (i.e. pixels) are strongly correlated
 	\item dimensionality of the generated data is higher than the \textbf{latent space} 
-	\item results lend themselves to visual quality inspection by humans (it is easy to see even degrees of quality between different architectures)
+	\item results lend themselves to visual quality inspection by humans (it is easy to see even degrees of quality between different architectures) as explained here (\ref{section:image_augmentation})
 \end{itemize}
 
 specifically the former points are strongly relevant to \ac{GAN} architecture, as will become obvious shortly.
@@ -18,10 +18,15 @@ specifically the former points are strongly relevant to \ac{GAN} architecture, a
 \section{Technical implementation steps}
 \label{section:technical_implementation}
 
-Since the goal of this paper is to evaluate whether or not \ac{GAN} may be used to not only generate more data of a small non-image dataset (which is fairly trivial) but whether or not this data actually serves to \textbf{boost model performance} of models trained on the resulting data, a small, well-understood standard dataset was used to develop the initial architecture; \cite{titanic}.
+Since the goal of this paper is to evaluate whether or not a \ac{GAN} may be used to not only generate more data of a small non-image dataset (which is fairly trivial) but whether or not this data actually serves to \textbf{boost model performance} of models trained on the resulting data, a small, well-understood standard dataset was used to develop the initial architecture; the titanic dataset proposed by \cite{titanic}.
+
 Specifically, the iconic titanic dataset constitutes a binary classification problem, which facilitates quick model evaluation and ameliorates some of the more typical difficulties of training \acp{GAN} - see below.
 
-The first attempts to create a basic, dense \ac{GAN} actually failed to converge for a significant number of experiments with different amounts of layers, neurons and size of the latent space. Somewhat unsurprisingly, achieving the classic Nash Equilibrium between discriminator and generator was fairly difficult and the initial models all proved unstable. \acp{GAN} provide several unique challenges, and/or failure modes:
+The first attempts to create a basic, dense \ac{GAN} actually failed to converge for a significant number of experiments with different amounts of layers, neurons and sizes of the latent space. 
+
+Somewhat unsurprisingly, achieving the classic Nash Equilibrium between discriminator and generator was fairly difficult and the initial models all proved unstable. 
+
+\acp{GAN} provide several unique challenges, and/or failure modes:
 
 \begin{itemize}
 	\item mode collapse \cite{mode_collapse}
@@ -29,7 +34,7 @@ The first attempts to create a basic, dense \ac{GAN} actually failed to converge
 	\item catastrophic forgetting \cite{catastrophic_forgetting}
 \end{itemize}
 
-Mode collapse is especially relevant in a task like MNIST, where there are multiple classes to be generated, and the generator becomes increasingly proficient in generating one class explicitly - thankfully, this is less of an issue in a binary classification task.
+Mode collapse is especially relevant in a task like MNIST (as used by \cite{goodfellow2014generative}), where there are multiple classes to be generated, and the generator becomes increasingly proficient in generating one class explicitly - thankfully, this is less of an issue in a binary classification task.
 
 \subsection{Network Architecture}
 \label{subsection:architecture}
@@ -44,25 +49,37 @@ Further experiments, with increased numbers of layers and neurons, produced firs
  
 \fig{img/gan_oscillation_2}{Dense GAN, 3 layers, 64 neurons/layer; left - losses of generator/discriminator right - the probabilities real/fake assigned by the discriminator}{fig:gan2}{.8}
 
-Note the oscillations in the early stages, which barely decrease in amplitude at all. Training for an increased number of epochs did not lead to the emergence of a proper equilibrium state, since the network was altogether too unstable. This instability is one of the most typical failure modes in \acp{GAN} as noted by \cite{wiatrak2020stabilizing}.
+Note the oscillations in the early stages, which barely decrease in amplitude at all. 
+
+Training for an increased number of epochs did not lead to the emergence of a proper equilibrium state, since the network was altogether too unstable. This instability is one of the most typical failure modes in \acp{GAN} as noted by \cite{wiatrak2020stabilizing}.
 
 \pagebreak 
 
-Finally, it has to be stressed that finding the ideal combination learning rates, dropout in the discriminator and number of training epochs, is really quite difficult, especially since there appears no good substitute to visually examining the pattern that is produced by a given architecture and then to adjust. A process that has to be iterated for quite a while, and is fairly manual and heavy on trial-and-error.
+Finally, it has to be stressed that finding the ideal combination learning rates, dropout in the discriminator and number of training epochs, is really quite difficult, especially since there appears no good substitute to visual examination of the pattern that is produced by a given architecture and then adjusting the parameters. 
+
+This process that has to be iterated for quite a while, and is fairly manually involved and heavy on trial-and-error.
  
 Ultimately, a a promising architecture appeared to be dense networks with 3 layers each, but a higher number of neurons, and still these networks diverged rather quickly shown here \ref{fig:gan3}:
  
 \fig{img/gan_divergence_3_layers_128_units.png}{Dense GAN, 3 layers, 128 neurons/layer, reduced learning rate and dropout in discriminator - losses of generator/discriminator right - the probabilities real/fake assigned by the discriminator}{fig:gan3}{.8}
 
-Unfortunately, from here on out simply optimizing the number of neurons and learning rate and learning rate scheduling was not enough to mitigate this divergence. Although implementing the popular 1Cycle learning rate decay (described by \cite{smith_1cycle}) did ameliorate the issue somewhat, it did not fix the network.
+Unfortunately, from here on out simply optimizing the number of neurons and learning rate and learning rate scheduling was not enough to mitigate this divergence. 
+
+Although implementing the popular 1Cycle learning rate decay (described by \cite{smith_1cycle}) did ameliorate the issue somewhat, it did not fix the network.
 
 \pagebreak
 
-What ultimately made the difference is an adaptation of the architecture proposed by \cite{dcgan}. The architecture proposed here for image generation constitutes a \textbf{symmetrical} upsampling from the latent space in the generator (in case of images, a \textbf{transposed convolution}) and downsampling in the discriminator. As shown by \cite{oversampling_gan} here:
+What ultimately made the difference is an adaptation of the architecture proposed by \cite{dcgan}. The architecture proposed here for image generation constitutes a \textbf{symmetrical} upsampling from the latent space in the generator (in case of images, a \textbf{transposed convolution}) and downsampling with the same steps in reverse in the discriminator. As shown by \cite{oversampling_gan} here:
 
 \fig{img/convolutional_architecture.png}{Architecture of Discriminator and Generator}{fig:gan4}{.8}
 
-Initially, implementing convolution actually deteriorated performance and completely prevented convergence of the network, a probable explanation would be the fact that convolution and transposed convolution not only upsample the latent space but more fundamentally relate to locality in the data; i.e. multiple convolutional layers over a picture effectively create hierarchical feature extraction. A paper that illustrates the mechanics of this fairly well was \cite{convolution_arithmetic}. Effectively, these convolutions would initially find small features in images, subsequent convolutions would assemble these features into feature maps and their presence would indicate the presence of objects in an image. The entire concept of strides and adjacent data points however, does not make sense in the concept of a dataset where an observation consists of a feature vector, in which the order does not convey any information. While 1D convolutions are quite widely used in sequence and time-series processing - which are quite comfortably out of scope of this paper - they fundamentally seem unsuited to a dataset which would not lose any information if the order of its' attributes was permutated.
+Initially, implementing convolution actually deteriorated performance and completely prevented convergence of the network. One probable explanation could be the fact that convolution and transposed convolution not only downsample and upsample the latent space (respectively) but more fundamentally relate to locality in the data; i.e. multiple convolutional layers over a picture effectively create hierarchical feature extraction - see more details in the section on image data (here \ref{section:image_augmentation}). 
+
+A paper that illustrates the mechanics of this fairly well was \cite{convolution_arithmetic}. Effectively, these convolutions would initially find small features in images, subsequent convolutions would assemble these features into feature maps and their presence would indicate the presence of objects in an image. The entire concept of strides and adjacent data points however, does not make sense in the concept of a dataset where an observation consists of a feature vector, in which the order of its' attributes does not convey any information. 
+
+\pagebreak
+
+While 1D convolutions are quite widely used in sequence and time-series processing - which are quite comfortably out of scope of this paper - they fundamentally seem unsuited to a dataset which would not lose any information if the order of its' attributes was permutated.
 
 What \textbf{did} make a difference was implementing the symmetry of upsampling and condensing in the generator and discriminator.
 
@@ -74,7 +91,9 @@ Furthermore, \cite{dcgan} propose other guidelines for building \acp{DCGAN} whic
 	\item using LeakyReLU in all layers in the discriminator, except for the output which uses sigmoid
 \end{itemize}
 
-After implementing these guidelines, using Binary Categorical Crossentropy loss, the generator and discriminator actually converged fairly well already, as seen in \ref{fig:gan5}
+\clearpage
+
+After implementing these guidelines, using Binary Categorical Crossentropy loss, the generator and discriminator actually converged fairly well already without diverging quickly, as seen in \ref{fig:gan5}
 
 \fig{img/best_dense_generator}{Dense GAN, 2 layers, 32 neurons/layer; left - losses of generator/discriminator right - the probabilities real/fake assigned by the discriminator}{fig:gan5}{.8}
 
@@ -95,33 +114,36 @@ Listing~\ref{lst:discriminator} shows the python function which creates the disc
 \subsection{Network Training Implementation}
 \label{subsection:training_loop}
 
-With the basic architecture for the Network in place, the functions are put together into a custom training loop. While there are multiple approaches to training \acp{GAN}, starting with the seminal paper by \cite{goodfellow2014generative}, such as training the discriminator and generator in an epoch separately, here a custom training loop with separate optimizers was chosen from the beginning, in order to accommodate more exotic loss functions.
+With the basic architecture for the Network in place, the functions are put together into a custom training loop. While there are multiple approaches to training \acp{GAN}, starting with the seminal paper by \cite{goodfellow2014generative}, such as training the discriminator and generator in an epoch separately, here a custom training loop with separate optimizers was chosen from the beginning, in order to accommodate more exotic loss functions (which will become relevant in the section immediately following).
 
-Since a number of experiments on the efficacy of the generated data has to be done, the entire \ac{GAN} system was set up to be set up with sensible defaults, dynamically adapting to 1D datasets. 
-Specifically \cite{buitinck2013api} suggest design lessons from scikit-learn, one of which is sensible defaults.
+Since a number of experiments on the efficacy of the generated data has to be done, the entire \ac{GAN} system was set up to be created with sensible defaults, dynamically adapting to 1D datasets. 
+Specifically \cite{buitinck2013api} suggest design lessons from scikit-learn, one of which is using sensible defaults.
 
 In order to automatically create both generators and discriminators dynamically based on input shape (but with strong default settings which ideally do not have to be adjusted during experimentation at all) a small package was created which encapsulates the entire training loop.
 
-Key part here is the training loop shown here:
+Key part is the training loop shown here:
 
 \newpage
 
 \lstinputlisting[language=Python, basicstyle=\tiny, caption=training loop, label=lst:train_loop]{./lst/train_generator_simplified.py}
 
 Listing~\ref{lst:train_loop} shows the python function which trains the network. Note that this function is \textbf{quite strongly simplified}, 
-the actual code used can be found at \url{https://github.com/PaulBFB/master_thesis/blob/main/train_generator.py} and would not likely be germane to the paper in its' entirety in any case.
+the actual code used can be found at \url{https://github.com/PaulBFB/master_thesis/blob/main/train_generator.py} and would not likely be germane to the paper in its' entirety in any case, even though it proved a strong basis for a large number of experiments in semi-dynamically creating \acp{GAN} for 1D data.
 
 \pagebreak
 
-The above training loop was developed together with the network architecture and also produced the training graphics shown so far. Before it was used in experimentation however, adjusting its' loss function was tested.
+The above training loop was developed together with the network architecture and also produced the training graphics shown so far. 
+
+Before it was used in experimentation however, adjusting its' loss function was tested.
 Specifically, as proposed by \cite{arjovsky2017wasserstein}, implementing the \ac{EM} as a loss function. 
 
-\fig{img/wasserstein_distance}{Wasserstein distance formula}{fig:wasserstein}{.5}
+\fig{img/wasserstein_distance}{EM / Wasserstein distance formula}{fig:wasserstein}{.5}
 
-As mentioned in the paper, this distance denotes the amount of work that is necessary to transform one distribution in to another, given an optimal transfer plan $\gamma$ which actually denotes \textbf{how} the work is done.
-Furthermore, and probably most importantly, the \ac{EM}, in contrast to other loss functions, is actually a function of the parameters $\theta$ of the distributions in question, i.e. it can express partial derivatives with respect to the single parameters!
+As mentioned in the paper, this distance describes the amount of work that is necessary to transform one distribution into another, given an optimal transfer plan $\gamma$ which actually denotes \textbf{how} the work is done.
+Furthermore, and probably most importantly, the \ac{EM}, in contrast to other loss functions, is actually a function of the parameters $\theta$ of the distributions in question, i.e. it can express partial derivatives with respect to the distributions' individual parameters (and thus facilitates Gradient Descent)!
 
-However, finding $\gamma$ is an optimization problem by itself, since it constitutes an \textbf{optimal} solution. As \cite{arjovsky2017wasserstein} mention therefore, it is approximated during training.
+However, finding the ideal transfer plan $\gamma$ is an optimization problem by itself, since it constitutes an \textbf{optimal} solution. As \cite{arjovsky2017wasserstein} mention therefore, it is approximated during training.
+
 A complete explication of the metric and its' approximation is out of scope of this paper.
 
 What this achieves in practice, is that it enables the discriminator to act as a \textbf{critic}, essentially reporting the distance that the generator has yet to move back during training, 
@@ -129,12 +151,13 @@ which the generator then backpropagates to its' parameters. Thereby,the loss dur
 
 \pagebreak
 
-\cite{arjovsky2017wasserstein} recommend in their paper to clip the gradients reported back to the generator to be clipped. This led to substantial instability in the network, as can be seen here:
+\cite{arjovsky2017wasserstein} recommend in their paper to clip the gradients reported back to the generator. This led to substantial instability in the network, as can be seen here:
 
 \fig{img/wasserstein_3_layers_unstable}{Wasserstein GAN, 3 layers; left - losses of generator/discriminator right - the probabilities real/fake assigned by the discriminator}{fig:wasserstein_train}{.8}
 
 As can be seen clearly here, the equilibrium between the components is fairly unstable.
 \cite{gulrajani2017improved} pose that gradient clipping here actually leads to exploding and vanishing gradients, which seems to describe this result fairly well. 
+
 In the actual implementation therefore, the \textbf{Gradient Penalty} method they recommend is implemented, namely:
 
 \begin{itemize}
@@ -158,7 +181,9 @@ The resulting training loop with the same layers and upsampling-downsampling sym
 \fig{img/wasserstein_2layers_50_epochs_promising}{Wasserstein GAN with gradient penalty, 2 layers; left - losses of generator/discriminator right - the probabilities real/fake assigned by the discriminator}{fig:wasserstein_gp_train}{.8}
 
 The equilibrium is quite tightly clustered around a probability of real and fake samples, which indicates that the discriminator and generator quickly reach a stable equilibrium 
-in which the discriminator is essentially forced to guess between real and fake examples.
+in which the discriminator is essentially forced to guess between real and fake examples. Note that the probabilities reported by the discriminator cluster very tightly around .5 for both real and fake samples, which overlap almost perfectly.
+
+\pagebreak
 
 Both training loops, the basic DCGAN-adapted including BatchNormalization as well as the Wasserstein loop including penalty were preserved as separate modules. 
 In order to perform efficient experiments on entire datasets, again with sensible default values as recommended by \cite{buitinck2013api} those loops were wrapped into a python module, which enables:
