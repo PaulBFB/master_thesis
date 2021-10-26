@@ -1,15 +1,15 @@
 \chapter{Generative Adversarial Networks}
 \label{chapter:gan}
 
-Since the technical implementation chosen here rests on \acp{GAN}, a brief introduction into the topic will be given here. Currently a very active field of study and experimentation a history and complete list of applications of \acp{GAN} is out of scope of this paper, especially since due to their development on image data, \acp{GAN} have been historically quite strongly focused on image data. Some additional thoughts in this regard are found in the section on image data augmentation here \ref{section:image_augmentation} and in the discussion here \ref{chapter:discussion}.
+Since the technical implementation chosen here rests on \acp{GAN}, a brief introduction into the topic will be given here. Currently a very active field of study and experimentation, a history and complete list of applications of \acp{GAN} is out of scope of this paper, especially since due to their development on image data, \acp{GAN} have been historically quite strongly focused on image data. Some additional thoughts in this regard are found in the section on image data augmentation (here \ref{section:image_augmentation}) and in the discussion (here \ref{chapter:discussion}).
 
-Furthermore, many of the points here will be touched upon in the technical implementation here \ref{chapter:technical_application} and will not be repeated here.
+Furthermore, many of the points here will be touched upon in the technical implementation (here \ref{chapter:technical_application}) and will not be repeated here, specifically Wasserstein- and \acp{DCGAN}.
 
 \pagebreak
 
 \section{A brief summary of Generative Adversarial Networks}
 
-\cite{goodfellow2014generative} showed in their original paper proposing the method, that by connecting two \acp{nn}; a \textbf{generator} and a \textbf{discriminator}, these two networks can be induced to engage in a zero-sum competition with each other and thereby teaching the generator to produce realistic synthetic samples. 
+\cite{goodfellow2014generative} showed in their original paper proposing the method, that by connecting two \acp{nn}; a \textbf{generator} and a \textbf{discriminator}, these two networks can be induced to engage in a zero-sum competition with each other, thereby teaching the generator to produce realistic synthetic images. 
 
 \subsection{The Generator Network}
 
@@ -38,18 +38,18 @@ So essentially, what is being optimized for is a composite of:
 
 as noted by \cite{raschka2017python} the generator payoff is \textbf{inverted} in the loss function proposed by \cite{goodfellow2014generative}. 
 
-This is due to the fact that at the very beginning of the training process, the examples produced by the generator are simply noise, and the discriminator is certain which samples are real. Thereby, $\log(D(G(z))$ (the probability assigned by the discriminator to samples produced by the generator) will be very close to zero, providing a weak signal to the generator (and suffering from vanishing gradients). 
+This is due to the fact that at the very beginning of the training process, the examples produced by the generator are simply noise, and the discriminator is certain which samples are real. Thereby, $\log(D(G(z))$ (the probability assigned by the discriminator to samples produced by the generator) will be very close to zero, providing a weak signal to the generator (and thus suffering from vanishing gradients). 
 
-Therefore in the complete loss function this is inverted to $\mathbb{E}_{z\sim p_z(z)}[\log(1 - D(G(z)))]$ and maximized.
+Therefore in the generator loss function this is inverted to $\mathbb{E}_{z\sim p_z(z)}[\log(1 - D(G(z)))]$ and maximized.
 
 Note that this loss function provides diametrically opposed incentives to the two parts of the network, resulting in a \textbf{nash equilibrium} between the two parts (ideally).
-\acp{GAN} are notoriously difficult to balance, which is elaborated on in the technical implementation here \ref{subsection:training_loop}.
+\acp{GAN} are notoriously difficult to balance, which is elaborated on in the technical implementation (here \ref{subsection:training_loop}).
 
 \pagebreak
 
 \subsection{GAN training loop}
 
-More details on the training loop are mentioned and shown in the relevant section here \ref{subsection:training_loop} - briefly however the steps in the training loop are:
+More details on the training loop are mentioned and shown in the relevant section on the technical implementation (here \ref{subsection:training_loop}) - briefly however the steps in the training loop are:
 
 \begin{itemize}
 	\item sample random data from the latent space and provide the input to the generator
@@ -60,8 +60,8 @@ More details on the training loop are mentioned and shown in the relevant sectio
 
 \clearpage
 
-To illustrate, \cite{goodfellow2014generative} trained their first \ac{GAN} on the \cite{mnist} dataset on handwritten digits and showed that the composite network converged on an equilibrium and produced acceptable fake handwritten digits:
+To illustrate, \cite{goodfellow2014generative} trained their first \ac{GAN} on the \cite{mnist} dataset on handwritten digits (among others) and showed that the composite network converged on an equilibrium and produced acceptable synthetic handwritten digits:
 
 \fig{img/gan_digits_goodfellow}{from \cite{goodfellow2014generative}}{fig:gan_digits}{1}
 
-Further developments are mentioned and implemented in the architecture section of the next chapter here \ref{subsection:architecture}.
+Further developments are mentioned and implemented in the architecture section of the next chapter (here \ref{subsection:architecture}).

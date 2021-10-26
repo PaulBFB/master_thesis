@@ -1,4 +1,4 @@
-\chapter{Data augmentation and synthesis in other Areas}
+\chapter{Data augmentation and Data synthesis in other Areas}
 \label{chapter:synthetic_data}
 
 Due to the importance of the amount of training data available and its' large impact on machine learning outcomes, using existing training data to maximum effect is a topic that has been approached from multiple sides. More established approaches involve K-Fold Crossvalidation as explored by \cite{kfold} and \ac{bagging}. 
@@ -23,7 +23,7 @@ A full discussion of data privacy is out of scope in this paper, but the motivat
 As the graphic shows quite succinctly, the logical process involves extracting relevant patterns from the original data, explicitly or implicitly, and then producing new data which preserves these patterns. 
 The generated data may then be used, without legal or ethical concerns regarding the privacy interests of the subjects of the original data, in order to extract insights and conduct research.
 
-The implicit assumption in this concept is, however: that the patterns which are relevant may be known beforehand and/or separated from the types of research conducted on the new data. More directly put, extracting patterns from a table of data with some attributes may be fairly trivial since there is only a limited if not always small number of interrelations possible between multiple attributes. 
+The implicit assumption behind this concept is, however: that the patterns which are relevant may be known beforehand and/or separated from the types of research conducted on the new data. More directly put, extracting patterns from a table of data with some attributes may be fairly trivial since there is only a limited if not always small number of interrelations possible between multiple attributes. 
 The situation changes dramatically if the data in question is stored in a relational database or distributed system, or is semi-structured or unstructured.
 
 In these cases, it may be difficult to even identify patterns in the data which need to be preserved in order to facilitate its' use in possible use cases in the future.
@@ -42,7 +42,7 @@ Their approach, briefly, proposes to model relations between tables specifically
 
 The model of the database then exposes these tables via an \ac{API} to be queried and generates synthetic tables based on the tables queried and their interrelations.
 In their paper \cite{patki2016synthetic} assess the efficacy of their approach by crowd-sourcing prediction tasks on datasets generated with their approach to data scientists and find that in over 50\% of cases 
-there was no significant difference in predictive power between features generated on the original dataset vs. generated data (an independent comparison to another approach is found here: \ref{subsection:efficacy}).
+there was no significant difference in predictive power between features generated on the original dataset vs. generated data (an independent comparison to another approach to synthetic data created for privacy is found here: \ref{subsection:efficacy}).
 
 \pagebreak
 
@@ -60,7 +60,7 @@ Their method, the DataSynthesizer focuses more strongly on the inference of data
 	\item datetime
 \end{itemize} 
 
-and then infers their meaning from there, attempting to recognize whether an attribute describes a category it it is a string for example.
+and then infers their meaning from there, for example attempting to recognize whether an attribute that is stored as a string describes a category.
 
 \pagebreak
 
@@ -87,14 +87,14 @@ As a note here, \cite{ares_utility} used tabular datasets for evaluation which p
 \section{Synthetic Minority Oversampling Technique}
 \label{section:smote}
 
-A popular approach in which synthetic data is used, \ac{SMOTE} focuses on strongly imbalanced datasets. As \cite{smote} argue in their paper, real-world data is often unbalanced in such a way in which the case which needs to be detected constitutes only an extremely small part of the data, while detection of these samples is critical. Noteworthy examples include the detection of cancer and fraudulent bank transactions.
+A popular approach in which synthetic data is used, \ac{SMOTE} focuses on strongly imbalanced datasets. As \cite{smote} argue in their paper, real-world data is often imbalanced in such a way that the case which needs to be detected constitutes only an extremely small part of the data, while detection of these samples is critical. Noteworthy examples include the detection of cancer and fraudulent bank transactions.
 
-The focus of \ac{SMOTE} is on the identification of interesting feature spaces, and not only sampling from these regions with small perturbations in the data, while undersampling the majority class. 
+The focus of \ac{SMOTE} is on the identification of interesting feature subspaces, and not only sampling from these regions with small perturbations in the data, while undersampling the majority class but actually creating more samples of the rare class in these subspaces. 
 Interestingly, this approach was inspired in part by work on data augmentation in image data (in the next section \ref{section:image_augmentation}).
 
-The salient difference here is that while image augmentation follows vector operations (in most cases) \ac{SMOTE} searches for the nearest neighbors in the feature spaces in the rare class and "interpolates" synthetic samples along the lines between nearest neighbors in the rare class.
+The salient difference here is that while image augmentation follows vector operations in most cases, (i.e. shifting, rotating etc.) \ac{SMOTE} searches for the nearest neighbors in the feature spaces in the rare class and "interpolates" synthetic samples along the lines between nearest neighbors in the rare class.
 
-Furthermore, in the original paper \cite{smote} evaluate \ac{SMOTE} using another dataset that is of interest, the Pima Indians Diabetes dataset described by \cite{diabetes}.
+Furthermore, in the original paper \cite{smote} evaluate \ac{SMOTE} using another dataset that is of interest, the Pima Indians Diabetes dataset described by \cite{diabetes} - compare \ref{chapter:experiment_results}.
 
 \pagebreak
 
@@ -112,9 +112,15 @@ Note that while interesting, \ac{SMOTE} is a strongly opinionated approach that 
 
 While the approaches for synthetic data generation discussed in previous sections involve the addition of noise into the dataset (specifically \ac{SDV} as proposed by \cite{patki2016synthetic} and the interpolation in \ac{SMOTE} proposed by \cite{smote}), they do not constitute the alteration of existing training data proposed by \cite{image_augmentation}.
 
-On a conceptual level, image data is quite distinct in the way that it includes a notion of locality (neighboring pixels are in relation to one another) and that it lends itself to rapid visual assessment by humans. In contrast to vectors of attributes constituted by other datasets, humans are capable of immediately assess whether or not an image representation has been preserver after alteration. This eliminates 
+On a conceptual level, image data is quite distinct in the way that it includes a notion of locality (neighboring pixels are in relation to one another) and that it lends itself to rapid visual assessment by humans. 
+
+In contrast to vectors of attributes (which constitute other datasets), humans are capable of immediately assessing quite literally "at a glance" whether or not the meaning behind an image representation has been preserver after alteration. 
+
+This eliminates the need for intermediate tools such as checking for correlation between features etc. (as mentioned specifically in \ref{subsection:datasynthesizer}) to assess whether data augmentation techniques yielded qualitative results.
 
 When training \acp{nn} for image classification therefore, a common practice is \textbf{data augmentation}, a range of semi-random transformations applied to images in order to artificially increase the breadth of data that the model is exposed to while presenting the underlying meaning. 
+
+\pagebreak
 
 Such operations include:
 \begin{itemize}
@@ -124,16 +130,18 @@ Such operations include:
 	\item height \& width shift
 \end{itemize}
 
-effectively, these operations transform an Image while preserving the underlying signals in the data. 
-
-\pagebreak
+effectively, these operations transform an image into a completely new observation (from the viewpoint of a \ac{nn}) while preserving the underlying signals in the data. 
 
 To illustrate the effect, examples can be seen here:
 
 \fig{img/image_augmentation}{showing classical image transformations from \cite{perez2017effectiveness}}{fig:image_augmentation}{1}
 
 While These transformations seem trivial to a human, it is important to note that effectively all pixels in these images are changed and to a machine learning model, each perturbation represents an entirely new observation. 
-Only the underlying meaning has been preserved, forcing the network to learn representations of the subjects in the data. As a note, in this very paper \cite{perez2017effectiveness} mention image augmentation with style-transfer \acp{GAN}, a currently very active field of study.
+Only the underlying meaning has been preserved, forcing the network to learn hierarchical representations of the subjects in the data, e.g. the presence of ears, eyes furs, their relative positions to one another and so on. 
+
+As a note, in this very paper \cite{perez2017effectiveness} mention image augmentation with style-transfer \acp{GAN}, a currently very active field of study.
+
+\pagebreak
 
 However, with other types of data this might not be possible. Attributes of another dataset may not be feasibly 'shifted' in one direction or another without fundamentally changing the signal and misleading the model. Furthermore, humans cannot immediately assess the loss of this meaning in the data, which is why other methods of creating synthetic data (such as \ac{DS} in particular \ref{subsection:datasynthesizer}) have to rely on statistical indicators of similarity to assess the actual quality of the data.
 
