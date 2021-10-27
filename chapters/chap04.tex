@@ -74,7 +74,7 @@ Although implementing the popular 1Cycle learning rate decay (described by \cite
 
 \pagebreak
 
-What ultimately made the difference is an adaptation of the architecture proposed by \cite{dcgan}. The architecture proposed here for image generation constitutes a \textbf{symmetrical} upsampling from the latent space in the generator (in case of images, a \textbf{transposed convolution}) and downsampling with the same steps in reverse in the discriminator. As shown by \cite{oversampling_gan} here:
+What ultimately made the difference was an adaptation of the architecture proposed by \cite{dcgan}. The architecture proposed for image generation constitutes a \textbf{symmetrical} upsampling from the latent space in the generator (in case of images, a \textbf{transposed convolution}) and downsampling with the same steps in reverse in the discriminator. As shown by \cite{oversampling_gan} here:
 
 \fig{img/convolutional_architecture.png}{Architecture of Discriminator and Generator}{fig:gan4}{.8}
 
@@ -84,16 +84,16 @@ A paper that illustrates the mechanics of this fairly well was \cite{convolution
 
 \pagebreak
 
-While 1D convolutions are quite widely used in sequence and time-series processing - which are quite comfortably out of scope of this paper - they fundamentally seem unsuited to a dataset which would not lose any information if the order of its' attributes was permutated.
+While 1D convolutions are quite widely used in sequence- and time-series-processing - which are quite comfortably out of scope of this paper - they fundamentally seem unsuited to a dataset which would not lose any information if the order of its' attributes was reversed, shuffled or permutated.
 
-What \textbf{did} make a difference was implementing the symmetry of upsampling and condensing in the generator and discriminator.
+What \textbf{did} make a difference was implementing the symmetry of upsampling and condensing in the generator and discriminator, respectively.
 
 Furthermore, \cite{dcgan} propose other guidelines for building \acp{DCGAN} which proved helpful:
 
 \begin{itemize}
 	\item implementing BatchNormalization in the generator and discriminator \cite{batchnorm}
-	\item using ReLU activation in all layers in the generator except for the output, which would use tanh
-	\item using LeakyReLU in all layers in the discriminator, except for the output which uses sigmoid
+	\item using ReLU activation in all layers in the generator except for the output, which would use tanh activation
+	\item using LeakyReLU in all layers in the discriminator, except for the output which uses a sigmoid activation
 \end{itemize}
 
 \clearpage
@@ -119,23 +119,27 @@ Listing~\ref{lst:discriminator} shows the python function which creates the disc
 \subsection{Network Training Implementation}
 \label{subsection:training_loop}
 
-With the basic architecture for the Network in place, the functions are put together into a custom training loop. While there are multiple approaches to training \acp{GAN}, starting with the seminal paper by \cite{goodfellow2014generative}, such as training the discriminator and generator in an epoch separately, here a custom training loop with separate optimizers was chosen from the beginning, in order to accommodate more exotic loss functions (which will become relevant in the section immediately following).
+With the basic architecture for the Network in place, the functions are put together into a custom training loop. 
+
+While there are multiple approaches to training \acp{GAN}, starting with the seminal paper by \cite{goodfellow2014generative}, such as training the discriminator and generator in an epoch separately, here a custom training loop with separate optimizers was chosen from the beginning, in order to accommodate more exotic loss functions (which will become relevant in the section immediately following).
 
 Since a number of experiments on the efficacy of the generated data has to be done, the entire \ac{GAN} system was set up to be created with sensible defaults, dynamically adapting to 1D datasets. 
-Specifically \cite{buitinck2013api} suggest design lessons from scikit-learn, one of which is using sensible defaults.
+Specifically \cite{buitinck2013api} suggest design lessons from their creation of scikit-learn, one of which is using sensible defaults.
 
 In order to automatically create both generators and discriminators dynamically based on input shape (but with strong default settings which ideally do not have to be adjusted during experimentation at all) a small package was created which encapsulates the entire training loop.
 
-Key part is the training loop shown here:
+\pagebreak
 
-\newpage
+Key part is the training loop shown here:
 
 \lstinputlisting[language=Python, basicstyle=\tiny, caption=training loop, label=lst:train_loop]{./lst/train_generator_simplified.py}
 
-Listing~\ref{lst:train_loop} shows the python function which trains the network. Note that this function is \textbf{quite strongly simplified}, 
-the actual code used can be found at \url{https://github.com/PaulBFB/master_thesis/blob/main/train_generator.py} and would not likely be germane to the paper in its' entirety in any case, even though it proved a strong basis for a large number of experiments in semi-dynamically creating \acp{GAN} for 1D data.
-
 \pagebreak
+
+Listing~\ref{lst:train_loop} shows the python function which trains the network. 
+
+Note that this function is \textbf{quite strongly simplified and truncated}, 
+the actual code used can be found at \url{https://github.com/PaulBFB/master_thesis/blob/main/train_generator.py} and would not likely be germane to the paper in its' entirety in any case, even though it proved a strong basis for a large number of experiments in semi-dynamically creating \acp{GAN} for 1D data.
 
 The above training loop was developed together with the network architecture and also produced the training graphics shown so far. 
 
@@ -144,26 +148,27 @@ Specifically, as proposed by \cite{arjovsky2017wasserstein}, implementing the \a
 
 \fig{img/wasserstein_distance}{EM / Wasserstein distance formula}{fig:wasserstein}{.5}
 
-As mentioned in the paper, this distance describes the amount of work that is necessary to transform one distribution into another, given an optimal transfer plan $\gamma$ which actually denotes \textbf{how} the work is done.
-Furthermore, and probably most importantly, the \ac{EM}, in contrast to other loss functions, is actually a function of the parameters $\theta$ of the distributions in question, i.e. it can express partial derivatives with respect to the distributions' individual parameters (and thus facilitates Gradient Descent)!
+As mentioned in the paper, this distance describes the amount of work that is necessary to transform one probability distribution into another, given an optimal transfer plan $\gamma$ which actually denotes \textbf{how} the work is done.
+
+Furthermore, and probably most importantly, the \ac{EM}, in contrast to other distance metrics, is actually a function of the parameters $\theta_{r}, \theta_{g}$  of the distributions in question, i.e. it can express partial derivatives with respect to the distributions' individual parameters (and thus facilitates Gradient Descent)!
 
 However, finding the ideal transfer plan $\gamma$ is an optimization problem by itself, since it constitutes an \textbf{optimal} solution. As \cite{arjovsky2017wasserstein} mention therefore, it is approximated during training.
 
-A complete explication of the metric and its' approximation is out of scope of this paper.
+A complete explication of distance metrics and their differences is out of scope of this paper.
 
-What this achieves in practice, is that it enables the discriminator to act as a \textbf{critic}, essentially reporting the distance that the generator has yet to move back during training, 
-which the generator then backpropagates to its' parameters. Thereby,the loss during training actually becomes more meaningfully readable.
+What this achieves in practice is that it enables the discriminator to act as a \textbf{critic}, essentially reporting the distance that the generator has yet to move back during training, 
+which the generator then backpropagates to its' parameters. Thereby, the loss during training actually becomes more meaningfully readable.
 
 \pagebreak
 
-\cite{arjovsky2017wasserstein} recommend in their paper to clip the gradients reported back to the generator. This led to substantial instability in the network, as can be seen here:
+\cite{arjovsky2017wasserstein} recommend in their paper to clip the gradients reported back to the generator. This led to substantial instability and oscillation in the network, as can be seen here:
 
 \fig{img/wasserstein_3_layers_unstable}{Wasserstein GAN, 3 layers; left - losses of generator/discriminator right - the probabilities real/fake assigned by the discriminator}{fig:wasserstein_train}{.8}
 
 As can be seen clearly here, the equilibrium between the components is fairly unstable.
-\cite{gulrajani2017improved} pose that gradient clipping here actually leads to exploding and vanishing gradients, which seems to describe this result fairly well. 
+\cite{gulrajani2017improved} pose that gradient clipping here actually leads to exploding and vanishing gradients, which seems to explain this result fairly well. 
 
-In the actual implementation therefore, the \textbf{Gradient Penalty} method they recommend is implemented, namely:
+In the actual implementation therefore, the \textbf{Gradient Penalty} method they recommend was implemented instead, namely:
 
 \begin{itemize}
 	\item between real and fake examples in a batch, choose a random number sampled from a uniform distribution
@@ -186,23 +191,28 @@ The resulting training loop with the same layers and upsampling-downsampling sym
 \fig{img/wasserstein_2layers_50_epochs_promising}{Wasserstein GAN with gradient penalty, 2 layers; left - losses of generator/discriminator right - the probabilities real/fake assigned by the discriminator}{fig:wasserstein_gp_train}{.8}
 
 The equilibrium is quite tightly clustered around a probability of real and fake samples, which indicates that the discriminator and generator quickly reach a stable equilibrium 
-in which the discriminator is essentially forced to guess between real and fake examples. Note that the probabilities reported by the discriminator cluster very tightly around .5 for both real and fake samples, which overlap almost perfectly.
+in which the discriminator is essentially forced to guess between real and fake examples. 
+
+Note that the probabilities reported by the discriminator cluster very tightly around .5 for both real and fake samples, which overlap almost perfectly.
 
 \pagebreak
 
 Both training loops, the basic DCGAN-adapted including BatchNormalization as well as the Wasserstein loop including penalty were preserved as separate modules. 
-In order to perform efficient experiments on entire datasets, again with sensible default values as recommended by \cite{buitinck2013api} those loops were wrapped into a python module, which enables:
+In order to perform efficient experiments on entire datasets, again with sensible default values as recommended by \cite{buitinck2013api}, those loops were wrapped into a python module, which enables:
 
 \begin{itemize}
-	\item accept preprocessed data in the form of numpy arrays, keep the original size or take a random sample from it (in order to experiment with even smaller data-subsets)
-	\item retrain either a Wasserstein-GP or DCGAN-adapted generator if the data was decreased (or the generator is forced to be trained)
-	\item create a number of samples based on the amount of original data and mix it into the original data
+	\item accepting preprocessed data in the form of numpy arrays, keep the original size or take a random sample from it (in order to experiment with even smaller data-subsets)
+	\item retraining either a Wasserstein-GP or DCGAN-adapted generator if the data was decreased (or the generator is forced to be trained)
+	\item creating a number of samples based on the amount of original data and mix it into the original data
 \end{itemize}
 
-Especially important here is the second point, since using a generator trained on the \textbf{full training data set} as a \ac{GAN} and then generating data to mix into a reduced subset 
+Especially important here is the second point, since using a generator trained on the \textbf{full training data set} as a \ac{GAN} and then generating data to mix into a reduced subset of this training data
 would effectively constitute \textbf{information leakage} from the entire training dataset!
 
+\pagebreak
+
 The complete function enhancing data may be found here \url{https://github.com/PaulBFB/master_thesis/blob/main/enhance_data.py}, also the helper function using the generator to generate data from a distribution may be found here: \url{https://github.com/PaulBFB/master_thesis/blob/main/generate_data.py} - both functions are fairly basic. 
+
 Mostly of interest is the fact that they may be used fairly agnostically with a given training dataset, given that is has been processed to be suitable to train standard models on it; i.e. scaled, imputed if necessary and categorically encoded.
 
 From here on out, experiments were performed on the dataset with different types of models.
