@@ -1,32 +1,35 @@
 \chapter{Data augmentation and Data synthesis in other Areas}
 \label{chapter:synthetic_data}
 
-Due to the importance of the amount of training data available and its' large impact on machine learning outcomes, using existing training data to maximum effect is a topic that has been approached from multiple sides. More established approaches involve K-Fold Crossvalidation as explored by \cite{kfold} and \ac{bagging}. 
+Due to the importance of the amount of training data available and its' large impact on machine learning outcomes, using existing training data to maximum effect is a topic that has been approached from multiple angles. More established approaches involve K-Fold Crossvalidation as explored by \cite{kfold} and \ac{bagging}. 
 
 In these approaches, broadly speaking, the available data is sub-sampled in different ways to simulate the presence of multiple - subtly differing - training sets, which makes them analogous to \ac{nn} dropout as described by \cite{srivastava2014dropout} in their paper and ensemble methods as described by \cite{dietterich2000ensemble}.
 
-\textbf{Creating} entirely new synthetic training data or \textbf{altering} existing data to fit machine learning models is separate area of research. 
+\textbf{Creating} entirely new synthetic training data or \textbf{altering} existing data to fit machine learning models are distinct areas of research. 
 
 \pagebreak
 
 \section{Synthetic Data for Privacy / Data Protection}
 
-A significant amount of the impetus behind this area of research stems from privacy concerns and attendant legislation. 
-Especially noteworthy here is of course the \ac{GDPR} which imposes potentially devastating penalties on the misuse of data regarding to natural persons ("natural person" in the legal sense, as opposed to a legal person such as a corporation). 
+A significant amount of the impetus behind the research area of synthetic data stems from privacy concerns and attendant legislation.
+ 
+Especially noteworthy here is of course the European \ac{GDPR} which imposes potentially devastating penalties on the misuse of data relating to natural persons ("natural person" in the legal sense, as opposed to a legal person such as a corporation). 
 
-A full discussion of data privacy is out of scope in this paper, but the motivation to sidestep concerns involving specific persons which arises from the potential sanctions arising from the \ac{GDPR} or \ac{HIPAA} and similar legislation by data anonymization is clear and understandable.
+A full discussion of data privacy is out of scope in this paper, but the motivation to sidestep concerns involving specific persons which arises from the potential sanctions arising from the \ac{GDPR} or the \ac{HIPAA} and similar legislation by data anonymization is clear and understandable.
 
-\cite{el2020practical} explores the topic well in his book. As illustrated here:
+\cite{el2020practical} explore the topic well in their book on synthetic data generation. As illustrated here:
 
 \fig{img/synthetic_data_el2020}{from \cite{el2020practical}}{fig:synthetic_el}{.8}
 
-As the graphic shows quite succinctly, the logical process involves extracting relevant patterns from the original data, explicitly or implicitly, and then producing new data which preserves these patterns. 
+As the graphic shows quite succinctly, the fundamental rationale involves extracting relevant patterns from the original data, explicitly or implicitly, and then producing new data which replicates these patterns. 
 The generated data may then be used, without legal or ethical concerns regarding the privacy interests of the subjects of the original data, in order to extract insights and conduct research.
 
-The implicit assumption behind this concept is, however: that the patterns which are relevant may be known beforehand and/or separated from the types of research conducted on the new data. More directly put, extracting patterns from a table of data with some attributes may be fairly trivial since there is only a limited if not always small number of interrelations possible between multiple attributes. 
-The situation changes dramatically if the data in question is stored in a relational database or distributed system, or is semi-structured or unstructured.
+The implicit assumption behind this concept is, however: that the patterns which are relevant may be known beforehand and/or separated from the types of research conducted on the new data. 
 
-In these cases, it may be difficult to even identify patterns in the data which need to be preserved in order to facilitate its' use in possible use cases in the future.
+More directly put, extracting patterns from a table of data with some attributes may be fairly trivial since there is only a limited (if not always small) number of interrelations possible between multiple attributes. 
+The situation changes dramatically if the data in question is stored in a relational database or distributed system, or is semi-structured or even entirely unstructured.
+
+In these cases, it may be difficult to even identify the specific patterns in the data which need to be preserved in order to facilitate its' use in possible future research (since it is not clear what patterns may even be relevant).
 
 This assumption may not always hold true but there is existing research which has been conducted to mitigate this problem.
 
@@ -60,7 +63,7 @@ Their method, the DataSynthesizer focuses more strongly on the inference of data
 	\item datetime
 \end{itemize} 
 
-and then infers their meaning from there, for example attempting to recognize whether an attribute that is stored as a string describes a category.
+and then infers their meaning from there, for example attempting to recognize whether an attribute that is stored as a string describes a category and then transforming the data into the correct type.
 
 \pagebreak
 
@@ -80,16 +83,18 @@ It is really quite an elegant approach which attempts to produce a statistically
 
 \fig{img/ares}{showing the decision boundary of an \ac{SVM} classifier trained on data generated on original data (left), data generated using the \ac{DS} (middle) and \ac{SDV} (right) from \cite{ares_utility}}{fig:ares}{1}
 
-As a note here, \cite{ares_utility} used tabular datasets for evaluation which plays to the strength of the \ac{DS} approach. Some further notes in the conclusion, their paper is quite pertinent to the objective here.
+As a note here, \cite{ares_utility} use tabular datasets for evaluation which plays to the strength of the \ac{DS} approach. Some further notes in the conclusion, their paper is quite pertinent to the objective here as will become more obvious in chapter \ref{chapter:experiment_results}.
 
 \pagebreak
 
 \section{Synthetic Minority Oversampling Technique}
 \label{section:smote}
 
-A popular approach in which synthetic data is used, \ac{SMOTE} focuses on strongly imbalanced datasets. As \cite{smote} argue in their paper, real-world data is often imbalanced in such a way that the case which needs to be detected constitutes only an extremely small part of the data, while detection of these samples is critical. Noteworthy examples include the detection of cancer and fraudulent bank transactions.
+A popular approach in which synthetic data is created, \ac{SMOTE} focuses on strongly imbalanced datasets. 
 
-The focus of \ac{SMOTE} is on the identification of interesting feature subspaces, and not only sampling from these regions with small perturbations in the data, while undersampling the majority class but actually creating more samples of the rare class in these subspaces. 
+As \cite{smote} argue in their paper, real-world data is often imbalanced in such a way that the case which needs to be detected constitutes only an extremely small part of the data, while detection of these samples is critical. Noteworthy examples include the detection of cancer and fraudulent bank transactions.
+
+The focus of \ac{SMOTE} is on the identification of interesting feature subspaces and not only sampling from these regions with small perturbations in the data while undersampling the majority class, but actually creating more samples of the rare class in these subspaces. 
 Interestingly, this approach was inspired in part by work on data augmentation in image data (in the next section \ref{section:image_augmentation}).
 
 The salient difference here is that while image augmentation follows vector operations in most cases, (i.e. shifting, rotating etc.) \ac{SMOTE} searches for the nearest neighbors in the feature spaces in the rare class and "interpolates" synthetic samples along the lines between nearest neighbors in the rare class.
@@ -98,11 +103,12 @@ Furthermore, in the original paper \cite{smote} evaluate \ac{SMOTE} using anothe
 
 \pagebreak
 
-Due to thee fact that the objective here is the detection of a rare class, the authors evaluate their approach using the \ac{ROC} \ac{AUC} as seen here:
+Due to thee fact that the objective here is the detection of a rare class, the authors evaluate their approach using the \ac{ROC} \ac{AUC} as seen here, which effectively tracks the trade-off of wrongly labeling "common" cases as important rare cases (i.e. False Positives, the x-axis) against catching all rare cases (i.e. True Positives, on the y-axis):
 
 \fig{img/smote_pima}{from \cite{smote}}{fig:pima_smote}{.8}
 
 Comparison to the relevant section here: \ref{subsection:pima}
+
 Note that while interesting, \ac{SMOTE} is a strongly opinionated approach that would probably not be suited to application to balanced datasets.
 
 \clearpage
@@ -110,9 +116,9 @@ Note that while interesting, \ac{SMOTE} is a strongly opinionated approach that 
 \section{Data Augmentation for Image Data}
 \label{section:image_augmentation}
 
-While the approaches for synthetic data generation discussed in previous sections involve the addition of noise into the dataset (specifically \ac{SDV} as proposed by \cite{patki2016synthetic} and the interpolation in \ac{SMOTE} proposed by \cite{smote}), they do not constitute the alteration of existing training data proposed by \cite{image_augmentation}.
+While the approaches for synthetic data generation discussed in previous sections involve the addition of noise into the dataset (specifically \ac{SDV} as proposed by \cite{patki2016synthetic} and the interpolation in \ac{SMOTE} proposed by \cite{smote}), they do not constitute the alteration of existing training data as proposed by \cite{image_augmentation}.
 
-On a conceptual level, image data is quite distinct in the way that it includes a notion of locality (neighboring pixels are in relation to one another) and that it lends itself to rapid visual assessment by humans. 
+On a conceptual level, image data is quite distinct, specifically in the way that it includes a notion of locality (neighboring pixels are in relation to one another) and that it lends itself to rapid visual assessment by humans. 
 
 In contrast to vectors of attributes (which constitute other datasets), humans are capable of immediately assessing quite literally "at a glance" whether or not the meaning behind an image representation has been preserver after alteration. 
 
@@ -136,15 +142,17 @@ To illustrate the effect, examples can be seen here:
 
 \fig{img/image_augmentation}{showing classical image transformations from \cite{perez2017effectiveness}}{fig:image_augmentation}{1}
 
-While These transformations seem trivial to a human, it is important to note that effectively all pixels in these images are changed and to a machine learning model, each perturbation represents an entirely new observation. 
-Only the underlying meaning has been preserved, forcing the network to learn hierarchical representations of the subjects in the data, e.g. the presence of ears, eyes furs, their relative positions to one another and so on. 
+While These transformations seem trivial to a human, it is important to note that virtually all pixels in these images are changed and to a machine learning model, each perturbation represents an entirely new observation. 
+Only the underlying meaning has been preserved, forcing the network to learn hierarchical representations of the subjects in the data, e.g. the presence of ears, eyes, fur, their relative positions to one another and so on. 
 
-As a note, in this very paper \cite{perez2017effectiveness} mention image augmentation with style-transfer \acp{GAN}, a currently very active field of study.
+As a note, in this very paper \cite{perez2017effectiveness} mention image augmentation with style-transfer \acp{GAN}, a currently very active field of study which is in a way analogous to the goal of this paper.
 
 \pagebreak
 
-However, with other types of data this might not be possible. Attributes of another dataset may not be feasibly 'shifted' in one direction or another without fundamentally changing the signal and misleading the model. Furthermore, humans cannot immediately assess the loss of this meaning in the data, which is why other methods of creating synthetic data (such as \ac{DS} in particular \ref{subsection:datasynthesizer}) have to rely on statistical indicators of similarity to assess the actual quality of the data.
+However, with other types of data (besides images) this might not be possible. Attributes of another dataset may not be feasibly 'shifted' in one direction or another without fundamentally changing the signal and misleading the model. 
+
+Furthermore, humans cannot immediately assess the loss of this meaning in the data, which is why other methods of creating synthetic data (such as \ac{DS} in particular, see \ref{subsection:datasynthesizer}) have to rely on statistical indicators of similarity to assess the actual quality of the generated data.
 
 As alluded to in the previous section, the approach described by \cite{image_augmentation} partly inspired \ac{SMOTE} noted here: \ref{section:smote}.
 
-A large comprehensive survey on the effectiveness on such techniques was composed by \cite{shorten2019survey}, comparing the efficacy of a large array of variations.
+A large comprehensive survey on the effectiveness on such techniques was composed by \cite{shorten2019survey}, comparing the efficacy of a large array of image augmentation techniques.
