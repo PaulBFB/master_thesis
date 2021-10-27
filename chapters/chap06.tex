@@ -54,9 +54,9 @@ To expand on the last point, since a lot of literature concerning Generative Adv
 
 In the case of data in the form of attribute vectors it becomes fairly intractable to quickly and informally assess whether the generator network has been stuck in generating a certain subset of the sampling space.
 
-This is actually a critical point; in the example of data generation on new datasets, it quickly became obvious that balance of the dataset is a key factor in model performance. This intuitively makes sense, since a generator that was stuck in a subset of the vector space would wildly unbalance any training data that is synthetically increased with it or increase an existing slight imbalance.
+This is actually a critical point; in the example of data generation on new datasets, it quickly became obvious that balance of the dataset is a key factor in model performance. This intuitively makes sense, since a generator that was stuck in a subset of the vector space would wildly unbalance any training data that is synthetically increased with it or increase any existing (even slight) imbalance.
 
-There may be applications in using Conditional \acp{GAN} as described by \cite{conditional_gans} in order to create stratified synthetic training data; an approach that would actually be somewhat analogous to \ac{SMOTE} as described by \cite{smote}.
+There may be applications in using Conditional \acp{GAN} as described by \cite{conditional_gans} in order to create stratified synthetic training data; an approach that would actually be somewhat analogous to \ac{SMOTE} as described by \cite{smote} which would serve to preserve the ratio of classes from the original data.
 
 Using multiple wrapper modules to generate different data shrink and boost sizes, run gridsearch on them and record the results (as well as any resulting \ac{GAN} generator training logs) proved as an involved but ultimately fairly efficient process to thoroughly evaluate the effect on predictive power.
 
@@ -64,7 +64,7 @@ Using multiple wrapper modules to generate different data shrink and boost sizes
 
 \subsection{Gridsearch}
 
-Specifically concerning gridsearch performed on neural networks using the scikit-learn wrapper as mentioned here \ref{lst:gridsearch}, while generally a promising design pattern that can definitely be reused, ultimately proved to be fairly time consuming (due to the duration of the experiments, fitting a large number of networks using Crossvalidation and selecting the best one). 
+Specifically concerning gridsearch performed on neural networks using the scikit-learn wrapper (as mentioned here \ref{lst:gridsearch}), while generally a promising design pattern that can definitely be reused, ultimately proved to be fairly time consuming (due to the duration of the experiments, fitting a large number of networks using Crossvalidation and selecting the best one). 
 
 Furthermore, a byproduct of the specific gridsearch chosen, randomized gridsearch, was some amount of randomness in the ultimate performance of the models, which made interpretation of these results more difficult. 
 
@@ -76,15 +76,15 @@ This is also the reason it was not actually applied to the new datasets, as it w
 
 In this section, the approach that was chosen actually showed the most promise. 
 
-Interestingly enough, model performance never degraded at all. While it was strange to see that the model hardly suffered from decreased data size at all, the results on all datasets here seem to indicate that this \ac{GAN} architecture is aligned to the specific dataset to such a degree as to not degrade model performance, when it is used to augment either subsets of the data or the entire training data - in which case it may be even beneficial.
+Interestingly enough, model performance never degraded at all. While it was strange to see that the model hardly suffered from decreased data size, the results on all datasets here seem to indicate that this \ac{GAN} architecture is aligned to the specific dataset to such a degree as to not degrade model performance, when it is used to augment either subsets of the data or the entire training data - in which case it may be even beneficial.
 
 A \textbf{strong} caveat here is, again, the fact that this data was used to create the architecture so information leakage can hardly be avoided.
 
-It is also possible that models trained on a boosted dataset here learned to ignore the boosted data by identifying patterns created by the generator. 
+It is also possible that models trained on a boosted dataset learned to ignore the boosted data by identifying it from learning the patterns created by the generator. 
 
 This is only speculation, but an indicator seems to be the fact that in experiments with significantly larger data boosts (up to +20x, see \ref{fig:ex5}) model performance did not decrease, but with complete replacement (see \ref{fig:replacing_titanic}) model performance did in fact decrease significantly, if less so than with other datasets. 
 
-Although as noted in the section on replacement conclusions, part of the effect, spefifically on \acp{nn} is most likely due to the nature of the training process
+Although as noted in the section on replacement conclusions, part of the effect, specifically on \acp{nn} is most likely due to the nature of the training process
 
 \pagebreak
 
@@ -104,9 +104,9 @@ The fact remains, that on the original dataset, with a large amount of manual \a
 
 The entire approach of selecting a mini-battery of models using default parameters and applying them to datasets without any feature engineering with and without boosted data seemed essential after the amount of time, architecture optimization (of the generator) and processing power (on finding the ideal model architecture) that had been applied to the original dataset.
 
-After all of this, there was simply no way that information leakage (and by extension, overfitting on the test data) had not occurred, \textbf{especially} the dataset in question was small by design and the model applied to it had a fairly outsized amount of representational power. 
+After all of this, there was simply no way that information leakage (and by extension, overfitting on the test data) had not occurred, \textbf{especially} since the dataset in question was small by design and the model applied to it had a fairly outsized amount of representational power. 
 
-While this was fairly intentional since the explicit goal was to evaluate whether using more complex models (i.e. \acp{nn}) on such datasets by increasing their size was a feasible trade-off against feature engineering. This would have required a gain in performance, however.
+This was fairly intentional since the explicit goal was to evaluate whether using more complex models (i.e. \acp{nn}) on such datasets by increasing their size was a feasible trade-off against feature engineering. This would have required a gain in performance, however.
 
 Thankfully, a large and diverse amount of machine learning datasets are now publicly available, and the additional work of selecting new datasets as a "blank canvas" to perform a sanity check on is tractable. 
 
@@ -141,7 +141,7 @@ This hypothesis would be difficult to confirm though, without finding a large nu
 
 As discussed, there are plenty of more proven methods of synthetic data generation, some of which offer model performance which is fairly consistent with the original data already, as discussed here \cite{ares_utility}.
 
-While using this method of data generation to create anonymous data was decidedly not the goal from the start, training models on completely synthetic data as mentioned in the paper offers a useful benchmark whether or not the generated data is actually meaningfully reflective of the original data at all. 
+While using this method of data generation to create anonymous data was decidedly not the goal from the start, training models on completely synthetic data as mentioned in the paper offers a useful benchmark whether or not the generated data is actually meaningfully reflective of the original data at all on its' own. 
 
 If we consider the extraction of a model out of a training data set as an efficient representation of the information contained in the data with regard to the target variable, the degradation of the predictive power of the same model with respect to the target variable on synthetic data can be constructed as a useful indicator whether or not the actual meaning of the data has been preserved.
 
@@ -153,7 +153,7 @@ Concerning the specific results of completely synthetic data model performance, 
 
 Perhaps most interestingly, all things considered, is the fact that the diabetes dataset experiences the smallest relative loss of predictive power (here: \ref{fig:all_replaced_diabetes}), in relative terms, when data has been completely replaced by synthetic data. Naively, it would make more sense to see the dataset the architecture was originally fit on to experience the smallest loss (actual loss seen here: \ref{fig:replacing_titanic}).
 
-While the fact that data generation with a such a \ac{GAN} is an intriguing option, especially since it does not rely on any assessment of similarity to generated data in an iterative fashion as the \ac{SDV} described by \cite{patki2016synthetic} or the \ac{DS} described by \cite{ping2017datasynthesizer} and is a much more unsupervised method, its' results are not in any way comparable. 
+While the fact that data generation with a such a \ac{GAN} is an intriguing option, especially since it does not rely on any assessment of similarity to generated data in an iterative fashion as the \ac{SDV} described by \cite{patki2016synthetic} or the \ac{DS} described by \cite{ping2017datasynthesizer} and is a much more unsupervised method, its' results are not in any way comparable in terms of the preservation of predictive power of models trained on the synthetically generated data. 
 
 In the future, there may be a way to use conditional \acp{GAN} as described by \cite{conditional_gans} to achieve the best of both worlds.
 
@@ -175,7 +175,7 @@ The fact that \ac{GAN} training is not only notoriously difficult but also diffi
 
 The purpose of this paper was mainly to show the trade-off between data scientist time investment (in feature engineering, data enrichment and - worst case - even data labeling) and increased processing power; i.e. using outsized representational power and computation to draw increased meaning from an otherwise unchanged dataset, as it is done in approaches like \ac{bagging}.
 
-What appears to be the case here is that the time investment using this approach would - in the ideal case - mainly shift from feature engineering to \ac{GAN} architecture search.
+What appears to be the effect here however, is that the time investment using this approach would - in the ideal case - mainly shift the work expended from feature engineering to \ac{GAN} architecture search.
 
 In cases where only a small amount of data is available and increasing the training dataset it otherwise impossible \textbf{and} feature engineering and data enrichment has been completely exhausted, the approach may hold some promise. Whether or not the ideal architecture may be found dynamically (as mentioned here \ref{note:hypothesis}) remains an open question.
 
