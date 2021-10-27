@@ -1,9 +1,13 @@
 \chapter{Generative Adversarial Networks}
 \label{chapter:gan}
 
-Since the technical implementation chosen here rests on \acp{GAN}, a brief introduction into the topic will be given here. Currently a very active field of study and experimentation, a history and complete list of applications of \acp{GAN} is out of scope of this paper, especially since due to their development on image data, \acp{GAN} have been historically quite strongly focused on image data. Some additional thoughts in this regard are found in the section on image data augmentation (here \ref{section:image_augmentation}) and in the discussion (here \ref{chapter:discussion}).
+Since the technical implementation chosen here rests on \acp{GAN}, a brief introduction into the topic will be given here. 
 
-Furthermore, many of the points here will be touched upon in the technical implementation (here \ref{chapter:technical_application}) and will not be repeated here, specifically Wasserstein- and \acp{DCGAN}.
+Currently a very active field of study and experimentation, a history and complete list of applications of \acp{GAN} is out of scope of this paper, especially since due to their development on image data, \acp{GAN} have been historically quite strongly focused on visual data. 
+
+Some additional thoughts in this regard are found in the section on image data augmentation (here \ref{section:image_augmentation}) and in the discussion (here \ref{chapter:discussion}).
+
+Furthermore, many of the points here will be touched upon in the technical implementation (here \ref{chapter:technical_application}) and will not be repeated here, specifically \acp{DCGAN} and Wasserstein-\acp{GAN} with Gradient Penalty.
 
 \pagebreak
 
@@ -13,11 +17,13 @@ Furthermore, many of the points here will be touched upon in the technical imple
 
 \subsection{The Generator Network}
 
-Receives random input from a latent space, in the form of a vector sampled from a distribution which is either uniform or normally distributed, performs transformations on them and outputs samples with the same dimensionality as the "real" examples.
+Receives random input from a one-dimensional latent space, in the form of a vector sampled from a distribution which is either uniform or normally distributed, performs transformations on them and outputs samples with the same dimensionality as the "real" examples.
 
 \subsection{The Discriminator Network}
 
-Receives samples produced by the generator as well as real examples and attempts to predict which are which. Importantly, the inverse of the Discriminator's input constitutes the loss function of the generator, i.e. the generator is learning to "fool" the discriminator.
+Receives samples produced by the generator as well as real examples and attempts to classify which are real. 
+
+Importantly, the inverse of the Discriminator's input constitutes the loss function of the generator, i.e. the generator is learning to "fool" the discriminator.
 
 \pagebreak
 
@@ -38,23 +44,28 @@ So essentially, what is being optimized for is a composite of:
 
 as noted by \cite{raschka2017python} the generator payoff is \textbf{inverted} in the loss function proposed by \cite{goodfellow2014generative}. 
 
-This is due to the fact that at the very beginning of the training process, the examples produced by the generator are simply noise, and the discriminator is certain which samples are real. Thereby, $\log(D(G(z))$ (the probability assigned by the discriminator to samples produced by the generator) will be very close to zero, providing a weak signal to the generator (and thus suffering from vanishing gradients). 
+This is due to the fact that at the very beginning of the training process, the examples produced by the generator are simply noise, and the discriminator is certain which samples are real. Thereby the probability assigned by the discriminator to samples produced by the generator, $\log(D(G(z))$ will be very close to zero, providing a weak signal to the generator (and thus suffering from vanishing gradients). 
 
 Therefore in the generator loss function this is inverted to $\mathbb{E}_{z\sim p_z(z)}[\log(1 - D(G(z)))]$ and maximized.
 
-Note that this loss function provides diametrically opposed incentives to the two parts of the network, resulting in a \textbf{Nash Equilibrium} between the two parts (ideally).
-\acp{GAN} are notoriously difficult to balance, which is elaborated on in the technical implementation (here \ref{subsection:training_loop}).
+\pagebreak
+
+Note that this loss function provides diametrically opposed incentives to the two parts of the network which induces the aforementioned zero-sum competition. 
+
+Ideally, this results in a \textbf{Nash Equilibrium} between the two parts in which the generator settles on producing very convincing synthetic images and the discriminator is completely uncertain which images are real and which are produced by the generator.
+
+However, \acp{GAN} are notoriously difficult to balance and are prone to instability, divergence, oscillation and other failure modes, which are elaborated on in the technical implementation (here \ref{subsection:training_loop}).
 
 \pagebreak
 
 \subsection{GAN training loop}
 
-More details on the training loop are mentioned and shown in the relevant section on the technical implementation (here \ref{subsection:training_loop}) - briefly however the steps in the training loop are:
+More details on the training loop are mentioned and shown in the relevant section on the technical implementation (here \ref{subsection:training_loop}) - briefly the steps in the training loop are:
 
 \begin{itemize}
 	\item sample random data from the latent space and provide the input to the generator
-	\item create output from the generator, label it automatically, mix it with real data and input into the discriminator
-	\item create discriminator predictions, compute the loss function and adjust the discriminator weights
+	\item create output from the generator by forward pass of the input through the generator layers, label it automatically, mix it with real data and input into the discriminator
+	\item create discriminator predictions, compute the loss function with regard to the discriminator and adjust the discriminator weights
 	\item provide feedback from the discriminator output to the generator and adjust its' weights
 \end{itemize}
 

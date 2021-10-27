@@ -5,11 +5,12 @@
 \label{section:theory_application}
 
 In their landmark paper in 2014, \cite{goodfellow2014generative} demonstrated the viability of \acp{GAN} on creating image data on the classic MNIST dataset (described by \cite{mnist}), by generating - among other things - convincing handwritten digits.
+
 As mentioned in \ref{section:image_augmentation}, some of the architecture specifics and evaluation are quite specific to image data in that 
 
 \begin{itemize}
 	\item the data contains a notion of locality, as neighboring data points (i.e. pixels) are strongly correlated
-	\item dimensionality of the generated data is higher than the \textbf{latent space} 
+	\item dimensionality of the generated data is higher than the \textbf{latent space} (two-dimensional as opposed to the 1D latent space)
 	\item results lend themselves to visual quality inspection by humans (it is easy to see even degrees of quality between different architectures) as explained here (\ref{section:image_augmentation})
 \end{itemize}
 
@@ -18,13 +19,13 @@ specifically the former points are strongly relevant to \ac{GAN} architecture, a
 \section{Technical implementation steps}
 \label{section:technical_implementation}
 
-Since the goal of this paper is to evaluate whether or not a \ac{GAN} may be used to not only generate more data of a small non-image dataset (which is fairly trivial) but whether or not this data actually serves to \textbf{boost model performance} of models trained on the resulting data, a small, well-understood standard dataset was used to develop the initial architecture; the titanic dataset proposed by \cite{titanic}.
+Since the goal of this paper is to evaluate whether or not a \ac{GAN} may be used to not only generate more data of a small non-image dataset (which was assumed to be fairly trivial) but whether or not this data actually serves to \textbf{boost model performance} of models trained on the resulting data, a small, well-understood standard dataset was used to develop the initial architecture; the titanic dataset proposed by \cite{titanic}.
 
 Specifically, the iconic titanic dataset constitutes a binary classification problem, which facilitates quick model evaluation and ameliorates some of the more typical difficulties of training \acp{GAN} - see below.
 
 The first attempts to create a basic, dense \ac{GAN} actually failed to converge for a significant number of experiments with different amounts of layers, neurons and sizes of the latent space. 
 
-Somewhat unsurprisingly, achieving the classic Nash Equilibrium between discriminator and generator was fairly difficult and the initial models all proved unstable. 
+Somewhat unsurprisingly therefore, achieving the classic Nash Equilibrium between discriminator and generator was fairly difficult and the initial models all proved unstable. 
 
 \acp{GAN} provide several unique challenges, and/or failure modes:
 
@@ -34,7 +35,11 @@ Somewhat unsurprisingly, achieving the classic Nash Equilibrium between discrimi
 	\item catastrophic forgetting \cite{catastrophic_forgetting}
 \end{itemize}
 
-Mode collapse is especially relevant in a task like MNIST (as used by \cite{goodfellow2014generative}), where there are multiple classes to be generated, and the generator becomes increasingly proficient in generating one class explicitly - thankfully, this is less of an issue in a binary classification task.
+Mode collapse is especially relevant in a task like MNIST (as used by \cite{goodfellow2014generative}), where there are multiple classes to be generated (digits 0 through 9), and the generator becomes increasingly proficient in generating one class specifically such as a single digit. 
+
+While there are specialized adjustments that may be made to the loss function as described by \cite{mode_collapse} to incentivize the generator to produce samples from a diverse array of classes, these are out of scope of this paper and thankfully, this is less of an issue in a binary classification task.
+
+\pagebreak
 
 \subsection{Network Architecture}
 \label{subsection:architecture}
@@ -47,7 +52,7 @@ The other failure modes, however \textbf{did} all make an appearance at one time
 
 Further experiments, with increased numbers of layers and neurons, produced first a very typical oscillation pattern, shown in \ref{fig:gan2}:
  
-\fig{img/gan_oscillation_2}{Dense GAN, 3 layers, 64 neurons/layer; left - losses of generator/discriminator right - the probabilities real/fake assigned by the discriminator}{fig:gan2}{.8}
+\fig{img/gan_oscillation_2}{Dense GAN, 3 layers, 64 neurons/layer; left - losses of generator/discriminator right - the probabilities real/fake assigned by the discriminator}{fig:gan2}{1}
 
 Note the oscillations in the early stages, which barely decrease in amplitude at all. 
 
@@ -57,11 +62,11 @@ Training for an increased number of epochs did not lead to the emergence of a pr
 
 Finally, it has to be stressed that finding the ideal combination learning rates, dropout in the discriminator and number of training epochs, is really quite difficult, especially since there appears no good substitute to visual examination of the pattern that is produced by a given architecture and then adjusting the parameters. 
 
-This process that has to be iterated for quite a while, and is fairly manually involved and heavy on trial-and-error.
+This process has to be iterated for quite a while, and is fairly manually involved and heavy on trial-and-error.
  
 Ultimately, a a promising architecture appeared to be dense networks with 3 layers each, but a higher number of neurons, and still these networks diverged rather quickly shown here \ref{fig:gan3}:
  
-\fig{img/gan_divergence_3_layers_128_units.png}{Dense GAN, 3 layers, 128 neurons/layer, reduced learning rate and dropout in discriminator - losses of generator/discriminator right - the probabilities real/fake assigned by the discriminator}{fig:gan3}{.8}
+\fig{img/gan_divergence_3_layers_128_units.png}{Dense GAN, 3 layers, 128 neurons/layer, reduced learning rate and dropout in discriminator - losses of generator/discriminator right - the probabilities real/fake assigned by the discriminator}{fig:gan3}{1}
 
 Unfortunately, from here on out simply optimizing the number of neurons and learning rate and learning rate scheduling was not enough to mitigate this divergence. 
 
