@@ -334,7 +334,7 @@ Data preparation steps (using sklearn Pipelines):
 	\item MinMaxScaling of numerical attributes
 \end{itemize}
 
-Again, extensive preprocessing or feature engineering was excluded. The steps taken are the bare minimum in order to enable machine learning at all by design.
+Again, extensive preprocessing or feature engineering was excluded. The steps taken are the bare minimum in order to enable machine learning at all by design. The code to create these experiments can be found at \url{https://github.com/PaulBFB/master_thesis/tree/main/notebooks}
 
 \clearpage
 
@@ -366,10 +366,10 @@ To test this, the following steps were performed on the titanic, diabetes and wi
 \begin{itemize}
 	\item splitting the data into training and test data (20\% withheld)
 	\item fitting a a Wasserstein-GP \ac{GAN} on the training data
-	\item completely discard the real training data and replacing it with synthetic data of identical size
+	\item completely discarding the real training data and replacing it with synthetic data of identical size
 \end{itemize}
 
-\textbf{Note} that both the attributes of the data as well as the target attribute was replaced with synthetic data.
+\textbf{Note} that both the attributes of the data as well as the target attribute were replaced with synthetic data.
 
 \clearpage
 
@@ -377,7 +377,9 @@ To test this, the following steps were performed on the titanic, diabetes and wi
 
 \fig{img/titanic_replacing_experiments}{Comparing all model type performances, training data entirely replaced by synthetic data of same size with Wasserstein-GP generator}{fig:replacing_titanic}{.6}
 
-Obviously, the effect on model performance is fairly stark. As a note, the line represents a static model, always predicting the most common class in the training data. Given, some models seem to preserve a small amount of predictive power above purely guessing, but this is negligible. 
+Obviously, the effect on model performance is fairly stark. 
+
+As a note, the line represents a static model, always predicting the most common class in the training data. Given, some models seem to preserve a small amount of predictive power above purely guessing, but this is negligible. 
 
 \pagebreak
 
@@ -406,10 +408,14 @@ It stands to reason that this hints at a fundamentally better fit of the Wassers
 
 \subsection{Replacement Conclusions}
 
-Two interesting notes here, firstly the model class that preserves the most predictive power is the Random Forest Classifier, which given the fact that it constitutes an ensemble model is not overly surprising. Secondly, the stark drop in performance of the \ac{nn} is - in part - due to the fact how it is trained;
+Two interesting notes here, firstly the model class that preserves the most predictive power is the Random Forest Classifier, which given the fact that it constitutes an ensemble model is not overly surprising. 
+
+Secondly, the stark drop in performance of the \ac{nn} is - in part - due to the fact how it is trained;
 
 In lieu of more traditional regularization techniques, the model uses keras's EarlyStopping Callback \url{https://keras.io/api/callbacks/early_stopping/} which monitors a key metric and stops the training if the model does not improve for a set number of epochs. 
 In the case of the model used here, the metric used for stopping was the validation loss, calculated on a subset of the training data during the epoch (20\%, randomly chosen).
+
+\pagebreak
 
 The code for the sample neural network:
 
@@ -417,7 +423,7 @@ The code for the sample neural network:
 
 Listing~\ref{lst:nn_experiments} shows the python function which creates the base neural network used in all experiments.
 
-While this is beneficial in a standard sequential model, if the trained data is not closely enough representing all data,
+While this is beneficial in a standard sequential model, if the trained data is not representing all data closely enough,
 this drift will be greatly magnified. 
 
 \pagebreak
@@ -426,6 +432,8 @@ Taking a look at the training log (taken from TensorBoard) seems to confirm this
 
 \fig{img/epoch_accuracy_n.png}{model accuracy history during training; data entirely replaced by synthetic data of same size with Wasserstein-GP generator}{fig:training_logs_tensorboard}{1}
 
-So it would seem from this training log, that the accuracy recorded during training quickly increases above 90\%. As a side note, with the titanic dataset the generalization error, that is the difference between validation accuracy calculated on the withheld subset of training data in each epoch and accuracy on the test set was always around 3-4 percentage points.
+So it would seem from this training log that the accuracy recorded during training quickly increases above 90\%. 
 
-Ultimately, if the synthetic data \textbf{were} to be representative of the test data, an accuracy of this magnitude with the same architecture would not be possible. There is a strong chance then, that the network trained here is actually learning some of the patterns that the generator uses to create new data from the random distribution in its' latent space.
+As a side note, with the titanic dataset the generalization error, that is the difference between validation accuracy calculated on the withheld subset of training data in each epoch and accuracy on the test set was always around 3-4 percentage points.
+
+Ultimately, if the synthetic data \textbf{were} to be representative of the test data, an accuracy of this magnitude with the same architecture would not be possible. It seems likely then, that the network trained here is actually learning some of the patterns that the generator uses to create new data from the random distribution in its' latent space.
