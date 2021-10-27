@@ -42,4 +42,4 @@ Some sample training logs can be found in the /custom_logs directory - to be vie
 ## Jupyter Notebooks
 
 found in the ./notebooks folder, contain all the boosting and shrinking experiments
-
+> note: in order to run the jupyter notebooks, it is recommended to run jupyter in the top directory of this repository, since most import paths are relative

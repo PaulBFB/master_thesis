@@ -61,7 +61,7 @@ if __name__ == '__main__':
     epochs = 100
     batch_size = 16
     
-    model = keras.models.load_model('./models/titanic_nn.h5')
+    model = keras.models.load_model('../models/titanic_nn.h5')
     
     one_cycle = OneCycleScheduler(
         iterations=math.ceil(len(x_train) / batch_size) * epochs, 

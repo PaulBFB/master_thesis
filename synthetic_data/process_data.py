@@ -18,7 +18,7 @@ def process_data(
     
 #    assert real_share <= 1, 'can only take 100% of all real data'
     
-    with open('./data/titanic.csv', mode='r') as file:
+    with open('../data/titanic.csv', mode='r') as file:
         df = pd.read_csv(file)
 
     df.drop(columns=['cabin', 'home.dest', 'boat', 'body', 'ticket'], inplace=True)
@@ -128,5 +128,5 @@ if __name__ == '__main__':
 
     for k, v in filter(lambda x: x[0] != 'pipeline', data.items()):
         
-        np.save(f'./data/titanic_{k}.npy', v)
+        np.save(f'../data/titanic_{k}.npy', v)
         print(f'{k} -  {type(v)} - {v.shape}')

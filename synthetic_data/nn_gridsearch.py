@@ -11,7 +11,7 @@ from sklearn.model_selection import RandomizedSearchCV
 from process_data import process_data
 
 
-root_logdir = os.path.join(os.curdir, 'custom_logs')
+root_logdir = os.path.relpath('../custom_logs')
 
 
 def make_model(
@@ -141,7 +141,7 @@ if __name__ == '__main__':
 
     
     best_model = grid.best_estimator_.model
-    model_path = f'./models/titanic_gridsearch{"_synthetic" if include_synthetic else ""}_{time.strftime("%Y_%m_%d_%H_%M")}.h5'
+    model_path = f'../models/titanic_gridsearch{"_synthetic" if include_synthetic else ""}_{time.strftime("%Y_%m_%d_%H_%M")}.h5'
     best_model.save(model_path)
     
     print(best_model.summary())

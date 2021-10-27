@@ -20,15 +20,15 @@ else:
 def create_generator_network(
     number_hidden_layers: int = 1,
     number_hidden_units_power: int = 5,
-    hidden_activation_function: str = 'selu',
+    hidden_activation_function: str = 'ReLU',
     use_dropout: bool = False,
     upsampling: bool = True,
+    use_batchnorm: bool = True,
     dropout_rate: float = 0.3,
     number_output_units: int = 12,
     output_activation_function: str = 'tanh') -> tf.keras.Model:
 
     model = tf.keras.Sequential()
-    
     for i in range(number_hidden_layers):
         
         if upsampling:
@@ -37,14 +37,18 @@ def create_generator_network(
         
         else:
             model.add(tf.keras.layers.Dense(2 ** number_hidden_units_power, use_bias=False))
-                
+        
+        if use_batchnorm:
+            model.add(tf.keras.layers.BatchNormalization())
+        else:
+            pass
+        
         model.add(tf.keras.layers.Activation(hidden_activation_function))
         
         if use_dropout:
             model.add(tf.keras.layers.Dropout(dropout_rate))
         else:
             pass
-        
 
     model.add(tf.keras.layers.Dense(number_output_units))
     model.add(tf.keras.layers.Activation(output_activation_function))
@@ -53,11 +57,12 @@ def create_generator_network(
 
 
 def create_discriminator_network(
-    number_hidden_layers: int = 1,
+    number_hidden_layers: int = 2,
     number_hidden_units_power: int = 5,
-    hidden_activation_function: str = 'selu',
+    hidden_activation_function: str = 'LeakyReLU',
     use_dropout: bool = True,
     upsampling: bool = True,
+    use_batchnorm: bool = True,
     dropout_rate: float = 0.3,
     number_output_units: int = 1) -> tf.keras.Model:
 
@@ -71,7 +76,12 @@ def create_discriminator_network(
         
         else:
             model.add(tf.keras.layers.Dense(2 ** number_hidden_units_power))
-                    
+        
+        if use_batchnorm:
+            model.add(tf.keras.layers.BatchNormalization())
+        else:
+            pass
+            
         model.add(tf.keras.layers.Activation(hidden_activation_function))
         
         if use_dropout:
@@ -119,8 +129,7 @@ def train_generator(
     batch_size: int = 32,
     tensorflow_device: str = device_name,
     generate_img: bool = True,
-    learning_rate: float = 0.0001,
-    lambda_gp: float = 10.0,
+    learning_rate: float = 0.0005,
     export_generator: bool = True) -> tf.keras.Model:
     
     
@@ -152,10 +161,10 @@ def train_generator(
         discriminator_model.build(input_shape=(None, np.prod(data_shape)))
 #        print(discriminator_model.summary())
         
-    # optimizers
-#    loss_fn = tf.keras.losses.BinaryCrossentropy(from_logits=True)
-    g_optimizer = tf.keras.optimizers.Adam(learning_rate=learning_rate)
-    d_optimizer = tf.keras.optimizers.Adam(learning_rate=learning_rate)
+    # Loss functions and optimizers
+    loss_fn = tf.keras.losses.BinaryCrossentropy(from_logits=True)
+    g_optimizer = tf.keras.optimizers.RMSprop(learning_rate=learning_rate)
+    d_optimizer = tf.keras.optimizers.RMSprop(learning_rate=learning_rate)
     
     # lists to store losses and values
     all_losses = []
@@ -166,80 +175,68 @@ def train_generator(
         epoch_losses, epoch_d_vals = [], []
         for i,(input_z,input_real) in enumerate(training_data):
             
-                        
-            # set up tapes
-            with tf.GradientTape() as d_tape, tf.GradientTape() as g_tape:
-                g_output = generator_model(input_z, training=True)
-                
-                # real and fake part of the critics output
-                d_critics_real = discriminator_model(input_real, training=True)
-                d_critics_fake = discriminator_model(g_output, training=True)
-                    
-                # generator loss - (reverse of discriminator, to avoid vanishing gradient)
-                g_loss = -tf.math.reduce_mean(d_critics_fake)
-                    
-                # discriminator losses                    
-                d_loss_real = -tf.math.reduce_mean(d_critics_real)
-                d_loss_fake =  tf.math.reduce_mean(d_critics_fake)
-                d_loss = d_loss_real + d_loss_fake
-                    
-                # inner loop for gradient penalty
-                with tf.GradientTape() as gp_tape:
-                    alpha = rng.uniform(
-                        shape=[d_critics_real.shape[0], 1, 1, 1], 
-                        minval=0.0, maxval=1.0)
-                    interpolated = (
-                        alpha*tf.cast(input_real, dtype=tf.float32) + (1-alpha)*g_output)
-                    # force recording of gradients of all interpolations (not created by model)
-                    gp_tape.watch(interpolated)
-                    d_critics_intp = discriminator_model(interpolated)
-                    
-                # gradients of the discriminator w. regard to all
-                grads_intp = gp_tape.gradient(
-                    d_critics_intp, [interpolated,])[0]
-                    
-                # regularization
-                grads_intp_l2 = tf.sqrt(
-                    tf.reduce_sum(tf.square(grads_intp), axis=[1, 2, 3]))
-                    
-                # compute penalty w. lambda hyperparam
-                grad_penalty = tf.reduce_mean(tf.square(grads_intp_l2 - 1.0))
-                    
-                # add GP to discriminator
-                d_loss = d_loss + lambda_gp*grad_penalty
-
-            
-            # Optimization: Compute the gradients apply them
-            d_grads = d_tape.gradient(d_loss, discriminator_model.trainable_variables)
-            d_optimizer.apply_gradients(
-                grads_and_vars=zip(d_grads, discriminator_model.trainable_variables))
-        
+            # generator loss, record gradients
+            with tf.GradientTape() as g_tape:
+                g_output = generator_model(input_z)
+                d_logits_fake = discriminator_model(g_output, training=True)
+                labels_real = tf.ones_like(d_logits_fake)
+                g_loss = loss_fn(y_true=labels_real, y_pred=d_logits_fake)
+            # get loss derivatives from tabe, only for trainable vars, in case of regularization / batchnorm
             g_grads = g_tape.gradient(g_loss, generator_model.trainable_variables)
+            
+            # apply optimizer for generator
             g_optimizer.apply_gradients(
                 grads_and_vars=zip(g_grads, generator_model.trainable_variables))
+    
+            # discriminator loss, gradients
+            with tf.GradientTape() as d_tape:
+                d_logits_real = discriminator_model(input_real, training=True)
+    
+                d_labels_real = tf.ones_like(d_logits_real)
+                
+                # loss for the real examples - labeles as 1
+                d_loss_real = loss_fn(
+                    y_true=d_labels_real, y_pred=d_logits_real)
+    
+                # loss for the fakes - labeled as 0 
+                
+                # apply discriminator to generator output like a function
+                d_logits_fake = discriminator_model(g_output, training=True)
+                d_labels_fake = tf.zeros_like(d_logits_fake)
+    
+                # loss function
+                d_loss_fake = loss_fn(
+                    y_true=d_labels_fake, y_pred=d_logits_fake)
+    
+                # compute component loss for real & fake
+                d_loss = d_loss_real + d_loss_fake
+    
+            # get the loss derivatives from the tape
+            d_grads = d_tape.gradient(d_loss, discriminator_model.trainable_variables)
             
-            d_probs_real = tf.reduce_mean(tf.sigmoid(d_critics_real))
-            d_probs_fake = tf.reduce_mean(tf.sigmoid(d_critics_fake))
-            
-            epoch_d_vals.append((d_probs_real.numpy(), d_probs_fake.numpy()))
-
+            # apply optimizer to discriminator gradients - only trainable :todo: add regularization here
+            d_optimizer.apply_gradients(
+                grads_and_vars=zip(d_grads, discriminator_model.trainable_variables))
+                               
+            # add step loss to epoch list
             epoch_losses.append(
                 (g_loss.numpy(), d_loss.numpy(), 
                  d_loss_real.numpy(), d_loss_fake.numpy()))
             
-            
+            # probabilities from logits for predcitions, using tf builtin
+            d_probs_real = tf.reduce_mean(tf.sigmoid(d_logits_real))
+            d_probs_fake = tf.reduce_mean(tf.sigmoid(d_logits_fake))
+            epoch_d_vals.append((d_probs_real.numpy(), d_probs_fake.numpy()))        
+        
         # record loss
         all_losses.append(epoch_losses)
-        
-        # record probabilities
         all_d_vals.append(epoch_d_vals)
-        
-        #all_d_vals.append(epoch_d_vals)
-        print('Epoch {:-3d} | ET {:.2f} min | Avg Losses >>'
-          ' G/D {:6.2f}/{:6.2f} [D-Real: {:6.2f} D-Fake: {:6.2f}]'
-          .format(epoch, (time.time() - start_time)/60, 
-                  *list(np.mean(all_losses[-1], axis=0))))
-
+        print(
+            'Epoch {:03d} | ET {:.2f} min | Avg Losses >>'
+            ' G/D {:.4f}/{:.4f} [D-Real: {:.4f} D-Fake: {:.4f}]'
+            .format(
+                epoch, (time.time() - start_time)/60, 
+                *list(np.mean(all_losses[-1], axis=0))))
     result = {
         'all_losses': all_losses,
         'all_d_vals': all_d_vals,
@@ -255,23 +252,22 @@ def train_generator(
         print('generating training log image')
         
         fig = plt.figure(figsize=(20, 10))
-        
-        # plot losses together
+    
+        ## Plotting the losses
         ax = fig.add_subplot(1, 2, 1)
         g_losses = [item[0] for item in itertools.chain(*all_losses)]
-        d_losses = [item[1] for item in itertools.chain(*all_losses)]
-
-        plt.plot(g_losses, label='Generator loss', alpha=0.95)
-        plt.plot(d_losses, label='Discriminator loss', alpha=0.95)
+        d_losses = [item[1]/2.0 for item in itertools.chain(*all_losses)]
+        plt.plot(g_losses, label='Generator loss', alpha=0.75)
+        plt.plot(d_losses, label='Discriminator loss', alpha=0.75)
         plt.legend(fontsize=20)
         ax.set_xlabel('Iteration', size=15)
         ax.set_ylabel('Loss', size=15)
         
         epochs = np.arange(1, n_epochs + 1)
         epoch2iter = lambda e: e*len(all_losses[-1])
-        epoch_ticks = np.arange(0, n_epochs, n_epochs // 10)
+        epoch_ticks = np.arange(0, n_epochs, 20)
         
-        newpos   = [epoch2iter(e) for e in epoch_ticks]
+        newpos = [epoch2iter(e) for e in epoch_ticks]
         ax2 = ax.twiny()
         ax2.set_xticks(newpos)
         ax2.set_xticklabels(epoch_ticks)
@@ -283,8 +279,7 @@ def train_generator(
         ax.tick_params(axis='both', which='major', labelsize=15)
         ax2.tick_params(axis='both', which='major', labelsize=15)
         
-        
-        # Plotting the outputs of the discriminator probabilities
+        # Plotting the outputs of the discriminator
         ax = fig.add_subplot(1, 2, 2)
         d_vals_real = [item[0] for item in itertools.chain(*all_d_vals)]
         d_vals_fake = [item[1] for item in itertools.chain(*all_d_vals)]
@@ -306,17 +301,17 @@ def train_generator(
         ax2.tick_params(axis='both', which='major', labelsize=15)
         
         
-        plt.savefig(f'./img/{model_name}.png')
+        plt.savefig(f'../img/{model_name}.png')
         
-        print(f'image saved to: ./img/{model_name}.png')
+        print(f'image saved to: ../img/{model_name}.png')
     
     if export_generator:
         
         print()
         print('saving generator model')
         
-        tf.keras.models.save_model(generator_model, f'./models/generator_{model_name}.h5')
-        print(f'generator model saved to: ./models/{model_name}.h5')
+        tf.keras.models.save_model(generator_model, f'../models/generator_{model_name}.h5')
+        print(f'generator model saved to: ../models/{model_name}.h5')
         
     return result
 
@@ -330,6 +325,4 @@ if __name__ == '__main__':
     x_train = np.column_stack((x_train, y_train))
 
     
-    result = train_generator(
-        training_data=x_train,
-        n_epochs=50)
+    result = train_generator(training_data=x_train)

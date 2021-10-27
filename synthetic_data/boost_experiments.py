@@ -66,5 +66,5 @@ for data_boost_x in [3, 5, 10, 20]:
 df = pd.DataFrame(models_tested)
 #df = df.drop_duplicates(subset=['share_real_data', 'boosted_data', 'data_boosted_x', 'boostint_type']).sort_values(['share_real_data', 'data_boosted_x'])
 
-with open('./boosting_results_extreme.csv', mode='w') as file:
+with open('../notebooks/boosting_results_extreme.csv', mode='w') as file:
     df.to_csv(file)

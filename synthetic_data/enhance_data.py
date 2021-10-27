@@ -60,7 +60,7 @@ def enhance_data(
         else:
             print()
             print(f'loading pre-trained {"wasserstein" if wasserstein else "dcgan"} generator')
-            generator = tf.keras.models.load_model(f'./models/best_{"wasserstein_" if wasserstein else ""}generator.h5', compile=False)
+            generator = tf.keras.models.load_model(f'../models/best_{"wasserstein_" if wasserstein else ""}generator.h5', compile=False)
     
         number_samples = x_train.shape[0] * synthetic_share
         number_samples = int(number_samples)
