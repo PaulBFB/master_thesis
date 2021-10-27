@@ -3,7 +3,7 @@
 
 \section{Experiments on the original dataset}
 
-The technical implementation that has been described in \ref{chapter:technical_application} has been entirely developed on the titanic dataset described by \cite{titanic}. 
+The technical implementation that has been described in chapter \ref{chapter:technical_application} has been entirely developed on the titanic dataset described by \cite{titanic}. 
 Therefore the first experiments were also performed on this dataset.
 
 It is important to \textbf{note} here, that due to the fact that this dataset is extremely widely used, there have been significantly higher performances in accuracy achieved.
@@ -13,7 +13,7 @@ distance from the deck and/or lifeboats.
 
 This is, however, explicitly \textbf{not} the purpose of this experiment, a notebook that does this fairly well can be found here: \url{https://www.kaggle.com/vinothan/titanic-model-with-90-accuracy} 
 
-The purpose of this experiment however, is to see if gains in performance can be achieved by simply applying larger compute power to the dataset in an agnostic fashion (more details in the discussion).
+The purpose of this experiment, in contrast, is to see whether or not gains in performance can be achieved by simply applying larger compute power to the dataset in an agnostic fashion (more details in the discussion).
 
 \subsection{Experiments with decreased amounts of data}
 
@@ -47,8 +47,9 @@ Using the KerasClassifier wrapper \url{https://www.tensorflow.org/api_docs/pytho
 \lstinputlisting[language=Python, basicstyle=\tiny, caption=gridsearch simplified, label=lst:gridsearch]{./lst/gridsearch_simplified.py}
 
 Note that both the gridsearch and model function are slightly simplified here, the original is again found at \url{https://github.com/PaulBFB/master_thesis/blob/main/nn_gridsearch.py}. 
+
 Also, to quickly apply the gridsearch function to progressively larger segments of the original data, a script \url{https://github.com/PaulBFB/master_thesis/blob/main/boost_experiments.py} was used; 
-which is nothing more than an iteration over the different sized data parts, applying gridsearch to all of them, in order to run in the background (or on remote machines, as some of these tests may take an exceedingly long time, based on the size of the grid and the hardware they run on).
+which is nothing more than an iteration over the differently resized data parts, applying gridsearch to all of them in order to run in the background (or on remote machines, as some of these tests may take an exceedingly long time, based on the size of the grid and the hardware they run on).
 
 \clearpage
 
@@ -62,6 +63,7 @@ As for the results with decreased data, the following steps were automatically p
 \end{itemize}
 
 All these steps were performed on a subset of the entire data, the training set, the remaining 20\% of the data, the test set, was only used for evaluation.
+
 Where Gridsearch was applied, a subset of the training data was withheld for Crossvalidation.
 
 The resulting graphic is always formatted in the same way; height of the bar denotes accuracy of the best model, color of the bar denotes the type of boosting that was applied, 
@@ -102,7 +104,7 @@ Performing the same test on the entire data:
 
 \fig{img/titanic_boosting_experiments_part_4}{Experiment with data size 100\% of original data}{fig:ex4}{1}
 
-appears to yield a performance gain, which is not significant either, but seems more consistent.
+appears to yield a subtle performance gain, which is not significant either, but seems more consistent.
 
 
 \clearpage
@@ -123,7 +125,7 @@ The line representing "unboosted" performance takes its' value from the model th
 
 While the fluctuation in performance remains on the same scale, which quite probably reflects nothing more than random noise, it seems remarkable here that model performance does not, in fact, degrade.
 
-Elaboration on this is found in the final chapter, it just seems prudent to note here that the axiom that comes to mind is:
+Elaboration on this is found in the final chapter, it just seems prudent to note here that the aphorism that comes to mind is:
 
 \begin{center} 
 	
@@ -151,16 +153,17 @@ In order to compare the impact of this type of boosting on different types of mo
 \begin{itemize}
 	\item Logistic Regression Classification
 	\item Support Vector Machine Classification
-	\item Random Forest Classification
 	\item Decision Tree Classification
+	\item Random Forest Classification
 	\item K-Nearest-Neighbor Classification
 	\item Gaussian Naive Bayes Classification
 	\item Dense Neural Network, for reference
 \end{itemize}
 
-Just a very brief summary of each type of classification (except for neural networks) follows here. All these models were implemented with their \textbf{default values} from scikit-learn version 1.0.
+Just a very brief summary of each type of classification (except for neural networks) follows here. All these models were implemented almost exclusively with their \textbf{default values} from scikit-learn version 1.0, where other values were used it is noted explicitly.
+
 As noted before, the very sensible default values in scikit-learn are described also by \cite{buitinck2013api} and have served as guidelines of code implemented here.
-Deep descriptions of these basic models are out of scope of this paper, as they only serve to test the performance of the approach for generation of synthetic training data on new datasets.
+Deep descriptions of these basic models are out of scope of this paper, as they only serve to test and benchmark the performance of the approach for generation of synthetic training data on new datasets.
 
 The relevant documentation is linked in all sections.
 
@@ -180,8 +183,9 @@ Documentation can be found here: \url{https://scikit-learn.org/stable/modules/ge
 
 \subsubsection{Support Vector Machine Classification}
 
-\ac{SVC} attempts to formulate a decision boundary around training instances. The goal is to formulate a hyperplane, n-1 dimensional space (where n is the number of attributes in the training data) 
+\ac{SVC} attempts to formulate a decision boundary around training instances. The goal is to formulate a hyperplane in n-1 dimensional space (where n is the number of attributes in the training data) 
 which maximizes the distance to the nearest training instance. 
+
 Originally formulated by \cite{vapnik1995support} it is a mathematically exceedingly elegant classification solution. In cases where the problem lends itself to projection or dimensionality reduction,
 \acp{SVC} are known to perform very well.
 
@@ -194,14 +198,14 @@ Documentation found here: \url{https://scikit-learn.org/stable/modules/generated
 Decision trees, first described by \cite{quinlan1986induction}, attempt to iteratively bisect the data in a fashion which increases the resulting halves in terms of their "purity".
 Purity in this case is described as how "unbalanced" the classes of the target variable are in the resulting halves, the more unbalanced the better (usually tracked in terms of gini impurity or entropy). 
 
-By recording these split points, decision trees effectively learn how to halve the data until all resulting observations are in pure subsets (or alternatively a maximum number of splits or a minimum number of samples has been reached). 
+By recording these split points, decision trees effectively learn how to bisect the data multiple times until all resulting observations are in pure subsets (or alternatively a maximum number of splits or a minimum number of samples has been reached). 
 
-Decision trees are intuitively well understandable, and are robust against outliers and feature scale, 
+Decision trees are intuitively well understandable by humans, and are robust against outliers and feature scale, 
 but are prone to overfit training data depending on their depth (the amount of times the classifier is allowed to split the data in training).
 
 Documentation can be found here: \url{https://scikit-learn.org/stable/modules/generated/sklearn.tree.DecisionTreeClassifier.html}
 
-Related to decision trees, \textbf{Random Forect Classifiers} train multiple decision trees on different subsets of the data and aggregate their results, and constitute a uniquely adaptable and robust ensemble method.
+Related to decision trees, \textbf{Random Forect Classifiers} train multiple decision trees on different subsets of attributes of the data and aggregate their results, and constitute a uniquely adaptable and robust ensemble method.
 
 Documentation can be found here: \url{https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html}
 
@@ -210,15 +214,17 @@ Documentation can be found here: \url{https://scikit-learn.org/stable/modules/ge
 \subsubsection{K-Nearest-Neighbor Classification}
 
 \ac{KNN} calculates all distances between training observations based on their attributes in n-dimensional space (where n is the number of attributes in the training data) 
-and classifies each observation by its' K nearest other observations. The default value of neighbors that is used here is 3 (in order to be less prone to overfitting the training data).
+and classifies each observation by its' K nearest other observations. 
+
+The number of neighbors that is used here is 3, less than the default 5 (in order to be less prone to overfitting the training data).
 
 Documentation can be found here: \url{https://scikit-learn.org/stable/modules/generated/sklearn.neighbors.KNeighborsClassifier.html}
 
 \subsubsection{Gaussian Naive Bayes Classification}
 
-The Naive Bayes Algorithm estimates the probability of a given outcome (1/0 in this case) given the value of a given attribute; as per Bayes' Theorem of conditional probability.
-Here, the key assumption is that all attributes are normally distributed (hence gaussian) 
-and furthermore that the features are all independent of each other (a strong assumption which makes this model fairly brittle in practice, hence naive).
+The Naive Bayes Algorithm estimates the probability of a given outcome (survival / death of passengers in this case) given the value of a given attribute; as per Bayes' Theorem of conditional probability.
+
+Here, a key assumption is that all attributes are normally distributed (hence gaussian) and furthermore that the features are all independent of each other (a strong assumption which makes this model fairly brittle in practice, hence naive).
 
 Treating all attributes independently of one another eliminates the requirement of observing all possible permutations of features for all outcomes.
 
@@ -228,19 +234,22 @@ Documentation can be found here: \url{https://scikit-learn.org/stable/modules/ge
 
 \subsection{Reference - model fitting on the titanic dataset}
 
-All these models have been fit on the titanic dataset for reference. In order to make these models comparable, they have all been fit on all datasets with the same parameters (as mentioned in the sections) as well as 
+All these types of models have first been fit on the titanic dataset for reference. 
+
+In order to make these types of models comparable, they have subsequently all been fit on all datasets with the same parameters (as mentioned in the sections) as well as 
 using 80\% of their data as training data, withholding 20\% for performance testing.
 
-All training data have then been used to fit a Wasserstein-GP generator and increase their training data size by 20\% (since this seemed to be the most consistent and promising configuration).
+All training data have then been used to fit a Wasserstein-GP generator and increase their training data size by 20\% (since this seemed to be the most consistent and promising configuration with the titanic dataset).
 
 For clarity, the baseline for a "naive" prediction (that is, always simply predicting the most common class) is also shown, 
-in order to demonstrate whether any of the models exhibit predictive power beyond simply making the safest guess (i.e. a static model).
+in order to demonstrate whether any of the models exhibit predictive power beyond simply making the safest guess (i.e. a static model) and are evaluated on their accuracy, since it is a very intuitively understandable metric.
 
-\fig{img/titanic_all_models_boosting_experiments}{Comparing all model type performances, training data size boosted by 20\% with Wasserstein-GP generator}{fig:all_titanic}{1}
+\fig{img/titanic_all_models_boosting_experiments}{Comparing all model type performances on the titanic dataset, training data size boosted by 20\% with Wasserstein-GP generator}{fig:all_titanic}{1}
 
 \pagebreak
 
-The outcome here seems quite consistent, with no change in most models, deterioration of performance does not actually occur, which is promising. 
+The outcome here seems quite consistent, with no change in most models, deterioration of performance does not actually occur, which is promising.
+ 
 Given the fact that this dataset is the one the Wasserstein-GP architecture was built on, any further deductions seem spurious.
 
 \clearpage
@@ -252,7 +261,7 @@ Two new datasets were selected as test sets for the architecture that was used:
 \subsection{The Wine Quality Dataset}
 
 Described by \cite{winequality}. The dataset contains 6000+ observations of wine quality with 11 attributes and one target variable (quality).
-The attributes describe characteristics such as citric acid, chlorides, residual sugar, alcohol...
+The attributes describe characteristics such as citric acid, chlorides, residual sugar, alcohol etc.
 
 Data preparation steps (using sklearn Pipelines):
 \begin{itemize}
