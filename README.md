@@ -38,3 +38,8 @@ Since the installation of tensorflow is notoriously finnicky and this was writte
 ## Training Logs
 
 Some sample training logs can be found in the /custom_logs directory - to be viewed using TensorBoard
+
+## Jupyter Notebooks
+
+found in the ./notebooks folder, contain all the boosting and shrinking experiments
+
